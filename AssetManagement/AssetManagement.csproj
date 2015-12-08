@@ -81,9 +81,9 @@
     <Compile Include="AdminLogin.Designer.cs">
       <DependentUpon>AdminLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="autoCompleteTextbox.cs" />
-    <Compile Include="Encrypter.cs" />
-    <Compile Include="ExcelUtlity.cs" />
+    <Compile Include="HelperClasses\autoCompleteTextbox.cs" />
+    <Compile Include="HelperClasses\Encrypter.cs" />
+    <Compile Include="HelperClasses\ExcelUtlity.cs" />
     <Compile Include="frm_DatabaseSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,12 +161,6 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\close-blue.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\button_blue_close.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="IMS.ico" />
