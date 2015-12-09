@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using WebCam_Capture;
-using System.Collections.Generic;
+﻿using WebCam_Capture;
+
 namespace AssetManagement
 {
     public class WebCam
@@ -11,6 +7,7 @@ namespace AssetManagement
         private WebCamCapture webcam;
         private System.Windows.Forms.PictureBox _FrameImage;
         private int FrameNumber = 50;
+
         public void InitializeWebCam(ref System.Windows.Forms.PictureBox ImageControl)
         {
             webcam = new WebCamCapture();
@@ -20,7 +17,7 @@ namespace AssetManagement
             _FrameImage = ImageControl;
         }
 
-        void webcam_ImageCaptured(object source, WebcamEventArgs e)
+        private void webcam_ImageCaptured(object source, WebcamEventArgs e)
         {
             _FrameImage.Image = e.WebCamImage;
         }

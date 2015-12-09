@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AssetManagement
@@ -14,41 +8,41 @@ namespace AssetManagement
     {
         #region Private Variable
 
-            private List<string> sheetToPopulate;
+        private List<string> sheetToPopulate;
 
-        #endregion
+        #endregion Private Variable
 
         #region constructor
 
-            public frm_SheetSelector(List<string> pSheetToPopulate)
-            {
-                InitializeComponent();
-                this.sheetToPopulate = pSheetToPopulate;
-                populateData(sheetToPopulate);
-            }
+        public frm_SheetSelector(List<string> pSheetToPopulate)
+        {
+            InitializeComponent();
+            this.sheetToPopulate = pSheetToPopulate;
+            populateData(sheetToPopulate);
+        }
 
-        #endregion
+        #endregion constructor
 
         #region Function
 
-            private void populateData(List<string> sheetToPopulate)
+        private void populateData(List<string> sheetToPopulate)
+        {
+            foreach (string data in sheetToPopulate)
             {
-                foreach(string data in sheetToPopulate)
-                {
-                    cbox_SheetSelect.Items.Add(data);
-                }
+                cbox_SheetSelect.Items.Add(data);
             }
+        }
 
-        #endregion
+        #endregion Function
 
         #region Event
 
-            private void cbox_SheetSelect_SelectedIndexChanged(object sender, EventArgs e)
-            {
-                frm_Main.sheetName = cbox_SheetSelect.SelectedItem.ToString();
-                this.Dispose();
-            }
+        private void cbox_SheetSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            frm_Main.sheetName = cbox_SheetSelect.SelectedItem.ToString();
+            this.Dispose();
+        }
 
-        #endregion
+        #endregion Event
     }
 }

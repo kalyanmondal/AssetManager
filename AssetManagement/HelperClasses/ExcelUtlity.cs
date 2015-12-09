@@ -1,19 +1,13 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Excel;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Office.Interop.Excel;
-using System.Windows.Forms;
 using System.Data;
-using System.IO;
-using System.Drawing;
+using System.Windows.Forms;
 
 namespace AssetManagement
 {
-    class ExcelUtlity
+    internal class ExcelUtlity
     {
-
         public bool WriteDataTableToExcel(System.Data.DataTable dataTable, string worksheetName, string saveAsLocation, string ReporType, int from)
         {
             Microsoft.Office.Interop.Excel.Application excel;
@@ -78,12 +72,9 @@ namespace AssetManagement
                                     excelCellrange = excelSheet.Range[excelSheet.Cells[rowcount, 1], excelSheet.Cells[rowcount, dataTable.Columns.Count]];
                                     FormattingExcelCells(excelCellrange, "#CCCCFF", System.Drawing.Color.Black, false);
                                 }
-
                             }
                         }
-
                     }
-
                 }
 
                 // now we resize the columns
@@ -93,13 +84,10 @@ namespace AssetManagement
                 border.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
                 border.Weight = 2d;
 
-
                 excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[2, dataTable.Columns.Count]];
                 FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
 
-
                 //now save the workbook and exit Excel
-
 
                 excelworkBook.SaveAs(saveAsLocation); ;
                 excelworkBook.Close();
@@ -117,8 +105,8 @@ namespace AssetManagement
                 excelCellrange = null;
                 excelworkBook = null;
             }
-
         }
+
         public void FormattingExcelCells(Microsoft.Office.Interop.Excel.Range range, string HTMLcolorCode, System.Drawing.Color fontColor, bool IsFontbool)
         {
             range.Interior.Color = System.Drawing.ColorTranslator.FromHtml(HTMLcolorCode);
@@ -128,6 +116,7 @@ namespace AssetManagement
                 range.Font.Bold = IsFontbool;
             }
         }
+
         public int noOfRowsCounter(string workWokbookName, string workSheetName)
         {
             Microsoft.Office.Interop.Excel.Application excel;
@@ -155,8 +144,8 @@ namespace AssetManagement
                 excelSheet = null;
                 excelworkBook = null;
             }
-
         }
+
         public int noOfSheetCounter(string workWokbookName)
         {
             Microsoft.Office.Interop.Excel.Application excel;
@@ -188,6 +177,7 @@ namespace AssetManagement
                 excelworkBook = null;
             }
         }
+
         public List<string> sheetNames(string workWokbookName)
         {
             Microsoft.Office.Interop.Excel.Application excel;

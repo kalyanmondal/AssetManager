@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AssetManagement
@@ -14,9 +8,9 @@ namespace AssetManagement
     {
         #region Private Variable
 
-        int p;
+        private int p;
 
-        #endregion
+        #endregion Private Variable
 
         #region constructor
 
@@ -27,13 +21,13 @@ namespace AssetManagement
             formShapper(p);
         }
 
-        #endregion
+        #endregion constructor
 
         #region Function
 
         private void formShapper(int pFrom)
         {
-            if(pFrom == 0)
+            if (pFrom == 0)
             {
                 lbl_Visitor_Report_DataCollector_EmployeeId.Visible = true;
                 tbox_Visitor_Report_DataCollector_EmployeeId.Visible = true;
@@ -52,7 +46,7 @@ namespace AssetManagement
                 btn_Ok.Visible = true;
 
                 lbl_Visitor_Report_DataCollector_EmployeeId.Text = "In Time :";
-                lbl_Visitor_Report_DataCollector_EmployeeId.Location = new Point(57,8);
+                lbl_Visitor_Report_DataCollector_EmployeeId.Location = new Point(57, 8);
 
                 lbl_Visitor_Report_DataCollector_OutTime.Visible = true;
                 dtPk_Report_DataCollector_OutTime.Visible = true;
@@ -66,13 +60,13 @@ namespace AssetManagement
             }
         }
 
-        #endregion
+        #endregion Function
 
         #region Event
 
         private void btn_Ok_Click(object sender, EventArgs e)
         {
-            if(p==0)
+            if (p == 0)
             {
                 frm_Main.employeeId = tbox_Visitor_Report_DataCollector_EmployeeId.Text;
                 this.Dispose();
@@ -99,6 +93,6 @@ namespace AssetManagement
             }
         }
 
-        #endregion
+        #endregion Event
     }
 }

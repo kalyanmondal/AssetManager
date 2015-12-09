@@ -157,7 +157,7 @@
             this.lbl_InterOffce_Comming_From = new System.Windows.Forms.Label();
             this.lbl_InterOffce_Employee_Name = new System.Windows.Forms.Label();
             this.tb_Page_VisitorDetails_Report = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grpBx_Inter_Office_Report = new System.Windows.Forms.GroupBox();
             this.btn_Report_Inter_Office_Last_7_Days = new System.Windows.Forms.Button();
             this.btn_Report_Inter_Office_Today = new System.Windows.Forms.Button();
             this.btn_Report_Inter_Office_Specific_Employee = new System.Windows.Forms.Button();
@@ -216,7 +216,7 @@
             this.lbl_Med_Emp_Id = new System.Windows.Forms.Label();
             this.tbox_Med_Medcine_Updated_Stock = new System.Windows.Forms.TextBox();
             this.lbl_medStockCounter = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.grpBx_MedicineSigneture = new System.Windows.Forms.GroupBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.btn_Med_Details_Reset = new System.Windows.Forms.Button();
             this.btn_Med_Assign = new System.Windows.Forms.Button();
@@ -267,11 +267,41 @@
             this.tbox_ManageEmployee_EmployeeEmail = new System.Windows.Forms.TextBox();
             this.tbox_ManageEmployee_EmployeeName = new System.Windows.Forms.TextBox();
             this.tbox_ManageEmployee_EmployeeId = new System.Windows.Forms.TextBox();
+            this.tb_Page_Settings_Manage_Medicine = new System.Windows.Forms.TabPage();
+            this.sp_Cont_Manage_Medicine_Graph = new System.Windows.Forms.SplitContainer();
+            this.sp_Cont_Manage_Medicine_Add_And_Update = new System.Windows.Forms.SplitContainer();
+            this.lbl_InsertMedicine = new System.Windows.Forms.Label();
+            this.lbl_ExistingMedicine = new System.Windows.Forms.Label();
+            this.btn_ManageMedicine_Insert_Reset = new System.Windows.Forms.Button();
+            this.btn_ManageMedicine_Add = new System.Windows.Forms.Button();
+            this.nemUD_ManageMedicine_InsertWarning = new System.Windows.Forms.NumericUpDown();
+            this.lbl__ManageMedicine_InsertWarning = new System.Windows.Forms.Label();
+            this.nemUD_ManageMedicine_InsertMedicineStock = new System.Windows.Forms.NumericUpDown();
+            this.lbl_ManageMedicine_InsertMedicineStock = new System.Windows.Forms.Label();
+            this.tbox_ManageMedicine_InsertMedicineName = new System.Windows.Forms.TextBox();
+            this.lbl_ManageMedicine_InsertMedicineName = new System.Windows.Forms.Label();
+            this.btn_ManageMedicine_Update_Reset = new System.Windows.Forms.Button();
+            this.btn_ManageMedicine_Update = new System.Windows.Forms.Button();
+            this.rdBtn_MedicineInActive = new System.Windows.Forms.RadioButton();
+            this.rdBtn_MedicineActive = new System.Windows.Forms.RadioButton();
+            this.nemUD_ManageMedicine_UpdateWarning = new System.Windows.Forms.NumericUpDown();
+            this.lbl_ManageMedicine_UpdateWarning = new System.Windows.Forms.Label();
+            this.nemUD_ManageMedicine_UpdateMedicineStock = new System.Windows.Forms.NumericUpDown();
+            this.lbl_ManageMedicine_UpdateMedicineStock = new System.Windows.Forms.Label();
+            this.btn_ManageMedicine_Search = new System.Windows.Forms.Button();
+            this.tbox_ManageMedicine_UpdateMedicineName = new System.Windows.Forms.TextBox();
+            this.lbl_ManageMedicine_UpdateMedicineName = new System.Windows.Forms.Label();
+            this.lbl_UpdateMedicine = new System.Windows.Forms.Label();
+            this.lbl_GraphDataError = new System.Windows.Forms.Label();
+            this.rd_ManageMedicine_PlotInActiveMedicine = new System.Windows.Forms.RadioButton();
+            this.rd_ManageMedicine_PlotActiveMedicine = new System.Windows.Forms.RadioButton();
+            this.chrt_Medicine_Stock = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tb_Page_Settings_Manage_Database = new System.Windows.Forms.TabPage();
             this.svFlDlg_SaveReport = new System.Windows.Forms.SaveFileDialog();
             this.opFlDlg_SelectFile = new System.Windows.Forms.OpenFileDialog();
             this.bg_Worker_ImportEmployee = new System.ComponentModel.BackgroundWorker();
             this.fbDlg_Backup_Database = new System.Windows.Forms.FolderBrowserDialog();
+            this.tbox_ManageMedicineId = new System.Windows.Forms.TextBox();
             this.sts_Strip.SuspendLayout();
             this.tbCtrl_Asset_Manager.SuspendLayout();
             this.tb_Page_VisitorDetails.SuspendLayout();
@@ -299,7 +329,7 @@
             this.grpBx_Inter_Office_Access_Card_Details.SuspendLayout();
             this.grpBx_Inter_Office_Emp_Details.SuspendLayout();
             this.tb_Page_VisitorDetails_Report.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.grpBx_Inter_Office_Report.SuspendLayout();
             this.grpBx_QuickReport.SuspendLayout();
             this.grpBx_DetailedReport.SuspendLayout();
             this.tb_Page_MedicineDistributionDetails.SuspendLayout();
@@ -308,7 +338,7 @@
             this.sp_Cont_Medicine_Distribution.Panel1.SuspendLayout();
             this.sp_Cont_Medicine_Distribution.Panel2.SuspendLayout();
             this.sp_Cont_Medicine_Distribution.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.grpBx_MedicineSigneture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.tb_Page_Settings.SuspendLayout();
             this.tbCtrl_Settings.SuspendLayout();
@@ -317,6 +347,20 @@
             this.sp_Cont_Manage_Employee.Panel1.SuspendLayout();
             this.sp_Cont_Manage_Employee.Panel2.SuspendLayout();
             this.sp_Cont_Manage_Employee.SuspendLayout();
+            this.tb_Page_Settings_Manage_Medicine.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Medicine_Graph)).BeginInit();
+            this.sp_Cont_Manage_Medicine_Graph.Panel1.SuspendLayout();
+            this.sp_Cont_Manage_Medicine_Graph.Panel2.SuspendLayout();
+            this.sp_Cont_Manage_Medicine_Graph.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Medicine_Add_And_Update)).BeginInit();
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.SuspendLayout();
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.SuspendLayout();
+            this.sp_Cont_Manage_Medicine_Add_And_Update.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_InsertWarning)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_InsertMedicineStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateWarning)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateMedicineStock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chrt_Medicine_Stock)).BeginInit();
             this.SuspendLayout();
             // 
             // sts_Strip
@@ -1625,7 +1669,7 @@
             // 
             // tb_Page_VisitorDetails_Report
             // 
-            this.tb_Page_VisitorDetails_Report.Controls.Add(this.groupBox1);
+            this.tb_Page_VisitorDetails_Report.Controls.Add(this.grpBx_Inter_Office_Report);
             this.tb_Page_VisitorDetails_Report.Controls.Add(this.grpBx_QuickReport);
             this.tb_Page_VisitorDetails_Report.Controls.Add(this.grpBx_DetailedReport);
             this.tb_Page_VisitorDetails_Report.Location = new System.Drawing.Point(4, 22);
@@ -1637,19 +1681,19 @@
             this.tb_Page_VisitorDetails_Report.UseVisualStyleBackColor = true;
             this.tb_Page_VisitorDetails_Report.Enter += new System.EventHandler(this.tb_Page_VisitorDetails_Report_Enter);
             // 
-            // groupBox1
+            // grpBx_Inter_Office_Report
             // 
-            this.groupBox1.Controls.Add(this.btn_Report_Inter_Office_Last_7_Days);
-            this.groupBox1.Controls.Add(this.btn_Report_Inter_Office_Today);
-            this.groupBox1.Controls.Add(this.btn_Report_Inter_Office_Specific_Employee);
-            this.groupBox1.Controls.Add(this.btn_Report_Inter_Office_Specified_Employee);
-            this.groupBox1.Controls.Add(this.btn_Report_Inter_Office_1_Month);
-            this.groupBox1.Location = new System.Drawing.Point(6, 425);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(849, 78);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Inter Office Report";
+            this.grpBx_Inter_Office_Report.Controls.Add(this.btn_Report_Inter_Office_Last_7_Days);
+            this.grpBx_Inter_Office_Report.Controls.Add(this.btn_Report_Inter_Office_Today);
+            this.grpBx_Inter_Office_Report.Controls.Add(this.btn_Report_Inter_Office_Specific_Employee);
+            this.grpBx_Inter_Office_Report.Controls.Add(this.btn_Report_Inter_Office_Specified_Employee);
+            this.grpBx_Inter_Office_Report.Controls.Add(this.btn_Report_Inter_Office_1_Month);
+            this.grpBx_Inter_Office_Report.Location = new System.Drawing.Point(6, 425);
+            this.grpBx_Inter_Office_Report.Name = "grpBx_Inter_Office_Report";
+            this.grpBx_Inter_Office_Report.Size = new System.Drawing.Size(849, 78);
+            this.grpBx_Inter_Office_Report.TabIndex = 3;
+            this.grpBx_Inter_Office_Report.TabStop = false;
+            this.grpBx_Inter_Office_Report.Text = "Inter Office Report";
             // 
             // btn_Report_Inter_Office_Last_7_Days
             // 
@@ -2140,7 +2184,7 @@
             // 
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.tbox_Med_Medcine_Updated_Stock);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.lbl_medStockCounter);
-            this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.groupBox2);
+            this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.grpBx_MedicineSigneture);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.btn_Med_Details_Reset);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.btn_Med_Assign);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.tbox_Med_Medcine_Quantity);
@@ -2280,15 +2324,15 @@
             this.lbl_medStockCounter.Size = new System.Drawing.Size(0, 13);
             this.lbl_medStockCounter.TabIndex = 21;
             // 
-            // groupBox2
+            // grpBx_MedicineSigneture
             // 
-            this.groupBox2.Controls.Add(this.pictureBox2);
-            this.groupBox2.Location = new System.Drawing.Point(10, 128);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(406, 135);
-            this.groupBox2.TabIndex = 20;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Signeture";
+            this.grpBx_MedicineSigneture.Controls.Add(this.pictureBox2);
+            this.grpBx_MedicineSigneture.Location = new System.Drawing.Point(10, 128);
+            this.grpBx_MedicineSigneture.Name = "grpBx_MedicineSigneture";
+            this.grpBx_MedicineSigneture.Size = new System.Drawing.Size(406, 135);
+            this.grpBx_MedicineSigneture.TabIndex = 20;
+            this.grpBx_MedicineSigneture.TabStop = false;
+            this.grpBx_MedicineSigneture.Text = "Signeture";
             // 
             // pictureBox2
             // 
@@ -2375,6 +2419,7 @@
             // tbCtrl_Settings
             // 
             this.tbCtrl_Settings.Controls.Add(this.tb_Page_Settings_Manage_Employee);
+            this.tbCtrl_Settings.Controls.Add(this.tb_Page_Settings_Manage_Medicine);
             this.tbCtrl_Settings.Controls.Add(this.tb_Page_Settings_Manage_Database);
             this.tbCtrl_Settings.Location = new System.Drawing.Point(6, 19);
             this.tbCtrl_Settings.Name = "tbCtrl_Settings";
@@ -2818,6 +2863,408 @@
             this.tbox_ManageEmployee_EmployeeId.TabIndex = 0;
             this.tbox_ManageEmployee_EmployeeId.TextChanged += new System.EventHandler(this.tbox_ManageEmployee_EmployeeId_TextChanged);
             // 
+            // tb_Page_Settings_Manage_Medicine
+            // 
+            this.tb_Page_Settings_Manage_Medicine.Controls.Add(this.sp_Cont_Manage_Medicine_Graph);
+            this.tb_Page_Settings_Manage_Medicine.Location = new System.Drawing.Point(4, 22);
+            this.tb_Page_Settings_Manage_Medicine.Name = "tb_Page_Settings_Manage_Medicine";
+            this.tb_Page_Settings_Manage_Medicine.Padding = new System.Windows.Forms.Padding(3);
+            this.tb_Page_Settings_Manage_Medicine.Size = new System.Drawing.Size(861, 515);
+            this.tb_Page_Settings_Manage_Medicine.TabIndex = 2;
+            this.tb_Page_Settings_Manage_Medicine.Text = "Manage Medicine";
+            this.tb_Page_Settings_Manage_Medicine.UseVisualStyleBackColor = true;
+            this.tb_Page_Settings_Manage_Medicine.Enter += new System.EventHandler(this.tb_Page_Settings_Manage_Medicine_Enter);
+            this.tb_Page_Settings_Manage_Medicine.Leave += new System.EventHandler(this.tb_Page_Settings_Manage_Medicine_Leave);
+            // 
+            // sp_Cont_Manage_Medicine_Graph
+            // 
+            this.sp_Cont_Manage_Medicine_Graph.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sp_Cont_Manage_Medicine_Graph.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_Manage_Medicine_Graph.IsSplitterFixed = true;
+            this.sp_Cont_Manage_Medicine_Graph.Location = new System.Drawing.Point(3, 3);
+            this.sp_Cont_Manage_Medicine_Graph.Name = "sp_Cont_Manage_Medicine_Graph";
+            // 
+            // sp_Cont_Manage_Medicine_Graph.Panel1
+            // 
+            this.sp_Cont_Manage_Medicine_Graph.Panel1.Controls.Add(this.sp_Cont_Manage_Medicine_Add_And_Update);
+            // 
+            // sp_Cont_Manage_Medicine_Graph.Panel2
+            // 
+            this.sp_Cont_Manage_Medicine_Graph.Panel2.Controls.Add(this.lbl_GraphDataError);
+            this.sp_Cont_Manage_Medicine_Graph.Panel2.Controls.Add(this.rd_ManageMedicine_PlotInActiveMedicine);
+            this.sp_Cont_Manage_Medicine_Graph.Panel2.Controls.Add(this.rd_ManageMedicine_PlotActiveMedicine);
+            this.sp_Cont_Manage_Medicine_Graph.Panel2.Controls.Add(this.chrt_Medicine_Stock);
+            this.sp_Cont_Manage_Medicine_Graph.Size = new System.Drawing.Size(855, 509);
+            this.sp_Cont_Manage_Medicine_Graph.SplitterDistance = 346;
+            this.sp_Cont_Manage_Medicine_Graph.TabIndex = 0;
+            // 
+            // sp_Cont_Manage_Medicine_Add_And_Update
+            // 
+            this.sp_Cont_Manage_Medicine_Add_And_Update.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_Manage_Medicine_Add_And_Update.IsSplitterFixed = true;
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Location = new System.Drawing.Point(0, 0);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Name = "sp_Cont_Manage_Medicine_Add_And_Update";
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // sp_Cont_Manage_Medicine_Add_And_Update.Panel1
+            // 
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl_InsertMedicine);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl_ExistingMedicine);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.btn_ManageMedicine_Insert_Reset);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.btn_ManageMedicine_Add);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.nemUD_ManageMedicine_InsertWarning);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl__ManageMedicine_InsertWarning);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.nemUD_ManageMedicine_InsertMedicineStock);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageMedicine_InsertMedicineStock);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.tbox_ManageMedicine_InsertMedicineName);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageMedicine_InsertMedicineName);
+            // 
+            // sp_Cont_Manage_Medicine_Add_And_Update.Panel2
+            // 
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.tbox_ManageMedicineId);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.btn_ManageMedicine_Update_Reset);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.btn_ManageMedicine_Update);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.rdBtn_MedicineInActive);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.rdBtn_MedicineActive);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.nemUD_ManageMedicine_UpdateWarning);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageMedicine_UpdateWarning);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.nemUD_ManageMedicine_UpdateMedicineStock);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageMedicine_UpdateMedicineStock);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.btn_ManageMedicine_Search);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.tbox_ManageMedicine_UpdateMedicineName);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageMedicine_UpdateMedicineName);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.Controls.Add(this.lbl_UpdateMedicine);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Size = new System.Drawing.Size(346, 509);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.SplitterDistance = 245;
+            this.sp_Cont_Manage_Medicine_Add_And_Update.TabIndex = 0;
+            // 
+            // lbl_InsertMedicine
+            // 
+            this.lbl_InsertMedicine.AutoSize = true;
+            this.lbl_InsertMedicine.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_InsertMedicine.ForeColor = System.Drawing.Color.Blue;
+            this.lbl_InsertMedicine.Location = new System.Drawing.Point(-1, 0);
+            this.lbl_InsertMedicine.Name = "lbl_InsertMedicine";
+            this.lbl_InsertMedicine.Size = new System.Drawing.Size(253, 25);
+            this.lbl_InsertMedicine.TabIndex = 10;
+            this.lbl_InsertMedicine.Text = "Insert Medicine Details";
+            // 
+            // lbl_ExistingMedicine
+            // 
+            this.lbl_ExistingMedicine.AutoSize = true;
+            this.lbl_ExistingMedicine.ForeColor = System.Drawing.Color.Red;
+            this.lbl_ExistingMedicine.Location = new System.Drawing.Point(144, 47);
+            this.lbl_ExistingMedicine.Name = "lbl_ExistingMedicine";
+            this.lbl_ExistingMedicine.Size = new System.Drawing.Size(0, 13);
+            this.lbl_ExistingMedicine.TabIndex = 8;
+            // 
+            // btn_ManageMedicine_Insert_Reset
+            // 
+            this.btn_ManageMedicine_Insert_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageMedicine_Insert_Reset.Location = new System.Drawing.Point(249, 172);
+            this.btn_ManageMedicine_Insert_Reset.Name = "btn_ManageMedicine_Insert_Reset";
+            this.btn_ManageMedicine_Insert_Reset.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageMedicine_Insert_Reset.TabIndex = 7;
+            this.btn_ManageMedicine_Insert_Reset.Text = "Reset";
+            this.btn_ManageMedicine_Insert_Reset.UseVisualStyleBackColor = true;
+            this.btn_ManageMedicine_Insert_Reset.Click += new System.EventHandler(this.btn_ManageMedicine_Insert_Reset_Click);
+            // 
+            // btn_ManageMedicine_Add
+            // 
+            this.btn_ManageMedicine_Add.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageMedicine_Add.Location = new System.Drawing.Point(151, 172);
+            this.btn_ManageMedicine_Add.Name = "btn_ManageMedicine_Add";
+            this.btn_ManageMedicine_Add.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageMedicine_Add.TabIndex = 6;
+            this.btn_ManageMedicine_Add.Text = "Insert";
+            this.btn_ManageMedicine_Add.UseVisualStyleBackColor = true;
+            this.btn_ManageMedicine_Add.Click += new System.EventHandler(this.btn_ManageMedicine_Add_Click);
+            // 
+            // nemUD_ManageMedicine_InsertWarning
+            // 
+            this.nemUD_ManageMedicine_InsertWarning.Location = new System.Drawing.Point(141, 134);
+            this.nemUD_ManageMedicine_InsertWarning.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.nemUD_ManageMedicine_InsertWarning.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nemUD_ManageMedicine_InsertWarning.Name = "nemUD_ManageMedicine_InsertWarning";
+            this.nemUD_ManageMedicine_InsertWarning.Size = new System.Drawing.Size(195, 20);
+            this.nemUD_ManageMedicine_InsertWarning.TabIndex = 3;
+            this.nemUD_ManageMedicine_InsertWarning.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lbl__ManageMedicine_InsertWarning
+            // 
+            this.lbl__ManageMedicine_InsertWarning.AutoSize = true;
+            this.lbl__ManageMedicine_InsertWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl__ManageMedicine_InsertWarning.Location = new System.Drawing.Point(7, 135);
+            this.lbl__ManageMedicine_InsertWarning.Name = "lbl__ManageMedicine_InsertWarning";
+            this.lbl__ManageMedicine_InsertWarning.Size = new System.Drawing.Size(136, 15);
+            this.lbl__ManageMedicine_InsertWarning.TabIndex = 4;
+            this.lbl__ManageMedicine_InsertWarning.Text = "Warnning Quantity : ";
+            // 
+            // nemUD_ManageMedicine_InsertMedicineStock
+            // 
+            this.nemUD_ManageMedicine_InsertMedicineStock.Location = new System.Drawing.Point(141, 99);
+            this.nemUD_ManageMedicine_InsertMedicineStock.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.nemUD_ManageMedicine_InsertMedicineStock.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nemUD_ManageMedicine_InsertMedicineStock.Name = "nemUD_ManageMedicine_InsertMedicineStock";
+            this.nemUD_ManageMedicine_InsertMedicineStock.Size = new System.Drawing.Size(195, 20);
+            this.nemUD_ManageMedicine_InsertMedicineStock.TabIndex = 2;
+            this.nemUD_ManageMedicine_InsertMedicineStock.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lbl_ManageMedicine_InsertMedicineStock
+            // 
+            this.lbl_ManageMedicine_InsertMedicineStock.AutoSize = true;
+            this.lbl_ManageMedicine_InsertMedicineStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageMedicine_InsertMedicineStock.Location = new System.Drawing.Point(33, 101);
+            this.lbl_ManageMedicine_InsertMedicineStock.Name = "lbl_ManageMedicine_InsertMedicineStock";
+            this.lbl_ManageMedicine_InsertMedicineStock.Size = new System.Drawing.Size(110, 15);
+            this.lbl_ManageMedicine_InsertMedicineStock.TabIndex = 2;
+            this.lbl_ManageMedicine_InsertMedicineStock.Text = "Stock Quantity : ";
+            // 
+            // tbox_ManageMedicine_InsertMedicineName
+            // 
+            this.tbox_ManageMedicine_InsertMedicineName.Location = new System.Drawing.Point(141, 63);
+            this.tbox_ManageMedicine_InsertMedicineName.Name = "tbox_ManageMedicine_InsertMedicineName";
+            this.tbox_ManageMedicine_InsertMedicineName.Size = new System.Drawing.Size(195, 20);
+            this.tbox_ManageMedicine_InsertMedicineName.TabIndex = 1;
+            // 
+            // lbl_ManageMedicine_InsertMedicineName
+            // 
+            this.lbl_ManageMedicine_InsertMedicineName.AutoSize = true;
+            this.lbl_ManageMedicine_InsertMedicineName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageMedicine_InsertMedicineName.Location = new System.Drawing.Point(24, 64);
+            this.lbl_ManageMedicine_InsertMedicineName.Name = "lbl_ManageMedicine_InsertMedicineName";
+            this.lbl_ManageMedicine_InsertMedicineName.Size = new System.Drawing.Size(120, 15);
+            this.lbl_ManageMedicine_InsertMedicineName.TabIndex = 0;
+            this.lbl_ManageMedicine_InsertMedicineName.Text = "Medicine Name : ";
+            // 
+            // btn_ManageMedicine_Update_Reset
+            // 
+            this.btn_ManageMedicine_Update_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageMedicine_Update_Reset.Location = new System.Drawing.Point(249, 205);
+            this.btn_ManageMedicine_Update_Reset.Name = "btn_ManageMedicine_Update_Reset";
+            this.btn_ManageMedicine_Update_Reset.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageMedicine_Update_Reset.TabIndex = 20;
+            this.btn_ManageMedicine_Update_Reset.Text = "Reset";
+            this.btn_ManageMedicine_Update_Reset.UseVisualStyleBackColor = true;
+            this.btn_ManageMedicine_Update_Reset.Click += new System.EventHandler(this.btn_ManageMedicine_Update_Reset_Click);
+            // 
+            // btn_ManageMedicine_Update
+            // 
+            this.btn_ManageMedicine_Update.Enabled = false;
+            this.btn_ManageMedicine_Update.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageMedicine_Update.Location = new System.Drawing.Point(151, 205);
+            this.btn_ManageMedicine_Update.Name = "btn_ManageMedicine_Update";
+            this.btn_ManageMedicine_Update.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageMedicine_Update.TabIndex = 19;
+            this.btn_ManageMedicine_Update.Text = "Update";
+            this.btn_ManageMedicine_Update.UseVisualStyleBackColor = true;
+            this.btn_ManageMedicine_Update.Click += new System.EventHandler(this.btn_ManageMedicine_Update_Click);
+            // 
+            // rdBtn_MedicineInActive
+            // 
+            this.rdBtn_MedicineInActive.AutoSize = true;
+            this.rdBtn_MedicineInActive.Enabled = false;
+            this.rdBtn_MedicineInActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdBtn_MedicineInActive.Location = new System.Drawing.Point(202, 178);
+            this.rdBtn_MedicineInActive.Name = "rdBtn_MedicineInActive";
+            this.rdBtn_MedicineInActive.Size = new System.Drawing.Size(76, 17);
+            this.rdBtn_MedicineInActive.TabIndex = 18;
+            this.rdBtn_MedicineInActive.TabStop = true;
+            this.rdBtn_MedicineInActive.Text = "In-Active";
+            this.rdBtn_MedicineInActive.UseVisualStyleBackColor = true;
+            // 
+            // rdBtn_MedicineActive
+            // 
+            this.rdBtn_MedicineActive.AutoSize = true;
+            this.rdBtn_MedicineActive.Enabled = false;
+            this.rdBtn_MedicineActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdBtn_MedicineActive.Location = new System.Drawing.Point(141, 178);
+            this.rdBtn_MedicineActive.Name = "rdBtn_MedicineActive";
+            this.rdBtn_MedicineActive.Size = new System.Drawing.Size(61, 17);
+            this.rdBtn_MedicineActive.TabIndex = 17;
+            this.rdBtn_MedicineActive.TabStop = true;
+            this.rdBtn_MedicineActive.Text = "Active";
+            this.rdBtn_MedicineActive.UseVisualStyleBackColor = true;
+            // 
+            // nemUD_ManageMedicine_UpdateWarning
+            // 
+            this.nemUD_ManageMedicine_UpdateWarning.Enabled = false;
+            this.nemUD_ManageMedicine_UpdateWarning.Location = new System.Drawing.Point(141, 152);
+            this.nemUD_ManageMedicine_UpdateWarning.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.nemUD_ManageMedicine_UpdateWarning.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nemUD_ManageMedicine_UpdateWarning.Name = "nemUD_ManageMedicine_UpdateWarning";
+            this.nemUD_ManageMedicine_UpdateWarning.Size = new System.Drawing.Size(195, 20);
+            this.nemUD_ManageMedicine_UpdateWarning.TabIndex = 15;
+            this.nemUD_ManageMedicine_UpdateWarning.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lbl_ManageMedicine_UpdateWarning
+            // 
+            this.lbl_ManageMedicine_UpdateWarning.AutoSize = true;
+            this.lbl_ManageMedicine_UpdateWarning.Enabled = false;
+            this.lbl_ManageMedicine_UpdateWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageMedicine_UpdateWarning.Location = new System.Drawing.Point(7, 153);
+            this.lbl_ManageMedicine_UpdateWarning.Name = "lbl_ManageMedicine_UpdateWarning";
+            this.lbl_ManageMedicine_UpdateWarning.Size = new System.Drawing.Size(136, 15);
+            this.lbl_ManageMedicine_UpdateWarning.TabIndex = 16;
+            this.lbl_ManageMedicine_UpdateWarning.Text = "Warnning Quantity : ";
+            // 
+            // nemUD_ManageMedicine_UpdateMedicineStock
+            // 
+            this.nemUD_ManageMedicine_UpdateMedicineStock.Enabled = false;
+            this.nemUD_ManageMedicine_UpdateMedicineStock.Location = new System.Drawing.Point(141, 117);
+            this.nemUD_ManageMedicine_UpdateMedicineStock.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.nemUD_ManageMedicine_UpdateMedicineStock.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nemUD_ManageMedicine_UpdateMedicineStock.Name = "nemUD_ManageMedicine_UpdateMedicineStock";
+            this.nemUD_ManageMedicine_UpdateMedicineStock.Size = new System.Drawing.Size(195, 20);
+            this.nemUD_ManageMedicine_UpdateMedicineStock.TabIndex = 13;
+            this.nemUD_ManageMedicine_UpdateMedicineStock.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lbl_ManageMedicine_UpdateMedicineStock
+            // 
+            this.lbl_ManageMedicine_UpdateMedicineStock.AutoSize = true;
+            this.lbl_ManageMedicine_UpdateMedicineStock.Enabled = false;
+            this.lbl_ManageMedicine_UpdateMedicineStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageMedicine_UpdateMedicineStock.Location = new System.Drawing.Point(33, 119);
+            this.lbl_ManageMedicine_UpdateMedicineStock.Name = "lbl_ManageMedicine_UpdateMedicineStock";
+            this.lbl_ManageMedicine_UpdateMedicineStock.Size = new System.Drawing.Size(110, 15);
+            this.lbl_ManageMedicine_UpdateMedicineStock.TabIndex = 14;
+            this.lbl_ManageMedicine_UpdateMedicineStock.Text = "Stock Quantity : ";
+            // 
+            // btn_ManageMedicine_Search
+            // 
+            this.btn_ManageMedicine_Search.Enabled = false;
+            this.btn_ManageMedicine_Search.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageMedicine_Search.Location = new System.Drawing.Point(249, 73);
+            this.btn_ManageMedicine_Search.Name = "btn_ManageMedicine_Search";
+            this.btn_ManageMedicine_Search.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageMedicine_Search.TabIndex = 12;
+            this.btn_ManageMedicine_Search.Text = "Search";
+            this.btn_ManageMedicine_Search.UseVisualStyleBackColor = true;
+            this.btn_ManageMedicine_Search.Click += new System.EventHandler(this.btn_ManageMedicine_Search_Click);
+            // 
+            // tbox_ManageMedicine_UpdateMedicineName
+            // 
+            this.tbox_ManageMedicine_UpdateMedicineName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_ManageMedicine_UpdateMedicineName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_ManageMedicine_UpdateMedicineName.Location = new System.Drawing.Point(141, 47);
+            this.tbox_ManageMedicine_UpdateMedicineName.Name = "tbox_ManageMedicine_UpdateMedicineName";
+            this.tbox_ManageMedicine_UpdateMedicineName.Size = new System.Drawing.Size(195, 20);
+            this.tbox_ManageMedicine_UpdateMedicineName.TabIndex = 11;
+            this.tbox_ManageMedicine_UpdateMedicineName.EnabledChanged += new System.EventHandler(this.tbox_ManageMedicine_UpdateMedicineName_EnabledChanged);
+            this.tbox_ManageMedicine_UpdateMedicineName.TextChanged += new System.EventHandler(this.tbox_ManageMedicine_UpdateMedicineName_TextChanged);
+            // 
+            // lbl_ManageMedicine_UpdateMedicineName
+            // 
+            this.lbl_ManageMedicine_UpdateMedicineName.AutoSize = true;
+            this.lbl_ManageMedicine_UpdateMedicineName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageMedicine_UpdateMedicineName.Location = new System.Drawing.Point(23, 48);
+            this.lbl_ManageMedicine_UpdateMedicineName.Name = "lbl_ManageMedicine_UpdateMedicineName";
+            this.lbl_ManageMedicine_UpdateMedicineName.Size = new System.Drawing.Size(120, 15);
+            this.lbl_ManageMedicine_UpdateMedicineName.TabIndex = 10;
+            this.lbl_ManageMedicine_UpdateMedicineName.Text = "Medicine Name : ";
+            // 
+            // lbl_UpdateMedicine
+            // 
+            this.lbl_UpdateMedicine.AutoSize = true;
+            this.lbl_UpdateMedicine.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_UpdateMedicine.ForeColor = System.Drawing.Color.Blue;
+            this.lbl_UpdateMedicine.Location = new System.Drawing.Point(-1, 0);
+            this.lbl_UpdateMedicine.Name = "lbl_UpdateMedicine";
+            this.lbl_UpdateMedicine.Size = new System.Drawing.Size(269, 25);
+            this.lbl_UpdateMedicine.TabIndex = 9;
+            this.lbl_UpdateMedicine.Text = "Update Medicine Details";
+            // 
+            // lbl_GraphDataError
+            // 
+            this.lbl_GraphDataError.AutoSize = true;
+            this.lbl_GraphDataError.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_GraphDataError.ForeColor = System.Drawing.Color.Red;
+            this.lbl_GraphDataError.Location = new System.Drawing.Point(54, 230);
+            this.lbl_GraphDataError.Name = "lbl_GraphDataError";
+            this.lbl_GraphDataError.Size = new System.Drawing.Size(0, 18);
+            this.lbl_GraphDataError.TabIndex = 3;
+            // 
+            // rd_ManageMedicine_PlotInActiveMedicine
+            // 
+            this.rd_ManageMedicine_PlotInActiveMedicine.AutoSize = true;
+            this.rd_ManageMedicine_PlotInActiveMedicine.Location = new System.Drawing.Point(255, 13);
+            this.rd_ManageMedicine_PlotInActiveMedicine.Name = "rd_ManageMedicine_PlotInActiveMedicine";
+            this.rd_ManageMedicine_PlotInActiveMedicine.Size = new System.Drawing.Size(145, 17);
+            this.rd_ManageMedicine_PlotInActiveMedicine.TabIndex = 2;
+            this.rd_ManageMedicine_PlotInActiveMedicine.TabStop = true;
+            this.rd_ManageMedicine_PlotInActiveMedicine.Text = "In-Active Medicine Graph";
+            this.rd_ManageMedicine_PlotInActiveMedicine.UseVisualStyleBackColor = true;
+            this.rd_ManageMedicine_PlotInActiveMedicine.CheckedChanged += new System.EventHandler(this.rd_ManageMedicine_PlotInActiveMedicine_CheckedChanged);
+            // 
+            // rd_ManageMedicine_PlotActiveMedicine
+            // 
+            this.rd_ManageMedicine_PlotActiveMedicine.AutoSize = true;
+            this.rd_ManageMedicine_PlotActiveMedicine.Location = new System.Drawing.Point(117, 13);
+            this.rd_ManageMedicine_PlotActiveMedicine.Name = "rd_ManageMedicine_PlotActiveMedicine";
+            this.rd_ManageMedicine_PlotActiveMedicine.Size = new System.Drawing.Size(133, 17);
+            this.rd_ManageMedicine_PlotActiveMedicine.TabIndex = 1;
+            this.rd_ManageMedicine_PlotActiveMedicine.TabStop = true;
+            this.rd_ManageMedicine_PlotActiveMedicine.Text = "Active Medicine Graph";
+            this.rd_ManageMedicine_PlotActiveMedicine.UseVisualStyleBackColor = true;
+            this.rd_ManageMedicine_PlotActiveMedicine.CheckedChanged += new System.EventHandler(this.rd_ManageMedicine_PlotActiveMedicine_CheckedChanged);
+            // 
+            // chrt_Medicine_Stock
+            // 
+            this.chrt_Medicine_Stock.Location = new System.Drawing.Point(3, 41);
+            this.chrt_Medicine_Stock.Name = "chrt_Medicine_Stock";
+            this.chrt_Medicine_Stock.Size = new System.Drawing.Size(499, 465);
+            this.chrt_Medicine_Stock.TabIndex = 0;
+            this.chrt_Medicine_Stock.Text = "chart1";
+            // 
             // tb_Page_Settings_Manage_Database
             // 
             this.tb_Page_Settings_Manage_Database.Location = new System.Drawing.Point(4, 22);
@@ -2825,8 +3272,9 @@
             this.tb_Page_Settings_Manage_Database.Padding = new System.Windows.Forms.Padding(3);
             this.tb_Page_Settings_Manage_Database.Size = new System.Drawing.Size(861, 515);
             this.tb_Page_Settings_Manage_Database.TabIndex = 1;
-            this.tb_Page_Settings_Manage_Database.Text = "Manage Database";
+            this.tb_Page_Settings_Manage_Database.Text = "Manage Database And Password";
             this.tb_Page_Settings_Manage_Database.UseVisualStyleBackColor = true;
+            this.tb_Page_Settings_Manage_Database.Enter += new System.EventHandler(this.tb_Page_Settings_Manage_Database_Enter);
             // 
             // svFlDlg_SaveReport
             // 
@@ -2837,6 +3285,14 @@
             this.bg_Worker_ImportEmployee.WorkerReportsProgress = true;
             this.bg_Worker_ImportEmployee.WorkerSupportsCancellation = true;
             this.bg_Worker_ImportEmployee.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bg_Worker_ImportEmployee_DoWork);
+            // 
+            // tbox_ManageMedicineId
+            // 
+            this.tbox_ManageMedicineId.Location = new System.Drawing.Point(10, 216);
+            this.tbox_ManageMedicineId.Name = "tbox_ManageMedicineId";
+            this.tbox_ManageMedicineId.Size = new System.Drawing.Size(76, 20);
+            this.tbox_ManageMedicineId.TabIndex = 21;
+            this.tbox_ManageMedicineId.Visible = false;
             // 
             // frm_Main
             // 
@@ -2889,7 +3345,7 @@
             this.grpBx_Inter_Office_Emp_Details.ResumeLayout(false);
             this.grpBx_Inter_Office_Emp_Details.PerformLayout();
             this.tb_Page_VisitorDetails_Report.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
+            this.grpBx_Inter_Office_Report.ResumeLayout(false);
             this.grpBx_QuickReport.ResumeLayout(false);
             this.grpBx_DetailedReport.ResumeLayout(false);
             this.grpBx_DetailedReport.PerformLayout();
@@ -2901,7 +3357,7 @@
             this.sp_Cont_Medicine_Distribution.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Medicine_Distribution)).EndInit();
             this.sp_Cont_Medicine_Distribution.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
+            this.grpBx_MedicineSigneture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.tb_Page_Settings.ResumeLayout(false);
             this.tbCtrl_Settings.ResumeLayout(false);
@@ -2912,6 +3368,23 @@
             this.sp_Cont_Manage_Employee.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Employee)).EndInit();
             this.sp_Cont_Manage_Employee.ResumeLayout(false);
+            this.tb_Page_Settings_Manage_Medicine.ResumeLayout(false);
+            this.sp_Cont_Manage_Medicine_Graph.Panel1.ResumeLayout(false);
+            this.sp_Cont_Manage_Medicine_Graph.Panel2.ResumeLayout(false);
+            this.sp_Cont_Manage_Medicine_Graph.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Medicine_Graph)).EndInit();
+            this.sp_Cont_Manage_Medicine_Graph.ResumeLayout(false);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.ResumeLayout(false);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.PerformLayout();
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.ResumeLayout(false);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Medicine_Add_And_Update)).EndInit();
+            this.sp_Cont_Manage_Medicine_Add_And_Update.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_InsertWarning)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_InsertMedicineStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateWarning)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateMedicineStock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chrt_Medicine_Stock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3082,7 +3555,7 @@
         private System.Windows.Forms.Label lbl_InterOffce_Return_Return_Time;
         private System.Windows.Forms.TextBox tbox_InterOffce_Return_Return_Date;
         private System.Windows.Forms.Label lbl_InterOffce_Return_Return_Date;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox grpBx_Inter_Office_Report;
         private System.Windows.Forms.Button btn_Report_Inter_Office_1_Month;
         private System.Windows.Forms.Button btn_Report_Inter_Office_Specific_Employee;
         private System.Windows.Forms.Button btn_Report_Inter_Office_Specified_Employee;
@@ -3108,7 +3581,7 @@
         private System.Windows.Forms.Label lbl_Med_Medcine_Quantity;
         private System.Windows.Forms.TextBox tbox_Med_Medcine_Name;
         private System.Windows.Forms.Label lbl_Med_Medcine_Name;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox grpBx_MedicineSigneture;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.TabPage tb_Page_Settings;
         private System.Windows.Forms.TabControl tbCtrl_Settings;
@@ -3161,6 +3634,36 @@
         private System.Windows.Forms.Label lbl_medStockCounter;
         private System.Windows.Forms.TextBox tbox_Med_Medcine_Updated_Stock;
         private System.Windows.Forms.FolderBrowserDialog fbDlg_Backup_Database;
+        private System.Windows.Forms.TabPage tb_Page_Settings_Manage_Medicine;
+        private System.Windows.Forms.SplitContainer sp_Cont_Manage_Medicine_Graph;
+        private System.Windows.Forms.SplitContainer sp_Cont_Manage_Medicine_Add_And_Update;
+        private System.Windows.Forms.Label lbl_ExistingMedicine;
+        private System.Windows.Forms.Button btn_ManageMedicine_Insert_Reset;
+        private System.Windows.Forms.Button btn_ManageMedicine_Add;
+        private System.Windows.Forms.NumericUpDown nemUD_ManageMedicine_InsertWarning;
+        private System.Windows.Forms.Label lbl__ManageMedicine_InsertWarning;
+        private System.Windows.Forms.NumericUpDown nemUD_ManageMedicine_InsertMedicineStock;
+        private System.Windows.Forms.Label lbl_ManageMedicine_InsertMedicineStock;
+        private System.Windows.Forms.TextBox tbox_ManageMedicine_InsertMedicineName;
+        private System.Windows.Forms.Label lbl_ManageMedicine_InsertMedicineName;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chrt_Medicine_Stock;
+        private System.Windows.Forms.RadioButton rd_ManageMedicine_PlotInActiveMedicine;
+        private System.Windows.Forms.RadioButton rd_ManageMedicine_PlotActiveMedicine;
+        private System.Windows.Forms.Label lbl_GraphDataError;
+        private System.Windows.Forms.Label lbl_InsertMedicine;
+        private System.Windows.Forms.Label lbl_UpdateMedicine;
+        private System.Windows.Forms.Button btn_ManageMedicine_Update_Reset;
+        private System.Windows.Forms.Button btn_ManageMedicine_Update;
+        private System.Windows.Forms.RadioButton rdBtn_MedicineInActive;
+        private System.Windows.Forms.RadioButton rdBtn_MedicineActive;
+        private System.Windows.Forms.NumericUpDown nemUD_ManageMedicine_UpdateWarning;
+        private System.Windows.Forms.Label lbl_ManageMedicine_UpdateWarning;
+        private System.Windows.Forms.NumericUpDown nemUD_ManageMedicine_UpdateMedicineStock;
+        private System.Windows.Forms.Label lbl_ManageMedicine_UpdateMedicineStock;
+        private System.Windows.Forms.Button btn_ManageMedicine_Search;
+        private System.Windows.Forms.TextBox tbox_ManageMedicine_UpdateMedicineName;
+        private System.Windows.Forms.Label lbl_ManageMedicine_UpdateMedicineName;
+        private System.Windows.Forms.TextBox tbox_ManageMedicineId;
     }
 }
 

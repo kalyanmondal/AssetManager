@@ -49,6 +49,7 @@ namespace AssetManagement
 
         public Dictionary<string, string> medicineData = new Dictionary<string, string>();
         public Dictionary<string, string> medicineUpdatedData = new Dictionary<string, string>();
+
         #endregion
 
         #region Construction
@@ -538,7 +539,7 @@ namespace AssetManagement
         {
             autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeId, "Employee_Id", "tbl_Employee_Details");
         }
-        
+
         private void tbox_ManageEmployee_EmployeeName_TextChanged(object sender, EventArgs e)
         {
             autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeName, "Employee_Name", "tbl_Employee_Details");
@@ -639,7 +640,7 @@ namespace AssetManagement
                     }
                     else
                         MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    populateEmployeeData("SELECT * FROM tbl_Employee_Details WHERE Id=" + tbox_Id.Text,0);
+                    populateEmployeeData("SELECT * FROM tbl_Employee_Details WHERE Id=" + tbox_Id.Text, 0);
                 }
             }
         }
@@ -673,7 +674,6 @@ namespace AssetManagement
             resetMedEmpData();
         }
 
-
         private void tb_Page_Settings_Enter(object sender, EventArgs e)
         {
             frm_AdminLogin fmal = new frm_AdminLogin();
@@ -694,7 +694,7 @@ namespace AssetManagement
 
         private void tbox_Med_Medcine_Name_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details");
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "True");
             if (tbox_Med_Medcine_Name.Text.Length > 0)
             {
                 tbox_Med_Medcine_Quantity.Enabled = true;
@@ -708,6 +708,147 @@ namespace AssetManagement
         private void tbox_Med_Medcine_Quantity_KeyUp(object sender, KeyEventArgs e)
         {
             medStockValidator();
+        }
+
+        private void tb_Page_Settings_Manage_Database_Enter(object sender, EventArgs e)
+        {
+            databaseSizeCalculator();
+            pgBarColorChanger();
+        }
+
+        private void tb_Page_Settings_Manage_Medicine_Enter(object sender, EventArgs e)
+        {
+            if (rd_ManageMedicine_PlotActiveMedicine.Checked == true)
+            {
+                plotGraph("True");
+            }
+            else
+            {
+                rd_ManageMedicine_PlotActiveMedicine.Checked = true;
+            }
+            resetAddMedicine();
+            resetUpdateMedicine();
+        }
+
+        private void btn_ManageMedicine_Add_Click(object sender, EventArgs e)
+        {
+            if (tbox_ManageMedicine_InsertMedicineName.Text.Length == 0)
+            {
+                lbl_ExistingMedicine.Text = "Please provide the name of the medicine!!!";
+            }
+            else if (getExistingMedicineNames().Contains(tbox_ManageMedicine_InsertMedicineName.Text))
+            {
+                lbl_ExistingMedicine.Text = "Existing Medicine!!!";
+            }
+            else
+            {
+                lbl_ExistingMedicine.Text = string.Empty;
+                inserMedicineDetails();
+                resetAddMedicine();
+                plotGraph("True");
+            }
+        }
+
+        private void btn_ManageMedicine_Insert_Reset_Click(object sender, EventArgs e)
+        {
+            resetAddMedicine();
+        }
+
+        private void rd_ManageMedicine_PlotActiveMedicine_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rd_ManageMedicine_PlotActiveMedicine.Checked == true)
+            {
+                plotGraph("True");
+            }
+        }
+
+        private void rd_ManageMedicine_PlotInActiveMedicine_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rd_ManageMedicine_PlotInActiveMedicine.Checked == true)
+            {
+                plotGraph("False");
+            }
+        }
+
+        private void tb_Page_Settings_Manage_Medicine_Leave(object sender, EventArgs e)
+        {
+            if (chrt_Medicine_Stock.ChartAreas.Count > 0)
+            {
+                chrt_Medicine_Stock.ChartAreas.Remove(chrt_Medicine_Stock.ChartAreas[0]);
+                chrt_Medicine_Stock.Legends.Remove(chrt_Medicine_Stock.Legends["MedicineStock"]);
+                chrt_Medicine_Stock.Series.Remove(chrt_Medicine_Stock.Series["Medicine Stock"]);
+                chrt_Medicine_Stock.Series.Remove(chrt_Medicine_Stock.Series["Warning Limit"]);
+            }
+        }
+        private void btn_ManageMedicine_Update_Click(object sender, EventArgs e)
+        {
+            updateMedicineDetails();
+            resetUpdateMedicine();
+            if (rd_ManageMedicine_PlotActiveMedicine.Checked == true)
+            {
+                plotGraph("True");
+            }
+            else
+            {
+                rd_ManageMedicine_PlotActiveMedicine.Checked = true;
+            }
+        }
+
+        private void btn_ManageMedicine_Search_Click(object sender, EventArgs e)
+        {
+            getMedicineDetails();
+        }
+
+        private void tbox_ManageMedicine_UpdateMedicineName_TextChanged(object sender, EventArgs e)
+        {
+            if (tbox_ManageMedicine_UpdateMedicineName.Text.Length > 0)
+            {
+                btn_ManageMedicine_Search.Enabled = true;
+                autoCompleteTextbox.autocompletedata(ref tbox_ManageMedicine_UpdateMedicineName, "Medicine_Name", "tbl_Medicine_Details");
+            }
+            else
+            {
+                btn_ManageMedicine_Search.Enabled = false;
+            }
+        }
+
+        private void btn_Med_Details_Reset_Click(object sender, EventArgs e)
+        {
+            resetMedMedcineData();
+        }
+
+        private void btn_Med_Assign_Click(object sender, EventArgs e)
+        {
+            insertMedAssinment();
+        }
+
+        private void tbox_ManageMedicine_UpdateMedicineName_EnabledChanged(object sender, EventArgs e)
+        {
+            if (tbox_ManageMedicine_UpdateMedicineName.Enabled == true)
+            {
+                nemUD_ManageMedicine_UpdateMedicineStock.Enabled = false;
+                nemUD_ManageMedicine_UpdateWarning.Enabled = false;
+                lbl_ManageMedicine_UpdateMedicineStock.Enabled = false;
+                lbl_ManageMedicine_UpdateWarning.Enabled = false;
+                rdBtn_MedicineActive.Enabled = false;
+                rdBtn_MedicineInActive.Enabled = false;
+                btn_ManageMedicine_Update.Enabled = false;
+            }
+            else
+            {
+                nemUD_ManageMedicine_UpdateMedicineStock.Enabled = true;
+                nemUD_ManageMedicine_UpdateWarning.Enabled = true;
+                lbl_ManageMedicine_UpdateMedicineStock.Enabled = true;
+                lbl_ManageMedicine_UpdateWarning.Enabled = true;
+                rdBtn_MedicineActive.Enabled = true;
+                rdBtn_MedicineInActive.Enabled = true;
+                btn_ManageMedicine_Update.Enabled = true;
+            }
+        }
+
+        private void btn_ManageMedicine_Update_Reset_Click(object sender, EventArgs e)
+        {
+            resetUpdateMedicine();
         }
 
         #endregion
@@ -2272,170 +2413,168 @@ namespace AssetManagement
             con.Close();
         }
 
-        //private void plotGraph(string type)
-        //{
-        //    con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-        //    if (chrt_Medicine_Stock.ChartAreas.Count > 0)
-        //    {
-        //        chrt_Medicine_Stock.ChartAreas.Remove(chrt_Medicine_Stock.ChartAreas[0]);
-        //        chrt_Medicine_Stock.Legends.Remove(chrt_Medicine_Stock.Legends["MedicineStock"]);
-        //        chrt_Medicine_Stock.Series.Remove(chrt_Medicine_Stock.Series["Medicine Stock"]);
-        //        chrt_Medicine_Stock.Series.Remove(chrt_Medicine_Stock.Series["Warning Limit"]);
-        //    }
+        private void plotGraph(string type)
+        {
+            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+            if (chrt_Medicine_Stock.ChartAreas.Count > 0)
+            {
+                chrt_Medicine_Stock.ChartAreas.Remove(chrt_Medicine_Stock.ChartAreas[0]);
+                chrt_Medicine_Stock.Legends.Remove(chrt_Medicine_Stock.Legends["MedicineStock"]);
+                chrt_Medicine_Stock.Series.Remove(chrt_Medicine_Stock.Series["Medicine Stock"]);
+                chrt_Medicine_Stock.Series.Remove(chrt_Medicine_Stock.Series["Warning Limit"]);
+            }
 
-        //    chrt_Medicine_Stock.ChartAreas.Add("MedicineStock");
-        //    chrt_Medicine_Stock.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-        //    chrt_Medicine_Stock.ChartAreas[0].AxisX.Title = "Medicine Name";
-        //    chrt_Medicine_Stock.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-        //    chrt_Medicine_Stock.ChartAreas[0].AxisY.Title = "Stock";
+            chrt_Medicine_Stock.ChartAreas.Add("MedicineStock");
+            chrt_Medicine_Stock.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chrt_Medicine_Stock.ChartAreas[0].AxisX.Title = "Medicine Name";
+            chrt_Medicine_Stock.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+            chrt_Medicine_Stock.ChartAreas[0].AxisY.Title = "Stock";
 
-        //    chrt_Medicine_Stock.Legends.Add("MedicineStock");
-        //    chrt_Medicine_Stock.Legends["MedicineStock"].Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            chrt_Medicine_Stock.Legends.Add("MedicineStock");
+            chrt_Medicine_Stock.Legends["MedicineStock"].Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
 
-        //    chrt_Medicine_Stock.Series.Add("Medicine Stock");
-        //    chrt_Medicine_Stock.Series.Add("Warning Limit").ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-        //    chrt_Medicine_Stock.Series["Medicine Stock"].IsValueShownAsLabel = true;
-        //    chrt_Medicine_Stock.Series["Warning Limit"].IsValueShownAsLabel = true;
+            chrt_Medicine_Stock.Series.Add("Medicine Stock");
+            chrt_Medicine_Stock.Series.Add("Warning Limit").ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            chrt_Medicine_Stock.Series["Medicine Stock"].IsValueShownAsLabel = true;
+            chrt_Medicine_Stock.Series["Warning Limit"].IsValueShownAsLabel = true;
 
-        //    lbl_GraphDataError.Visible = false;
-        //    try
-        //    {
-        //        using (con)
-        //        {
-        //            adapter = new OleDbDataAdapter("SELECT Medicine_Name,Stock_Quantity,Warning_Quantity FROM tbl_Medicine_Details WHERE Active=" + type, con);
-        //            ds = new DataSet();
-        //            adapter.Fill(ds);
-        //        }
-        //        foreach (DataRow dr in ds.Tables[0].Rows)
-        //        {
-        //            chrt_Medicine_Stock.Series["Medicine Stock"].Points.AddXY(dr[0].ToString(), dr[1]);
-        //            chrt_Medicine_Stock.Series["Warning Limit"].Points.AddXY(dr[0].ToString(), dr[2]);
-        //        }
-        //        chrt_Medicine_Stock.Visible = true;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        chrt_Medicine_Stock.Visible = false;
-        //        lbl_GraphDataError.Text = "There is some problem to plot the graph.";
-        //        lbl_GraphDataError.Visible = true;
-        //    }
+            lbl_GraphDataError.Visible = false;
+            try
+            {
+                using (con)
+                {
+                    adapter = new OleDbDataAdapter("SELECT Medicine_Name,Stock_Quantity,Warning_Quantity FROM tbl_Medicine_Details WHERE Active=" + type, con);
+                    ds = new DataSet();
+                    adapter.Fill(ds);
+                }
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    chrt_Medicine_Stock.Series["Medicine Stock"].Points.AddXY(dr[0].ToString(), dr[1]);
+                    chrt_Medicine_Stock.Series["Warning Limit"].Points.AddXY(dr[0].ToString(), dr[2]);
+                }
+                chrt_Medicine_Stock.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                chrt_Medicine_Stock.Visible = false;
+                lbl_GraphDataError.Text = "There is some problem to plot the graph.";
+                lbl_GraphDataError.Visible = true;
+            }
+        }
 
+        private void inserMedicineDetails()
+        {
+            try
+            {
+                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+                cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)", con);
+                con.Open();
+                int n = cmd.ExecuteNonQuery();
+                con.Close();
+                if (n > 0)
+                {
+                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                    MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
-        //}
+        private void updateMedicineDetails()
+        {
+            if (tbox_ManageMedicineId.Text != string.Empty)
+            {
+                medicineUpdatedData.Add("Id", tbox_ManageMedicineId.Text.Trim());
+                medicineUpdatedData.Add("Medicine_Name", tbox_ManageMedicine_UpdateMedicineName.Text.Trim());
+                medicineUpdatedData.Add("Stock_Quantity", nemUD_ManageMedicine_UpdateMedicineStock.Value.ToString());
+                medicineUpdatedData.Add("Warning_Quantity", nemUD_ManageMedicine_UpdateWarning.Value.ToString());
 
-        //private void inserMedicineDetails()
-        //{
-        //    try
-        //    {
-        //        con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-        //        cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)", con);
-        //        con.Open();
-        //        int n = cmd.ExecuteNonQuery();
-        //        con.Close();
-        //        if (n > 0)
-        //        {
-        //            MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-        //        else
-        //            MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
+                if (rdBtn_MedicineActive.Checked == true)
+                {
+                    medicineUpdatedData.Add("Active", "True");
+                }
+                else
+                {
+                    medicineUpdatedData.Add("Active", "False");
+                }
 
-        //private void updateMedicineDetails()
-        //{
-        //    if (tbox_ManageMedicineId.Text != string.Empty)
-        //    {
-        //        medicineUpdatedData.Add("Id", tbox_ManageMedicineId.Text.Trim());
-        //        medicineUpdatedData.Add("Medicine_Name", tbox_ManageMedicine_UpdateMedicineName.Text.Trim());
-        //        medicineUpdatedData.Add("Stock_Quantity", nemUD_ManageMedicine_UpdateMedicineStock.Value.ToString());
-        //        medicineUpdatedData.Add("Warning_Quantity", nemUD_ManageMedicine_UpdateWarning.Value.ToString());
+                bool equal = false;
+                if (medicineData.Count == medicineUpdatedData.Count) // Require equal count.
+                {
+                    equal = true;
+                    foreach (var pair in medicineData)
+                    {
+                        string value;
+                        if (medicineUpdatedData.TryGetValue(pair.Key, out value))
+                        {
+                            if (!value.Equals(pair.Value))
+                            {
+                                equal = false;
+                            }
+                        }
+                        else
+                        {
+                            equal = true;
+                        }
+                    }
+                }
+                medicineData.Clear();
+                medicineUpdatedData.Clear();
+                if (equal == true)
+                {
+                    MessageBox.Show("There is no changes in data to update", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    bool active;
+                    if (rdBtn_MedicineActive.Checked == true)
+                    {
+                        active = true;
+                    }
+                    else
+                    {
+                        active = false;
+                    }
+                    con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+                    string query = "UPDATE tbl_Medicine_Details SET Medicine_Name  = '" + tbox_ManageMedicine_UpdateMedicineName.Text.Trim() + "',Stock_Quantity=" + nemUD_ManageMedicine_UpdateMedicineStock.Value + ",Warning_Quantity='" + nemUD_ManageMedicine_UpdateWarning.Value + "',Active=" + active + " WHERE Id =" + tbox_ManageMedicineId.Text + "";
+                    cmd = new OleDbCommand(query, con);
+                    con.Open();
+                    int n = cmd.ExecuteNonQuery();
+                    con.Close();
+                    if (n > 0)
+                    {
+                        MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+        }
 
-        //        if (rdBtn_MedicineActive.Checked == true)
-        //        {
-        //            medicineUpdatedData.Add("Active", "True");
-        //        }
-        //        else
-        //        {
-        //            medicineUpdatedData.Add("Active", "False");
-        //        }
+        private void resetAddMedicine()
+        {
+            lbl_ExistingMedicine.Text = string.Empty;
+            tbox_ManageMedicine_InsertMedicineName.Text = string.Empty;
+            nemUD_ManageMedicine_InsertMedicineStock.Value = nemUD_ManageMedicine_InsertMedicineStock.Minimum;
+            nemUD_ManageMedicine_InsertWarning.Value = nemUD_ManageMedicine_InsertWarning.Minimum;
+        }
 
-        //        bool equal = false;
-        //        if (medicineData.Count == medicineUpdatedData.Count) // Require equal count.
-        //        {
-        //            equal = true;
-        //            foreach (var pair in medicineData)
-        //            {
-        //                string value;
-        //                if (medicineUpdatedData.TryGetValue(pair.Key, out value))
-        //                {
-        //                    if (!value.Equals(pair.Value))
-        //                    {
-        //                        equal = false;
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    equal = true;
-        //                }
-        //            }
-        //        }
-        //        medicineData.Clear();
-        //        medicineUpdatedData.Clear();
-        //        if (equal == true)
-        //        {
-        //            MessageBox.Show("There is no changes in data to update", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //        }
-        //        else
-        //        {
-        //            bool active;
-        //            if (rdBtn_MedicineActive.Checked == true)
-        //            {
-        //                active = true;
-        //            }
-        //            else
-        //            {
-        //                active = false;
-        //            }
-        //            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-        //            string query = "UPDATE tbl_Medicine_Details SET Medicine_Name  = '" + tbox_ManageMedicine_UpdateMedicineName.Text.Trim() + "',Stock_Quantity=" + nemUD_ManageMedicine_UpdateMedicineStock.Value + ",Warning_Quantity='" + nemUD_ManageMedicine_UpdateWarning.Value + "',Active=" + active + " WHERE Id =" + tbox_ManageMedicineId.Text + "";
-        //            cmd = new OleDbCommand(query, con);
-        //            con.Open();
-        //            int n = cmd.ExecuteNonQuery();
-        //            con.Close();
-        //            if (n > 0)
-        //            {
-        //                MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void resetAddMedicine()
-        //{
-        //    lbl_ExistingMedicine.Text = string.Empty;
-        //    tbox_ManageMedicine_InsertMedicineName.Text = string.Empty;
-        //    nemUD_ManageMedicine_InsertMedicineStock.Value = nemUD_ManageMedicine_InsertMedicineStock.Minimum;
-        //    nemUD_ManageMedicine_InsertWarning.Value = nemUD_ManageMedicine_InsertWarning.Minimum;
-        //}
-
-        //private void resetUpdateMedicine()
-        //{
-        //    tbox_ManageMedicineId.Text = string.Empty;
-        //    tbox_ManageMedicine_UpdateMedicineName.Text = string.Empty;
-        //    tbox_ManageMedicine_UpdateMedicineName.Enabled = true;
-        //    nemUD_ManageMedicine_UpdateMedicineStock.Value = nemUD_ManageMedicine_UpdateMedicineStock.Minimum;
-        //    nemUD_ManageMedicine_UpdateWarning.Value = nemUD_ManageMedicine_UpdateWarning.Minimum;
-        //    rdBtn_MedicineActive.Checked = false; ;
-        //    rdBtn_MedicineInActive.Checked = false;
-        //}
+        private void resetUpdateMedicine()
+        {
+            tbox_ManageMedicineId.Text = string.Empty;
+            tbox_ManageMedicine_UpdateMedicineName.Text = string.Empty;
+            tbox_ManageMedicine_UpdateMedicineName.Enabled = true;
+            nemUD_ManageMedicine_UpdateMedicineStock.Value = nemUD_ManageMedicine_UpdateMedicineStock.Minimum;
+            nemUD_ManageMedicine_UpdateWarning.Value = nemUD_ManageMedicine_UpdateWarning.Minimum;
+            rdBtn_MedicineActive.Checked = false; ;
+            rdBtn_MedicineInActive.Checked = false;
+        }
 
         private List<string> getExistingMedicineNames()
         {
@@ -2463,83 +2602,73 @@ namespace AssetManagement
             }
         }
 
-        private void btn_Med_Details_Reset_Click(object sender, EventArgs e)
+        private void getMedicineDetails()
         {
-            resetMedMedcineData();
+            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+            try
+            {
+                using (con)
+                {
+                    adapter = new OleDbDataAdapter("SELECT Id,Medicine_Name,Stock_Quantity,Warning_Quantity,Active FROM tbl_Medicine_Details WHERE Medicine_Name = '" + tbox_ManageMedicine_UpdateMedicineName.Text + "'", con);
+                    ds = new DataSet();
+                    adapter.Fill(ds);
+
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        btn_ManageMedicine_Search.Enabled = false;
+                        tbox_ManageMedicine_UpdateMedicineName.Enabled = false;
+
+
+                        tbox_ManageMedicineId.Text = ds.Tables[0].Rows[0][0].ToString();
+                        medicineData.Add("Id", ds.Tables[0].Rows[0][0].ToString());
+                        medicineData.Add("Medicine_Name", ds.Tables[0].Rows[0][1].ToString());
+                        nemUD_ManageMedicine_UpdateMedicineStock.Value = int.Parse(ds.Tables[0].Rows[0][2].ToString());
+                        medicineData.Add("Stock_Quantity", ds.Tables[0].Rows[0][2].ToString());
+                        nemUD_ManageMedicine_UpdateWarning.Value = int.Parse(ds.Tables[0].Rows[0][3].ToString());
+                        medicineData.Add("Warning_Quantity", ds.Tables[0].Rows[0][3].ToString());
+                        if (ds.Tables[0].Rows[0][4].ToString() == "True")
+                        {
+                            rdBtn_MedicineActive.Checked = true;
+                        }
+                        else
+                        {
+                            rdBtn_MedicineInActive.Checked = true;
+                        }
+                        medicineData.Add("Active", ds.Tables[0].Rows[0][4].ToString());
+                    }
+                    else
+                    {
+                        MessageBox.Show("No medicine found!", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
-        private void btn_Med_Assign_Click(object sender, EventArgs e)
+        private void databaseSizeCalculator()
         {
-            insertMedAssinment();
-        }   
+            //pgBar_Database_Size.Value = 0;
+            //FileInfo databseFile = new FileInfo(Encrypter.Decrypt(RegManager.getKey("data source"), true));
+            //int databseSize = Convert.ToInt32(databseFile.Length / 1048576);
+            //pgBar_Database_Size.Value = pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100) > 100 ? 100 : pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100);
 
-        //private void getMedicineDetails()
-        //{
-        //    con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-        //    try
-        //    {
-        //        using (con)
-        //        {
-        //            adapter = new OleDbDataAdapter("SELECT Id,Medicine_Name,Stock_Quantity,Warning_Quantity,Active FROM tbl_Medicine_Details WHERE Medicine_Name = '" + tbox_ManageMedicine_UpdateMedicineName.Text + "'", con);
-        //            ds = new DataSet();
-        //            adapter.Fill(ds);
+        }
 
-        //            if (ds.Tables[0].Rows.Count > 0)
-        //            {
-        //                btn_ManageMedicine_Search.Enabled = false;
-        //                tbox_ManageMedicine_UpdateMedicineName.Enabled = false;
-
-
-        //                tbox_ManageMedicineId.Text = ds.Tables[0].Rows[0][0].ToString();
-        //                medicineData.Add("Id", ds.Tables[0].Rows[0][0].ToString());
-        //                medicineData.Add("Medicine_Name", ds.Tables[0].Rows[0][1].ToString());
-        //                nemUD_ManageMedicine_UpdateMedicineStock.Value = int.Parse(ds.Tables[0].Rows[0][2].ToString());
-        //                medicineData.Add("Stock_Quantity", ds.Tables[0].Rows[0][2].ToString());
-        //                nemUD_ManageMedicine_UpdateWarning.Value = int.Parse(ds.Tables[0].Rows[0][3].ToString());
-        //                medicineData.Add("Warning_Quantity", ds.Tables[0].Rows[0][3].ToString());
-        //                if (ds.Tables[0].Rows[0][4].ToString() == "True")
-        //                {
-        //                    rdBtn_MedicineActive.Checked = true;
-        //                }
-        //                else
-        //                {
-        //                    rdBtn_MedicineInActive.Checked = true;
-        //                }
-        //                medicineData.Add("Active", ds.Tables[0].Rows[0][4].ToString());
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("No medicine found!", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //    }
-        //}
-
-        //private void databaseSizeCalculator()
-        //{
-        //    pgBar_Database_Size.Value = 0;
-        //    FileInfo databseFile = new FileInfo(RegManager.getKey("data source"));
-        //    int databseSize = Convert.ToInt32(databseFile.Length / 1048576);
-        //    pgBar_Database_Size.Value = pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100) > 100 ? 100 : pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100);
-
-        //}
-
-        //private void pgBarColorChanger()
-        //{
-        //    ModifyProgressBarColor.SetState(pgBar_Database_Size, 1);
-        //    if (pgBar_Database_Size.Value >= 80 && pgBar_Database_Size.Value <= 89)
-        //    {
-        //        ModifyProgressBarColor.SetState(pgBar_Database_Size, 3);
-        //    }
-        //    if (pgBar_Database_Size.Value >= 90)
-        //    {
-        //        ModifyProgressBarColor.SetState(pgBar_Database_Size, 2);
-        //    }
-        //}
+        private void pgBarColorChanger()
+        {
+            //ModifyProgressBarColor.SetState(pgBar_Database_Size, 1);
+            //if (pgBar_Database_Size.Value >= 80 && pgBar_Database_Size.Value <= 89)
+            //{
+            //    ModifyProgressBarColor.SetState(pgBar_Database_Size, 3);
+            //}
+            //if (pgBar_Database_Size.Value >= 90)
+            //{
+            //    ModifyProgressBarColor.SetState(pgBar_Database_Size, 2);
+            //}
+        }
 
         #endregion
 

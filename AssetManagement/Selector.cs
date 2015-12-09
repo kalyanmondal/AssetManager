@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AssetManagement
@@ -22,16 +16,16 @@ namespace AssetManagement
             sizesetter();
         }
 
-        #endregion
+        #endregion constructor
 
         #region Function
 
         public void sizesetter()
         {
-            this.Size = new Size(dtGrVw_Selector.Width+35, dtGrVw_Selector.Height+70);
+            this.Size = new Size(dtGrVw_Selector.Width + 35, dtGrVw_Selector.Height + 70);
         }
 
-        #endregion
+        #endregion Function
 
         #region Event
 
@@ -63,6 +57,6 @@ namespace AssetManagement
             }
         }
 
-        #endregion
+        #endregion Event
     }
 }

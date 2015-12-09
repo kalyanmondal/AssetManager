@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AssetManagement
 {
-    static class Encrypter
+    internal static class Encrypter
     {
-        static string key = "IMS Health";
+        private static string key = "IMS Health";
+
         public static string Encrypt(string toEncrypt, bool useHashing)
         {
             byte[] keyArray;
