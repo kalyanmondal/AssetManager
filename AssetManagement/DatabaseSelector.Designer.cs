@@ -57,7 +57,7 @@
             // btn_Browse_Database
             // 
             this.btn_Browse_Database.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Browse_Database.Location = new System.Drawing.Point(638, 15);
+            this.btn_Browse_Database.Location = new System.Drawing.Point(638, 16);
             this.btn_Browse_Database.Name = "btn_Browse_Database";
             this.btn_Browse_Database.Size = new System.Drawing.Size(75, 23);
             this.btn_Browse_Database.TabIndex = 2;

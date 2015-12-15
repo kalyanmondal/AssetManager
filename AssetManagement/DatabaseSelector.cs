@@ -5,11 +5,19 @@ namespace AssetManagement
 {
     public partial class frm_DatabaseSelector : Form
     {
+        private int p;
+
         #region Constructor
 
         public frm_DatabaseSelector()
         {
             InitializeComponent();
+        }
+
+        public frm_DatabaseSelector(int p)
+        {
+            this.p = p;
+            this.ControlBox = true;
         }
 
         #endregion Constructor
@@ -33,7 +41,14 @@ namespace AssetManagement
             }
             else
             {
-                MessageBox.Show("Please select the file.\nThis is one time process.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (p != 1)
+                {
+                    MessageBox.Show("Please select the file.\nThis is one time process.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    MessageBox.Show("Please select the file.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
         }
 

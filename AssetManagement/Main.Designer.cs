@@ -280,6 +280,7 @@
             this.lbl_ManageMedicine_InsertMedicineStock = new System.Windows.Forms.Label();
             this.tbox_ManageMedicine_InsertMedicineName = new System.Windows.Forms.TextBox();
             this.lbl_ManageMedicine_InsertMedicineName = new System.Windows.Forms.Label();
+            this.tbox_ManageMedicineId = new System.Windows.Forms.TextBox();
             this.btn_ManageMedicine_Update_Reset = new System.Windows.Forms.Button();
             this.btn_ManageMedicine_Update = new System.Windows.Forms.Button();
             this.rdBtn_MedicineInActive = new System.Windows.Forms.RadioButton();
@@ -297,11 +298,26 @@
             this.rd_ManageMedicine_PlotActiveMedicine = new System.Windows.Forms.RadioButton();
             this.chrt_Medicine_Stock = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tb_Page_Settings_Manage_Database = new System.Windows.Forms.TabPage();
+            this.lbl_BackupStatus = new System.Windows.Forms.Label();
+            this.tbox_Log_Find = new System.Windows.Forms.TextBox();
+            this.lbl_Log_Find = new System.Windows.Forms.Label();
+            this.lbl_Daily_Log = new System.Windows.Forms.Label();
+            this.grpbx_Database_Details = new System.Windows.Forms.GroupBox();
+            this.lbl_Database_Last_BackedUp_On = new System.Windows.Forms.Label();
+            this.pgBar_Database_Size = new System.Windows.Forms.ProgressBar();
+            this.lbl_Database_Size = new System.Windows.Forms.Label();
+            this.pgBar_Backup_Progress = new System.Windows.Forms.ProgressBar();
+            this.rtbox_Daily_Log = new System.Windows.Forms.RichTextBox();
+            this.btn_Change_Admin_Password = new System.Windows.Forms.Button();
+            this.btn_Restore_Database = new System.Windows.Forms.Button();
+            this.btn_Backup_Database = new System.Windows.Forms.Button();
+            this.btn_Repoint_Database = new System.Windows.Forms.Button();
             this.svFlDlg_SaveReport = new System.Windows.Forms.SaveFileDialog();
             this.opFlDlg_SelectFile = new System.Windows.Forms.OpenFileDialog();
             this.bg_Worker_ImportEmployee = new System.ComponentModel.BackgroundWorker();
             this.fbDlg_Backup_Database = new System.Windows.Forms.FolderBrowserDialog();
-            this.tbox_ManageMedicineId = new System.Windows.Forms.TextBox();
+            this.bg_Worker_BackupDatabase = new System.ComponentModel.BackgroundWorker();
+            this.lbl_DatabaseSize = new System.Windows.Forms.Label();
             this.sts_Strip.SuspendLayout();
             this.tbCtrl_Asset_Manager.SuspendLayout();
             this.tb_Page_VisitorDetails.SuspendLayout();
@@ -361,6 +377,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateWarning)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateMedicineStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chrt_Medicine_Stock)).BeginInit();
+            this.tb_Page_Settings_Manage_Database.SuspendLayout();
+            this.grpbx_Database_Details.SuspendLayout();
             this.SuspendLayout();
             // 
             // sts_Strip
@@ -3062,6 +3080,14 @@
             this.lbl_ManageMedicine_InsertMedicineName.TabIndex = 0;
             this.lbl_ManageMedicine_InsertMedicineName.Text = "Medicine Name : ";
             // 
+            // tbox_ManageMedicineId
+            // 
+            this.tbox_ManageMedicineId.Location = new System.Drawing.Point(10, 216);
+            this.tbox_ManageMedicineId.Name = "tbox_ManageMedicineId";
+            this.tbox_ManageMedicineId.Size = new System.Drawing.Size(76, 20);
+            this.tbox_ManageMedicineId.TabIndex = 21;
+            this.tbox_ManageMedicineId.Visible = false;
+            // 
             // btn_ManageMedicine_Update_Reset
             // 
             this.btn_ManageMedicine_Update_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -3267,6 +3293,17 @@
             // 
             // tb_Page_Settings_Manage_Database
             // 
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.lbl_BackupStatus);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.tbox_Log_Find);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.lbl_Log_Find);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.lbl_Daily_Log);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.grpbx_Database_Details);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.pgBar_Backup_Progress);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.rtbox_Daily_Log);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.btn_Change_Admin_Password);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.btn_Restore_Database);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.btn_Backup_Database);
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.btn_Repoint_Database);
             this.tb_Page_Settings_Manage_Database.Location = new System.Drawing.Point(4, 22);
             this.tb_Page_Settings_Manage_Database.Name = "tb_Page_Settings_Manage_Database";
             this.tb_Page_Settings_Manage_Database.Padding = new System.Windows.Forms.Padding(3);
@@ -3275,6 +3312,141 @@
             this.tb_Page_Settings_Manage_Database.Text = "Manage Database And Password";
             this.tb_Page_Settings_Manage_Database.UseVisualStyleBackColor = true;
             this.tb_Page_Settings_Manage_Database.Enter += new System.EventHandler(this.tb_Page_Settings_Manage_Database_Enter);
+            // 
+            // lbl_BackupStatus
+            // 
+            this.lbl_BackupStatus.AutoSize = true;
+            this.lbl_BackupStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_BackupStatus.Location = new System.Drawing.Point(6, 93);
+            this.lbl_BackupStatus.Name = "lbl_BackupStatus";
+            this.lbl_BackupStatus.Size = new System.Drawing.Size(0, 15);
+            this.lbl_BackupStatus.TabIndex = 10;
+            // 
+            // tbox_Log_Find
+            // 
+            this.tbox_Log_Find.Location = new System.Drawing.Point(487, 111);
+            this.tbox_Log_Find.Name = "tbox_Log_Find";
+            this.tbox_Log_Find.Size = new System.Drawing.Size(365, 20);
+            this.tbox_Log_Find.TabIndex = 9;
+            // 
+            // lbl_Log_Find
+            // 
+            this.lbl_Log_Find.AutoSize = true;
+            this.lbl_Log_Find.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Log_Find.Location = new System.Drawing.Point(448, 113);
+            this.lbl_Log_Find.Name = "lbl_Log_Find";
+            this.lbl_Log_Find.Size = new System.Drawing.Size(40, 15);
+            this.lbl_Log_Find.TabIndex = 8;
+            this.lbl_Log_Find.Text = "Find : ";
+            // 
+            // lbl_Daily_Log
+            // 
+            this.lbl_Daily_Log.AutoSize = true;
+            this.lbl_Daily_Log.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Daily_Log.Location = new System.Drawing.Point(6, 112);
+            this.lbl_Daily_Log.Name = "lbl_Daily_Log";
+            this.lbl_Daily_Log.Size = new System.Drawing.Size(81, 18);
+            this.lbl_Daily_Log.TabIndex = 7;
+            this.lbl_Daily_Log.Text = "Daily Log : ";
+            // 
+            // grpbx_Database_Details
+            // 
+            this.grpbx_Database_Details.Controls.Add(this.lbl_DatabaseSize);
+            this.grpbx_Database_Details.Controls.Add(this.lbl_Database_Last_BackedUp_On);
+            this.grpbx_Database_Details.Controls.Add(this.pgBar_Database_Size);
+            this.grpbx_Database_Details.Controls.Add(this.lbl_Database_Size);
+            this.grpbx_Database_Details.Location = new System.Drawing.Point(489, 6);
+            this.grpbx_Database_Details.Name = "grpbx_Database_Details";
+            this.grpbx_Database_Details.Size = new System.Drawing.Size(363, 92);
+            this.grpbx_Database_Details.TabIndex = 6;
+            this.grpbx_Database_Details.TabStop = false;
+            this.grpbx_Database_Details.Text = "Database Backup Details";
+            // 
+            // lbl_Database_Last_BackedUp_On
+            // 
+            this.lbl_Database_Last_BackedUp_On.AutoSize = true;
+            this.lbl_Database_Last_BackedUp_On.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lbl_Database_Last_BackedUp_On.Location = new System.Drawing.Point(6, 66);
+            this.lbl_Database_Last_BackedUp_On.Name = "lbl_Database_Last_BackedUp_On";
+            this.lbl_Database_Last_BackedUp_On.Size = new System.Drawing.Size(149, 16);
+            this.lbl_Database_Last_BackedUp_On.TabIndex = 2;
+            this.lbl_Database_Last_BackedUp_On.Text = "Last BackedUp On : ";
+            // 
+            // pgBar_Database_Size
+            // 
+            this.pgBar_Database_Size.Location = new System.Drawing.Point(130, 18);
+            this.pgBar_Database_Size.Name = "pgBar_Database_Size";
+            this.pgBar_Database_Size.Size = new System.Drawing.Size(227, 23);
+            this.pgBar_Database_Size.TabIndex = 1;
+            // 
+            // lbl_Database_Size
+            // 
+            this.lbl_Database_Size.AutoSize = true;
+            this.lbl_Database_Size.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Database_Size.Location = new System.Drawing.Point(6, 23);
+            this.lbl_Database_Size.Name = "lbl_Database_Size";
+            this.lbl_Database_Size.Size = new System.Drawing.Size(122, 16);
+            this.lbl_Database_Size.TabIndex = 0;
+            this.lbl_Database_Size.Text = "Database Size : ";
+            // 
+            // pgBar_Backup_Progress
+            // 
+            this.pgBar_Backup_Progress.Location = new System.Drawing.Point(6, 75);
+            this.pgBar_Backup_Progress.Name = "pgBar_Backup_Progress";
+            this.pgBar_Backup_Progress.Size = new System.Drawing.Size(465, 15);
+            this.pgBar_Backup_Progress.TabIndex = 5;
+            // 
+            // rtbox_Daily_Log
+            // 
+            this.rtbox_Daily_Log.Location = new System.Drawing.Point(6, 131);
+            this.rtbox_Daily_Log.Name = "rtbox_Daily_Log";
+            this.rtbox_Daily_Log.Size = new System.Drawing.Size(846, 378);
+            this.rtbox_Daily_Log.TabIndex = 4;
+            this.rtbox_Daily_Log.Text = "";
+            // 
+            // btn_Change_Admin_Password
+            // 
+            this.btn_Change_Admin_Password.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Change_Admin_Password.Location = new System.Drawing.Point(360, 6);
+            this.btn_Change_Admin_Password.Name = "btn_Change_Admin_Password";
+            this.btn_Change_Admin_Password.Size = new System.Drawing.Size(111, 63);
+            this.btn_Change_Admin_Password.TabIndex = 3;
+            this.btn_Change_Admin_Password.Text = "Change Admin Login Details";
+            this.btn_Change_Admin_Password.UseVisualStyleBackColor = true;
+            this.btn_Change_Admin_Password.Click += new System.EventHandler(this.btn_Change_Admin_Password_Click);
+            // 
+            // btn_Restore_Database
+            // 
+            this.btn_Restore_Database.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
+            this.btn_Restore_Database.Location = new System.Drawing.Point(243, 6);
+            this.btn_Restore_Database.Name = "btn_Restore_Database";
+            this.btn_Restore_Database.Size = new System.Drawing.Size(111, 63);
+            this.btn_Restore_Database.TabIndex = 2;
+            this.btn_Restore_Database.Text = "Restore Database";
+            this.btn_Restore_Database.UseVisualStyleBackColor = true;
+            this.btn_Restore_Database.Click += new System.EventHandler(this.btn_Restore_Database_Click);
+            // 
+            // btn_Backup_Database
+            // 
+            this.btn_Backup_Database.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold);
+            this.btn_Backup_Database.Location = new System.Drawing.Point(123, 6);
+            this.btn_Backup_Database.Name = "btn_Backup_Database";
+            this.btn_Backup_Database.Size = new System.Drawing.Size(111, 63);
+            this.btn_Backup_Database.TabIndex = 1;
+            this.btn_Backup_Database.Text = "Backup Database";
+            this.btn_Backup_Database.UseVisualStyleBackColor = true;
+            this.btn_Backup_Database.Click += new System.EventHandler(this.btn_Backup_Database_Click);
+            // 
+            // btn_Repoint_Database
+            // 
+            this.btn_Repoint_Database.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Repoint_Database.Location = new System.Drawing.Point(6, 6);
+            this.btn_Repoint_Database.Name = "btn_Repoint_Database";
+            this.btn_Repoint_Database.Size = new System.Drawing.Size(111, 63);
+            this.btn_Repoint_Database.TabIndex = 0;
+            this.btn_Repoint_Database.Text = "Repoint Database";
+            this.btn_Repoint_Database.UseVisualStyleBackColor = true;
+            this.btn_Repoint_Database.Click += new System.EventHandler(this.btn_Repoint_Database_Click);
             // 
             // svFlDlg_SaveReport
             // 
@@ -3286,13 +3458,21 @@
             this.bg_Worker_ImportEmployee.WorkerSupportsCancellation = true;
             this.bg_Worker_ImportEmployee.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bg_Worker_ImportEmployee_DoWork);
             // 
-            // tbox_ManageMedicineId
+            // bg_Worker_BackupDatabase
             // 
-            this.tbox_ManageMedicineId.Location = new System.Drawing.Point(10, 216);
-            this.tbox_ManageMedicineId.Name = "tbox_ManageMedicineId";
-            this.tbox_ManageMedicineId.Size = new System.Drawing.Size(76, 20);
-            this.tbox_ManageMedicineId.TabIndex = 21;
-            this.tbox_ManageMedicineId.Visible = false;
+            this.bg_Worker_BackupDatabase.WorkerReportsProgress = true;
+            this.bg_Worker_BackupDatabase.WorkerSupportsCancellation = true;
+            this.bg_Worker_BackupDatabase.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bg_Worker_BackupDatabase_DoWork);
+            this.bg_Worker_BackupDatabase.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bg_Worker_BackupDatabase_ProgressChanged);
+            this.bg_Worker_BackupDatabase.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bg_Worker_BackupDatabase_RunWorkerCompleted);
+            // 
+            // lbl_DatabaseSize
+            // 
+            this.lbl_DatabaseSize.AutoSize = true;
+            this.lbl_DatabaseSize.Location = new System.Drawing.Point(133, 44);
+            this.lbl_DatabaseSize.Name = "lbl_DatabaseSize";
+            this.lbl_DatabaseSize.Size = new System.Drawing.Size(0, 13);
+            this.lbl_DatabaseSize.TabIndex = 3;
             // 
             // frm_Main
             // 
@@ -3385,6 +3565,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateWarning)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateMedicineStock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chrt_Medicine_Stock)).EndInit();
+            this.tb_Page_Settings_Manage_Database.ResumeLayout(false);
+            this.tb_Page_Settings_Manage_Database.PerformLayout();
+            this.grpbx_Database_Details.ResumeLayout(false);
+            this.grpbx_Database_Details.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3664,6 +3848,22 @@
         private System.Windows.Forms.TextBox tbox_ManageMedicine_UpdateMedicineName;
         private System.Windows.Forms.Label lbl_ManageMedicine_UpdateMedicineName;
         private System.Windows.Forms.TextBox tbox_ManageMedicineId;
+        private System.Windows.Forms.Button btn_Repoint_Database;
+        private System.Windows.Forms.Button btn_Change_Admin_Password;
+        private System.Windows.Forms.Button btn_Restore_Database;
+        private System.Windows.Forms.Button btn_Backup_Database;
+        private System.Windows.Forms.ProgressBar pgBar_Backup_Progress;
+        private System.Windows.Forms.RichTextBox rtbox_Daily_Log;
+        private System.Windows.Forms.Label lbl_Daily_Log;
+        private System.Windows.Forms.Label lbl_Log_Find;
+        private System.Windows.Forms.TextBox tbox_Log_Find;
+        private System.Windows.Forms.GroupBox grpbx_Database_Details;
+        private System.Windows.Forms.ProgressBar pgBar_Database_Size;
+        private System.Windows.Forms.Label lbl_Database_Size;
+        private System.Windows.Forms.Label lbl_Database_Last_BackedUp_On;
+        private System.ComponentModel.BackgroundWorker bg_Worker_BackupDatabase;
+        private System.Windows.Forms.Label lbl_BackupStatus;
+        private System.Windows.Forms.Label lbl_DatabaseSize;
     }
 }
 

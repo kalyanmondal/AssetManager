@@ -15,6 +15,7 @@ namespace AssetManagement
                     key.SetValue("AdminPassword", Encrypter.Encrypt("123456", true));
                     key.SetValue("data source", "");
                     key.SetValue("provider", Encrypter.Encrypt("Microsoft.ACE.OLEDB.12.0", true));
+                    key.SetValue("backupdatetime", "");
                     key.Close();
                 }
             }

@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows.Forms;
 
 namespace AssetManagement
@@ -49,6 +50,8 @@ namespace AssetManagement
 
         public Dictionary<string, string> medicineData = new Dictionary<string, string>();
         public Dictionary<string, string> medicineUpdatedData = new Dictionary<string, string>();
+
+        public static int maxValProgressBar { get; set; }
 
         #endregion
 
@@ -96,7 +99,7 @@ namespace AssetManagement
             try
             {
                 RegManager.createKey();
-                if (RegManager.getKey("data source") == string.Empty)
+                if (RegManager.getKey("data source")== string.Empty)
                 {
                     DialogResult dr = MessageBox.Show("Database configuration is not done! \nWould you like to do it now?", "Asset Manager", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (dr != DialogResult.Cancel)
@@ -114,6 +117,7 @@ namespace AssetManagement
             catch (Exception ex)
             {
                 MessageBox.Show("Somthing went wrong. Please contact service provider.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RegManager.deleteAllKey();
                 Application.Exit();
             }
 
@@ -514,8 +518,9 @@ namespace AssetManagement
 
         private void bg_Worker_ImportEmployee_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
+            pgBar_Import_Progress.Maximum = maxValProgressBar;
             lblStateStatus.Text = e.UserState as string;
-            pgBar_Import_Progress.Value = pgBar_Import_Progress.Value + e.ProgressPercentage > 100 ? 100 : pgBar_Import_Progress.Value + e.ProgressPercentage;
+            pgBar_Import_Progress.Value = pgBar_Import_Progress.Value + e.ProgressPercentage > maxValProgressBar ? maxValProgressBar : pgBar_Import_Progress.Value + e.ProgressPercentage;
         }
 
         private void bg_Worker_ImportEmployee_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -659,6 +664,7 @@ namespace AssetManagement
         {
             interviewCheckboxStatusChange(2);
         }
+
         private void tbox_Med_Emp_Email_TextChanged(object sender, EventArgs e)
         {
             autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Email, "Employee_Email", "tbl_Employee_Details");
@@ -714,6 +720,14 @@ namespace AssetManagement
         {
             databaseSizeCalculator();
             pgBarColorChanger();
+            if (RegManager.getKey("backupdatetime") != "")
+            {
+                lbl_Database_Last_BackedUp_On.Text = lbl_Database_Last_BackedUp_On.Text.Substring(0, 19) + Encrypter.Decrypt(RegManager.getKey("backupdatetime"), true);
+            }
+            else
+            {
+                lbl_Database_Last_BackedUp_On.Text = lbl_Database_Last_BackedUp_On.Text.Substring(0, 19) + "Not backed-up yet";
+            }
         }
 
         private void tb_Page_Settings_Manage_Medicine_Enter(object sender, EventArgs e)
@@ -780,6 +794,7 @@ namespace AssetManagement
                 chrt_Medicine_Stock.Series.Remove(chrt_Medicine_Stock.Series["Warning Limit"]);
             }
         }
+
         private void btn_ManageMedicine_Update_Click(object sender, EventArgs e)
         {
             updateMedicineDetails();
@@ -849,6 +864,66 @@ namespace AssetManagement
         private void btn_ManageMedicine_Update_Reset_Click(object sender, EventArgs e)
         {
             resetUpdateMedicine();
+        }
+
+        private void btn_Repoint_Database_Click(object sender, EventArgs e)
+        {
+            frm_DatabaseSelector fmds = new frm_DatabaseSelector(1);
+            fmds.ShowDialog();
+            databaseSizeCalculator();
+            pgBarColorChanger();
+            pgBar_Database_Size.Update();
+        }
+
+        private void btn_Backup_Database_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                pgBar_Backup_Progress.Value = 0;
+                bg_Worker_BackupDatabase.ProgressChanged -= new ProgressChangedEventHandler(bg_Worker_BackupDatabase_ProgressChanged);
+                bg_Worker_BackupDatabase.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(bg_Worker_BackupDatabase_RunWorkerCompleted);
+                bg_Worker_BackupDatabase.ProgressChanged += new ProgressChangedEventHandler(bg_Worker_BackupDatabase_ProgressChanged);
+                bg_Worker_BackupDatabase.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bg_Worker_BackupDatabase_RunWorkerCompleted);
+                bg_Worker_BackupDatabase.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void bg_Worker_BackupDatabase_DoWork(object sender, DoWorkEventArgs e)
+        {
+            backupDatabase();
+        }
+
+        private void bg_Worker_BackupDatabase_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            lbl_BackupStatus.Text = e.UserState as string;
+            pgBar_Backup_Progress.Value = pgBar_Backup_Progress.Value + e.ProgressPercentage > 100 ? 100 : pgBar_Backup_Progress.Value + e.ProgressPercentage;
+        }
+
+        private void bg_Worker_BackupDatabase_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            lbl_Database_Last_BackedUp_On.Text = lbl_Database_Last_BackedUp_On.Text.Substring(0, 19) + Encrypter.Decrypt(RegManager.getKey("backupdatetime"), true);
+            lbl_BackupStatus.Text = "Completed...";
+            DialogResult dresult = MessageBox.Show("Data Backup Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (dresult == DialogResult.OK)
+            {
+                pgBar_Backup_Progress.Value = 0;
+                lbl_BackupStatus.Text = string.Empty;
+            }
+        }
+
+        private void btn_Restore_Database_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_Change_Admin_Password_Click(object sender, EventArgs e)
+        {
+            //frm_AdminLoginDetailsChanger fraldc = new frm_AdminLoginDetailsChanger();
+            //fraldc.ShowDialog();
         }
 
         #endregion
@@ -1842,6 +1917,7 @@ namespace AssetManagement
                 ss.ShowDialog();
             }
             int rowcount = excelUtlity.noOfRowsCounter(tbox_Browse.Text, sheetName);
+            maxValProgressBar = rowcount;
             string connectionString = "";
             connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'";
             connectionString = String.Format(connectionString, tbox_Browse.Text);
@@ -1875,7 +1951,6 @@ namespace AssetManagement
                 if (dr == DialogResult.OK)
                     backUpDatabaseLocation = fbDlg_Backup_Database.SelectedPath;
             }));
-
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
@@ -1909,9 +1984,15 @@ namespace AssetManagement
                 ////}
                 ////xmlTags = xmlTags + "</Backups>";
                 #endregion
-                string src = RegManager.getKey("data source");
-                string dst = backUpDatabaseLocation + "/Backup_" + DateTime.Now.ToLongDateString(); ;
+                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Getting the source database"));
+                string src = Encrypter.Decrypt(RegManager.getKey("data source"), true);
+                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Creating the destination database"));
+                string dst = backUpDatabaseLocation + "/Backup_" + DateTime.Now.ToString("dd MMMM yyyy hh-mm-ss");
+                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Copying database started"));
                 System.IO.File.Copy(src, dst, true);
+                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Copying database finished"));
+                RegManager.updateKey("backupdatetime", DateTime.Now.ToString("dd MMM yyyy hh:mm:ss tt"));
+                processBackupAndOriginalDatabase(src, dst);
             }
             else
             {
@@ -1919,46 +2000,46 @@ namespace AssetManagement
             }
         }
 
-        public void WriteToAccess(DataTable dt, int rowcount)
+        private void WriteToAccess(DataTable dt, int rowcount)
         {
-            try
+            int j = 1;
+            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+            string cmdText = "Insert into tbl_Employee_Details (Employee_Id,Employee_Name,Employee_Email,Extension,Personal_Mobile,Personal_Email,Official_Mobile,Department,Company,Current_Manager_Name,Current_Manager_Employee_Id,Location,Active) Values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            con.Open();
+            OleDbTransaction transaction = con.BeginTransaction();
+            OleDbCommand cmd = new OleDbCommand(cmdText, con, transaction);
+            using (con)
             {
-                int j = 1;
-                string cmdText = "Insert into tbl_Employee_Details (Employee_Id,Employee_Name,Employee_Email,Extension,Personal_Mobile,Personal_Email,Official_Mobile,Department,Company,Current_Manager_Name,Current_Manager_Employee_Id,Location,Active) Values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                using (con)
+                try
                 {
-                    using (OleDbCommand cmd = new OleDbCommand(cmdText, con))
+                    foreach (DataRow r in dt.Rows)
                     {
-                        con.Open();
-                        foreach (DataRow r in dt.Rows)
-                        {
-                            int i = 0;
-                            cmd.Parameters.Clear();
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
-                            cmd.Parameters.AddWithValue("?", 1);
-                            cmd.ExecuteNonQuery();
-                            j++;
-                            bg_Worker_ImportEmployee.ReportProgress((j / rowcount) * 100, string.Format("Completed -" + j + "/" + rowcount));
-                        }
-
+                        int i = 0;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", r[i++].ToString().Trim());
+                        cmd.Parameters.AddWithValue("?", 1);
+                        cmd.ExecuteNonQuery();
+                        j++;
+                        bg_Worker_ImportEmployee.ReportProgress((int)Math.Ceiling((float)j / rowcount), string.Format("Completed -" + j + "/" + rowcount));
                     }
+                    transaction.Commit();
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -2650,24 +2731,61 @@ namespace AssetManagement
 
         private void databaseSizeCalculator()
         {
-            //pgBar_Database_Size.Value = 0;
-            //FileInfo databseFile = new FileInfo(Encrypter.Decrypt(RegManager.getKey("data source"), true));
-            //int databseSize = Convert.ToInt32(databseFile.Length / 1048576);
-            //pgBar_Database_Size.Value = pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100) > 100 ? 100 : pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100);
+            pgBar_Database_Size.Value = 0;
+            FileInfo databseFile = new FileInfo(Encrypter.Decrypt(RegManager.getKey("data source"), true));
+            int databseSize = Convert.ToInt32(databseFile.Length / 1048576);
+            pgBar_Database_Size.Value = pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100) > 100 ? 100 : pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100);
+            lbl_DatabaseSize.Text = databseSize.ToString() + "MB";
 
         }
 
         private void pgBarColorChanger()
         {
-            //ModifyProgressBarColor.SetState(pgBar_Database_Size, 1);
-            //if (pgBar_Database_Size.Value >= 80 && pgBar_Database_Size.Value <= 89)
-            //{
-            //    ModifyProgressBarColor.SetState(pgBar_Database_Size, 3);
-            //}
-            //if (pgBar_Database_Size.Value >= 90)
-            //{
-            //    ModifyProgressBarColor.SetState(pgBar_Database_Size, 2);
-            //}
+            ModifyProgressBarColor.SetState(pgBar_Database_Size, 1);
+            if (pgBar_Database_Size.Value >= 80 && pgBar_Database_Size.Value <= 89)
+            {
+                ModifyProgressBarColor.SetState(pgBar_Database_Size, 3);
+            }
+            if (pgBar_Database_Size.Value >= 90)
+            {
+                ModifyProgressBarColor.SetState(pgBar_Database_Size, 2);
+            }
+        }
+
+        private void processBackupAndOriginalDatabase(string src, string dst)
+        {
+            OleDbConnection dstCon = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + ";OLE DB Services=-4; data source=" + dst);
+            OleDbConnection srcCon = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + ";OLE DB Services=-4; data source=" + src);
+            try
+            {
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    using (dstCon)
+                    {
+                        dstCon.Open();
+                        cmd = new OleDbCommand("DROP TABLE tbl_Employee_Details", dstCon);
+                        cmd.ExecuteNonQuery();
+                        cmd = new OleDbCommand("DROP TABLE tbl_Medicine_Details", dstCon);
+                        cmd.ExecuteNonQuery();
+
+                        using (srcCon)
+                        {
+                            srcCon.Open();
+                            cmd = new OleDbCommand("DELETE FROM tbl_Inter_Office_Visitor", srcCon);
+                            cmd.ExecuteNonQuery();
+                            cmd = new OleDbCommand("DELETE FROM tbl_Medicine_Distrubution", srcCon);
+                            cmd.ExecuteNonQuery();
+                            cmd = new OleDbCommand("DELETE FROM tbl_Visitor_details", srcCon);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         #endregion
