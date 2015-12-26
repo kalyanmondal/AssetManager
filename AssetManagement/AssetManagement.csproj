@@ -83,6 +83,12 @@
     <Compile Include="AdminLogin.Designer.cs">
       <DependentUpon>AdminLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="AdminLoginDetailsChanger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminLoginDetailsChanger.Designer.cs">
+      <DependentUpon>AdminLoginDetailsChanger.cs</DependentUpon>
+    </Compile>
     <Compile Include="HelperClasses\autoCompleteTextbox.cs" />
     <Compile Include="HelperClasses\Encrypter.cs" />
     <Compile Include="HelperClasses\ExcelUtlity.cs" />
@@ -123,6 +129,9 @@
     <Compile Include="HelperClasses\WebCam.cs" />
     <EmbeddedResource Include="AdminLogin.resx">
       <DependentUpon>AdminLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AdminLoginDetailsChanger.resx">
+      <DependentUpon>AdminLoginDetailsChanger.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DatabaseSelector.resx">
       <DependentUpon>DatabaseSelector.cs</DependentUpon>

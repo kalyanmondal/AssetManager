@@ -9,13 +9,9 @@ namespace AssetManagement
 
         #region Constructor
 
-        public frm_DatabaseSelector()
-        {
-            InitializeComponent();
-        }
-
         public frm_DatabaseSelector(int p)
         {
+            InitializeComponent();
             this.p = p;
             this.ControlBox = true;
         }
@@ -26,26 +22,33 @@ namespace AssetManagement
 
         private void btn_Browse_Database_Click(object sender, EventArgs e)
         {
-            dlg_OpenFile_Database_Selector.Title = "Select the database";
-            dlg_OpenFile_Database_Selector.Filter = "Access-2007 (*.accdb)|*.accdb|Access-2003 (*.mdb)|*.mdb|All files (*.*)|*.*";
+            if (p == 0 || p == 1)
+            {
+                dlg_OpenFile_Database_Selector.Title = "Select the database";
+                dlg_OpenFile_Database_Selector.Filter = "Access-2007 (*.accdb)|*.accdb|Access-2003 (*.mdb)|*.mdb|All files (*.*)|*.*";
+            }
+
             dlg_OpenFile_Database_Selector.ShowDialog();
-            tbox_Select_The_Database.Text = dlg_OpenFile_Database_Selector.FileName.ToString();
+            tbox_Select_The_Database.Text = dlg_OpenFile_Database_Selector.FileName;
         }
 
         private void btn_Ok_Database_Click(object sender, EventArgs e)
         {
             if (tbox_Select_The_Database.Text.Length > 0)
             {
-                RegManager.updateKey("data source", tbox_Select_The_Database.Text);
-                this.Dispose();
+                if (p == 0 || p == 1)
+                {
+                    RegManager.updateKey("data source", tbox_Select_The_Database.Text);
+                    this.Dispose();
+                }
             }
             else
             {
-                if (p != 1)
+                if (p == 0)
                 {
                     MessageBox.Show("Please select the file.\nThis is one time process.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
-                else
+                else if (p == 1)
                 {
                     MessageBox.Show("Please select the file.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }

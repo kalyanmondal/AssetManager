@@ -34,12 +34,12 @@ namespace AssetManagement
             textControl.AutoCompleteCustomSource = source;
         }
 
-        public static void autocompletedata(ref System.Windows.Forms.TextBox textControl, string columnName, string tableName, string secondFilterColumn, string secondFilterConition)
+        public static void autocompletedata(ref System.Windows.Forms.TextBox textControl, string columnName, string tableName, string secondFilterColumn, string Operator ,string secondFilterConition)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             var source = new AutoCompleteStringCollection();
             string strQuery = string.Empty;
-            strQuery = "SELECT " + columnName + " FROM " + tableName + " WHERE " + columnName + " LIKE '%" + textControl.Text + "%' AND " + secondFilterColumn + " =" + secondFilterConition;
+            strQuery = "SELECT " + columnName + " FROM " + tableName + " WHERE " + columnName + " LIKE '%" + textControl.Text + "%' AND " + secondFilterColumn + Operator + secondFilterConition;
             try
             {
                 using (con)

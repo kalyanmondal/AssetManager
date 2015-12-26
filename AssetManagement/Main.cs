@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows.Forms;
 
@@ -19,19 +15,20 @@ namespace AssetManagement
 {
     public partial class frm_Main : Form
     {
-
         #region Private Variable
 
-        WebCam webcam;
-        OleDbConnection con;
-        OleDbCommand cmd;
-        OleDbDataAdapter adapter;
-        DataSet ds;
-        MemoryStream ms;
-        byte[] photo_aray;
-        string reportSaveLocation;
-        string backUpDatabaseLocation;
-        ExcelUtlity excelUtlity = new ExcelUtlity();
+        private WebCam webcam;
+        private OleDbConnection con;
+        private OleDbCommand cmd;
+        private OleDbDataAdapter adapter;
+        private DataSet ds;
+        private MemoryStream ms;
+        private byte[] photo_aray;
+        private string reportSaveLocation;
+        private string backUpDatabaseLocation;
+        private bool backupSuccessful = false;
+        private bool restoreSuccessful = false;
+        private ExcelUtlity excelUtlity = new ExcelUtlity();
 
         public static string serialNumber { get; set; }
         public static string employeeId { get; set; }
@@ -40,9 +37,8 @@ namespace AssetManagement
         public static DateTime? OutTime { get; set; }
         public static int toDo { get; set; }
         public static string sheetName { get; set; }
-
+        public static string restoreFrom { get; set; }
         public static bool medValidationPassed { get; set; }
-
         public static bool addminLoginAllowed { get; set; }
 
         public Dictionary<string, string> employeeData = new Dictionary<string, string>();
@@ -53,9 +49,10 @@ namespace AssetManagement
 
         public static int maxValProgressBar { get; set; }
 
-        #endregion
+        #endregion Private Variable
 
         #region Construction
+
         public frm_Main()
         {
             InitializeComponent();
@@ -64,47 +61,23 @@ namespace AssetManagement
             tmr_Asset_Timer.Start();
         }
 
-        #endregion
+        #endregion Construction
 
         #region Events
 
-        private void tmr_Ops_Timer_Tick(object sender, EventArgs e)
-        {
-            lbl_time.Text = string.Format("Time Now : {0}", DateTime.Now.ToLongTimeString());
-            tbox_In_Time.Text = DateTime.Now.ToString("dd MMMM yyyy") + " " + DateTime.Now.ToLongTimeString();
-            tbox_Out_Time.Text = DateTime.Now.ToString("dd MMMM yyyy") + " " + DateTime.Now.ToLongTimeString();
-            if (tbox_InterOffice_Serial_Number.Text == string.Empty)
-            {
-                tbox_InterOffce_Date.Text = DateTime.Now.ToString("dd MMMM yyyy");
-                tbox_InterOffce_Issuing_Time.Text = DateTime.Now.ToLongTimeString();
-            }
-            tbox_InterOffce_Return_Return_Date.Text = DateTime.Now.ToString("dd MMMM yyyy");
-            tbox_InterOffce_Return_Return_Time.Text = DateTime.Now.ToLongTimeString();
-        }
-
-        private void btn_Stop_Click(object sender, EventArgs e)
-        {
-            webcam.Stop();
-            pBox_Image.Image = null;
-        }
-
-        private void btn_TakeImage_Click(object sender, EventArgs e)
-        {
-            pBox_Image.Image = pBox_Image.Image;
-            webcam.Stop();
-        }
+        #region generalEvents
 
         private void frm_Main_Load(object sender, EventArgs e)
         {
             try
             {
                 RegManager.createKey();
-                if (RegManager.getKey("data source")== string.Empty)
+                if (RegManager.getKey("data source") == string.Empty)
                 {
                     DialogResult dr = MessageBox.Show("Database configuration is not done! \nWould you like to do it now?", "Asset Manager", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (dr != DialogResult.Cancel)
                     {
-                        frm_DatabaseSelector fmds = new frm_DatabaseSelector();
+                        frm_DatabaseSelector fmds = new frm_DatabaseSelector(0);
                         fmds.ShowDialog();
                     }
                     else
@@ -120,7 +93,41 @@ namespace AssetManagement
                 RegManager.deleteAllKey();
                 Application.Exit();
             }
+        }
 
+        private void tmr_Ops_Timer_Tick(object sender, EventArgs e)
+        {
+            lbl_time.Text = string.Format("Time Now : {0}", DateTime.Now.ToLongTimeString());
+            tbox_In_Time.Text = DateTime.Now.ToString("dd MMMM yyyy") + " " + DateTime.Now.ToLongTimeString();
+            tbox_Out_Time.Text = DateTime.Now.ToString("dd MMMM yyyy") + " " + DateTime.Now.ToLongTimeString();
+            if (tbox_InterOffice_Serial_Number.Text == string.Empty)
+            {
+                tbox_InterOffce_Date.Text = DateTime.Now.ToString("dd MMMM yyyy");
+                tbox_InterOffce_Issuing_Time.Text = DateTime.Now.ToLongTimeString();
+            }
+            tbox_InterOffce_Return_Return_Date.Text = DateTime.Now.ToString("dd MMMM yyyy");
+            tbox_InterOffce_Return_Return_Time.Text = DateTime.Now.ToLongTimeString();
+        }
+
+        private void svFlDlg_SaveReport_FileOk(object sender, CancelEventArgs e)
+        {
+            reportSaveLocation = svFlDlg_SaveReport.FileName;
+        }
+
+        #endregion generalEvents
+
+        #region btnEvents
+
+        private void btn_Stop_Click(object sender, EventArgs e)
+        {
+            webcam.Stop();
+            pBox_Image.Image = null;
+        }
+
+        private void btn_TakeImage_Click(object sender, EventArgs e)
+        {
+            pBox_Image.Image = pBox_Image.Image;
+            webcam.Stop();
         }
 
         private void btn_Webcam_Click(object sender, EventArgs e)
@@ -210,19 +217,6 @@ namespace AssetManagement
                 MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void tb_Page_VisitorDetails_OutDetails_Enter(object sender, EventArgs e)
-        {
-            resetVisitorFrom(2);
-            controlDisabler(true);
-        }
-
-        private void tb_Page_VisitorDetails_InDetails_Enter(object sender, EventArgs e)
-        {
-            webcam = new WebCam();
-            webcam.InitializeWebCam(ref pBox_Image);
-            resetVisitorFrom(1);
-        }
-
         private void btn_Report_Extract_Click(object sender, EventArgs e)
         {
             adapter = new OleDbDataAdapter(queryGenerator(1), con);
@@ -275,31 +269,6 @@ namespace AssetManagement
             }
         }
 
-        private void tb_Page_VisitorDetails_Report_Enter(object sender, EventArgs e)
-        {
-            dtPk_Report_InTime.Checked = false;
-            dtPk_Report_OutTime.Checked = false;
-            dtPk_Report_InTime.Format = DateTimePickerFormat.Custom;
-            dtPk_Report_InTime.CustomFormat = "dd MMMM yyyy";
-            dtPk_Report_OutTime.Format = DateTimePickerFormat.Custom;
-            dtPk_Report_OutTime.CustomFormat = "dd MMMM yyyy";
-        }
-
-        private void svFlDlg_SaveReport_FileOk(object sender, CancelEventArgs e)
-        {
-            reportSaveLocation = svFlDlg_SaveReport.FileName;
-        }
-
-        private void cbox_Interview_Purpose_CheckedChanged(object sender, EventArgs e)
-        {
-            interviewCheckboxStatusChange(0);
-        }
-
-        private void cbox_Interview_Out_Purpose_CheckedChanged(object sender, EventArgs e)
-        {
-            interviewCheckboxStatusChange(1);
-        }
-
         private void btn_Reset_Extract_Click(object sender, EventArgs e)
         {
             resetVisitorFrom(4);
@@ -318,36 +287,6 @@ namespace AssetManagement
         private void btn_Report_Interview_1_Month_Click(object sender, EventArgs e)
         {
             quickReportGenerator(2);
-        }
-
-        private void tb_Page_InterOffice_Visitor_Enter(object sender, EventArgs e)
-        {
-            cbox_Inter_Update_Return_Details.Checked = false;
-            cbox_Inter_Update_Return_Details_CheckedChanged(sender, e);
-            webcam = new WebCam();
-            webcam.InitializeWebCam(ref pBox_Inter_Office_Image);
-        }
-
-        private void cbox_Inter_Update_Return_Details_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cbox_Inter_Update_Return_Details.Checked == true)
-            {
-                grpBx_Inter_Office_Emp_Details.Enabled = false;
-                grpBx_Inter_Office_Access_Card_Details.Enabled = false;
-                grpBx_Inter_Office_Emp_Image_Details.Enabled = false;
-                grpBx_Inter_Office_Emp_Signeture_Details.Enabled = false;
-                btn_Assign.Enabled = false;
-                grpBx_Inter_Office_Return_Details.Enabled = true;
-            }
-            else
-            {
-                grpBx_Inter_Office_Emp_Details.Enabled = true;
-                grpBx_Inter_Office_Access_Card_Details.Enabled = true;
-                grpBx_Inter_Office_Emp_Image_Details.Enabled = true;
-                grpBx_Inter_Office_Emp_Signeture_Details.Enabled = true;
-                btn_Assign.Enabled = true;
-                grpBx_Inter_Office_Return_Details.Enabled = false;
-            }
         }
 
         private void btn_Inter_Office_Reset_Click(object sender, EventArgs e)
@@ -379,25 +318,19 @@ namespace AssetManagement
 
         private void btn_Assign_Click(object sender, EventArgs e)
         {
-            try
+            if (inFormInterOfficeVisitorValidate() == 0)
             {
-                if (inFormInterOfficeVisitorValidate() == 0)
-                {
-                    insertInterOfficeVisitorDetails();
-                }
-                else
-                {
-                    MessageBox.Show("Please enter all the mandetory field", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                insertInterOfficeVisitorDetails();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter all the mandetory field", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
         private void btn_Inter_Office_Search_Click(object sender, EventArgs e)
         {
+            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             string query = string.Empty;
             query = "SELECT Serial_No_Inter_Office,Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Employee_Image,Employee_Signeture FROM tbl_Inter_Office_Visitor WHERE Employee_Id = '" + tbox_InterOffce_Return_Employee_Id.Text + "' AND Return_Date IS NULL AND Return_Time IS NULL";
             adapter = new OleDbDataAdapter(query, con);
@@ -490,12 +423,14 @@ namespace AssetManagement
 
         private void btn_Browse_Click(object sender, EventArgs e)
         {
+            opFlDlg_SelectFile.Title = "Select the file to import";
             opFlDlg_SelectFile.ShowDialog();
             tbox_Browse.Text = opFlDlg_SelectFile.FileName.ToString();
         }
 
         private void btn_Start_Click(object sender, EventArgs e)
         {
+            btn_Start.Enabled = false;
             try
             {
                 pgBar_Import_Progress.Value = 0;
@@ -514,50 +449,6 @@ namespace AssetManagement
             {
                 MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void bg_Worker_ImportEmployee_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            pgBar_Import_Progress.Maximum = maxValProgressBar;
-            lblStateStatus.Text = e.UserState as string;
-            pgBar_Import_Progress.Value = pgBar_Import_Progress.Value + e.ProgressPercentage > maxValProgressBar ? maxValProgressBar : pgBar_Import_Progress.Value + e.ProgressPercentage;
-        }
-
-        private void bg_Worker_ImportEmployee_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            lblStateStatus.Text = "Completed...";
-            DialogResult dresult = MessageBox.Show("Data Uplaod Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            if (dresult == DialogResult.OK)
-            {
-                pgBar_Import_Progress.Value = 0;
-                lblStateStatus.Text = string.Empty;
-                tbox_Browse.Text = string.Empty;
-            }
-        }
-
-        private void bg_Worker_ImportEmployee_DoWork(object sender, DoWorkEventArgs e)
-        {
-            importEmployee();
-        }
-
-        private void tbox_ManageEmployee_EmployeeId_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeId, "Employee_Id", "tbl_Employee_Details");
-        }
-
-        private void tbox_ManageEmployee_EmployeeName_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeName, "Employee_Name", "tbl_Employee_Details");
-        }
-
-        private void tbox_ManageEmployee_EmployeeEmail_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeEmail, "Employee_Email", "tbl_Employee_Details");
-        }
-
-        private void tbox_ManageEmployee_EmployeeExtection_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeExtection, "Extension", "tbl_Employee_Details");
         }
 
         private void btn_Employee_Search_Click(object sender, EventArgs e)
@@ -650,34 +541,154 @@ namespace AssetManagement
             }
         }
 
-        private void tbox_Med_Emp_Id_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Id, "Employee_Id", "tbl_Employee_Details");
-        }
-
-        private void tbox_Med_Emp_Name_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Name, "Employee_Name", "tbl_Employee_Details");
-        }
-
-        private void cbox_Interview_Report_Purpose_CheckedChanged(object sender, EventArgs e)
-        {
-            interviewCheckboxStatusChange(2);
-        }
-
-        private void tbox_Med_Emp_Email_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Email, "Employee_Email", "tbl_Employee_Details");
-        }
-
-        private void tbox_Med_Emp_Desk_Phone_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Desk_Phone, "Extension", "tbl_Employee_Details");
-        }
-
         private void btn_Med_Emp_Reset_Click(object sender, EventArgs e)
         {
             resetMedEmpData();
+        }
+
+        private void btn_ManageMedicine_Add_Click(object sender, EventArgs e)
+        {
+            if (tbox_ManageMedicine_InsertMedicineName.Text.Length == 0)
+            {
+                lbl_ExistingMedicine.Text = "Please provide the name of the medicine!!!";
+            }
+            else if (getExistingMedicineNames().Contains(tbox_ManageMedicine_InsertMedicineName.Text))
+            {
+                lbl_ExistingMedicine.Text = "Existing Medicine!!!";
+            }
+            else
+            {
+                lbl_ExistingMedicine.Text = string.Empty;
+                inserMedicineDetails();
+                resetAddMedicine();
+                plotGraph("True");
+            }
+        }
+
+        private void btn_ManageMedicine_Insert_Reset_Click(object sender, EventArgs e)
+        {
+            resetAddMedicine();
+        }
+
+        private void btn_ManageMedicine_Update_Click(object sender, EventArgs e)
+        {
+            updateMedicineDetails();
+            resetUpdateMedicine();
+            if (rd_ManageMedicine_PlotActiveMedicine.Checked == true)
+            {
+                plotGraph("True");
+            }
+            else
+            {
+                rd_ManageMedicine_PlotActiveMedicine.Checked = true;
+            }
+        }
+
+        private void btn_ManageMedicine_Search_Click(object sender, EventArgs e)
+        {
+            getMedicineDetails();
+        }
+
+        private void btn_Med_Details_Reset_Click(object sender, EventArgs e)
+        {
+            resetMedMedcineData();
+        }
+
+        private void btn_Med_Assign_Click(object sender, EventArgs e)
+        {
+            insertMedAssinment();
+        }
+
+        private void btn_ManageMedicine_Update_Reset_Click(object sender, EventArgs e)
+        {
+            resetUpdateMedicine();
+        }
+
+        private void btn_Repoint_Database_Click(object sender, EventArgs e)
+        {
+            frm_DatabaseSelector fmds = new frm_DatabaseSelector(1);
+            fmds.ShowDialog();
+            databaseSizeCalculator();
+            pgBarColorChanger();
+            pgBar_Database_Size.Update();
+        }
+
+        private void btn_Backup_Database_Click(object sender, EventArgs e)
+        {
+            btn_Backup_Database.Enabled = false;
+            try
+            {
+                pgBar_Backup_Progress.Value = 0;
+                bg_Worker_BackupDatabase.ProgressChanged -= new ProgressChangedEventHandler(bg_Worker_BackupDatabase_ProgressChanged);
+                bg_Worker_BackupDatabase.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(bg_Worker_BackupDatabase_RunWorkerCompleted);
+                bg_Worker_BackupDatabase.ProgressChanged += new ProgressChangedEventHandler(bg_Worker_BackupDatabase_ProgressChanged);
+                bg_Worker_BackupDatabase.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bg_Worker_BackupDatabase_RunWorkerCompleted);
+                bg_Worker_BackupDatabase.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btn_Restore_Database_Click(object sender, EventArgs e)
+        {
+            btn_Restore_Database.Enabled = false;
+            try
+            {
+                pgBar_Backup_Progress.Value = 0;
+                bg_Worker_RestoreDatabase.ProgressChanged -= new ProgressChangedEventHandler(bg_Worker_RestoreDatabase_ProgressChanged);
+                bg_Worker_RestoreDatabase.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(bg_Worker_RestoreDatabase_RunWorkerCompleted);
+                bg_Worker_RestoreDatabase.ProgressChanged += new ProgressChangedEventHandler(bg_Worker_RestoreDatabase_ProgressChanged);
+                bg_Worker_RestoreDatabase.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bg_Worker_RestoreDatabase_RunWorkerCompleted);
+                bg_Worker_RestoreDatabase.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btn_Change_Admin_Password_Click(object sender, EventArgs e)
+        {
+            frm_AdminLoginDetailsChanger fraldc = new frm_AdminLoginDetailsChanger();
+            fraldc.ShowDialog();
+        }
+
+        #endregion btnEvents
+
+        #region tbPageEvents
+
+        private void tb_Page_VisitorDetails_OutDetails_Enter(object sender, EventArgs e)
+        {
+            resetVisitorFrom(2);
+            controlDisabler(true);
+        }
+
+        private void tb_Page_VisitorDetails_InDetails_Enter(object sender, EventArgs e)
+        {
+            webcam = new WebCam();
+            webcam.InitializeWebCam(ref pBox_Image);
+            resetVisitorFrom(1);
+        }
+
+        private void tb_Page_VisitorDetails_Report_Enter(object sender, EventArgs e)
+        {
+            dtPk_Report_InTime.Checked = false;
+            dtPk_Report_OutTime.Checked = false;
+            dtPk_Report_InTime.Format = DateTimePickerFormat.Custom;
+            dtPk_Report_InTime.CustomFormat = "dd MMMM yyyy";
+            dtPk_Report_OutTime.Format = DateTimePickerFormat.Custom;
+            dtPk_Report_OutTime.CustomFormat = "dd MMMM yyyy";
+        }
+
+        private void tb_Page_InterOffice_Visitor_Enter(object sender, EventArgs e)
+        {
+            cbox_Inter_Update_Return_Details.Checked = false;
+            cbox_Inter_Update_Return_Details_CheckedChanged(sender, e);
+            webcam = new WebCam();
+            webcam.InitializeWebCam(ref pBox_Inter_Office_Image);
+            resetVisitorFrom(3);
         }
 
         private void tb_Page_Settings_Enter(object sender, EventArgs e)
@@ -696,24 +707,6 @@ namespace AssetManagement
                 tb_Page_Settings.Enter += tb_Page_Settings_Enter;
                 resetEmployeeForm();
             }
-        }
-
-        private void tbox_Med_Medcine_Name_TextChanged(object sender, EventArgs e)
-        {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "True");
-            if (tbox_Med_Medcine_Name.Text.Length > 0)
-            {
-                tbox_Med_Medcine_Quantity.Enabled = true;
-            }
-            else
-            {
-                tbox_Med_Medcine_Quantity.Enabled = false;
-            }
-        }
-
-        private void tbox_Med_Medcine_Quantity_KeyUp(object sender, KeyEventArgs e)
-        {
-            medStockValidator();
         }
 
         private void tb_Page_Settings_Manage_Database_Enter(object sender, EventArgs e)
@@ -744,46 +737,6 @@ namespace AssetManagement
             resetUpdateMedicine();
         }
 
-        private void btn_ManageMedicine_Add_Click(object sender, EventArgs e)
-        {
-            if (tbox_ManageMedicine_InsertMedicineName.Text.Length == 0)
-            {
-                lbl_ExistingMedicine.Text = "Please provide the name of the medicine!!!";
-            }
-            else if (getExistingMedicineNames().Contains(tbox_ManageMedicine_InsertMedicineName.Text))
-            {
-                lbl_ExistingMedicine.Text = "Existing Medicine!!!";
-            }
-            else
-            {
-                lbl_ExistingMedicine.Text = string.Empty;
-                inserMedicineDetails();
-                resetAddMedicine();
-                plotGraph("True");
-            }
-        }
-
-        private void btn_ManageMedicine_Insert_Reset_Click(object sender, EventArgs e)
-        {
-            resetAddMedicine();
-        }
-
-        private void rd_ManageMedicine_PlotActiveMedicine_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rd_ManageMedicine_PlotActiveMedicine.Checked == true)
-            {
-                plotGraph("True");
-            }
-        }
-
-        private void rd_ManageMedicine_PlotInActiveMedicine_CheckedChanged(object sender, EventArgs e)
-        {
-            if (rd_ManageMedicine_PlotInActiveMedicine.Checked == true)
-            {
-                plotGraph("False");
-            }
-        }
-
         private void tb_Page_Settings_Manage_Medicine_Leave(object sender, EventArgs e)
         {
             if (chrt_Medicine_Stock.ChartAreas.Count > 0)
@@ -795,23 +748,177 @@ namespace AssetManagement
             }
         }
 
-        private void btn_ManageMedicine_Update_Click(object sender, EventArgs e)
+        #endregion tbPageEvents
+
+        #region cboxEvents
+
+        private void cbox_Interview_Purpose_CheckedChanged(object sender, EventArgs e)
         {
-            updateMedicineDetails();
-            resetUpdateMedicine();
-            if (rd_ManageMedicine_PlotActiveMedicine.Checked == true)
+            interviewCheckboxStatusChange(0);
+        }
+
+        private void cbox_Interview_Out_Purpose_CheckedChanged(object sender, EventArgs e)
+        {
+            interviewCheckboxStatusChange(1);
+        }
+
+        private void cbox_Inter_Update_Return_Details_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbox_Inter_Update_Return_Details.Checked == true)
             {
-                plotGraph("True");
+                grpBx_Inter_Office_Emp_Details.Enabled = false;
+                grpBx_Inter_Office_Access_Card_Details.Enabled = false;
+                grpBx_Inter_Office_Emp_Image_Details.Enabled = false;
+                grpBx_Inter_Office_Emp_Signeture_Details.Enabled = false;
+                btn_Assign.Enabled = false;
+                grpBx_Inter_Office_Return_Details.Enabled = true;
             }
             else
             {
-                rd_ManageMedicine_PlotActiveMedicine.Checked = true;
+                grpBx_Inter_Office_Emp_Details.Enabled = true;
+                grpBx_Inter_Office_Access_Card_Details.Enabled = true;
+                grpBx_Inter_Office_Emp_Image_Details.Enabled = true;
+                grpBx_Inter_Office_Emp_Signeture_Details.Enabled = true;
+                btn_Assign.Enabled = true;
+                grpBx_Inter_Office_Return_Details.Enabled = false;
             }
         }
 
-        private void btn_ManageMedicine_Search_Click(object sender, EventArgs e)
+        private void cbox_Interview_Report_Purpose_CheckedChanged(object sender, EventArgs e)
         {
-            getMedicineDetails();
+            interviewCheckboxStatusChange(2);
+        }
+
+        #endregion cboxEvents
+
+        #region bgPgrsEvents
+
+        private void bg_Worker_ImportEmployee_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            pgBar_Import_Progress.Maximum = maxValProgressBar;
+            lblStateStatus.Text = e.UserState as string;
+            pgBar_Import_Progress.Value = pgBar_Import_Progress.Value + e.ProgressPercentage > maxValProgressBar ? maxValProgressBar : pgBar_Import_Progress.Value + e.ProgressPercentage;
+        }
+
+        private void bg_Worker_ImportEmployee_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            lblStateStatus.Text = "Completed...";
+            DialogResult dresult = MessageBox.Show("Data Uplaod Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (dresult == DialogResult.OK)
+            {
+                pgBar_Import_Progress.Value = 0;
+                lblStateStatus.Text = string.Empty;
+                tbox_Browse.Text = string.Empty;
+            }
+            btn_Start.Enabled = true;
+        }
+
+        private void bg_Worker_ImportEmployee_DoWork(object sender, DoWorkEventArgs e)
+        {
+            importEmployee();
+        }
+
+        private void bg_Worker_BackupDatabase_DoWork(object sender, DoWorkEventArgs e)
+        {
+            backupDatabase();
+        }
+
+        private void bg_Worker_BackupDatabase_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            lbl_BackupStatus.Text = e.UserState as string;
+            pgBar_Backup_Progress.Value = pgBar_Backup_Progress.Value + e.ProgressPercentage > 100 ? 100 : pgBar_Backup_Progress.Value + e.ProgressPercentage;
+        }
+
+        private void bg_Worker_BackupDatabase_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (backupSuccessful)
+            {
+                lbl_Database_Last_BackedUp_On.Text = lbl_Database_Last_BackedUp_On.Text.Substring(0, 19) + Encrypter.Decrypt(RegManager.getKey("backupdatetime"), true);
+                lbl_BackupStatus.Text = "Completed...";
+                DialogResult dresult = MessageBox.Show("Data Backup Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (dresult == DialogResult.OK)
+                {
+                    pgBar_Backup_Progress.Value = 0;
+                    lbl_BackupStatus.Text = string.Empty;
+                }
+                btn_Backup_Database.Enabled = true;
+            }
+        }
+
+        private void bg_Worker_RestoreDatabase_DoWork(object sender, DoWorkEventArgs e)
+        {
+            RestoreDatabase();
+        }
+
+        private void bg_Worker_RestoreDatabase_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+        }
+
+        private void bg_Worker_RestoreDatabase_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (restoreSuccessful)
+            {
+                lbl_BackupStatus.Text = "Completed...";
+                DialogResult dresult = MessageBox.Show("Data Restore Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (dresult == DialogResult.OK)
+                {
+                    pgBar_Backup_Progress.Value = 0;
+                    lbl_BackupStatus.Text = string.Empty;
+                }
+                btn_Restore_Database.Enabled = true;
+            }
+        }
+
+        #endregion bgPgrsEvents
+
+        #region tboxEvents
+
+        private void tbox_ManageEmployee_EmployeeId_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeId, "Employee_Id", "tbl_Employee_Details");
+        }
+
+        private void tbox_ManageEmployee_EmployeeName_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeName, "Employee_Name", "tbl_Employee_Details");
+        }
+
+        private void tbox_ManageEmployee_EmployeeEmail_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeEmail, "Employee_Email", "tbl_Employee_Details");
+        }
+
+        private void tbox_ManageEmployee_EmployeeExtection_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeExtection, "Extension", "tbl_Employee_Details");
+        }
+
+        private void tbox_Med_Emp_Id_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Id, "Employee_Id", "tbl_Employee_Details");
+        }
+
+        private void tbox_Med_Emp_Name_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Name, "Employee_Name", "tbl_Employee_Details");
+        }
+
+        private void tbox_Med_Medcine_Name_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "=" ,"True");
+            if (tbox_Med_Medcine_Name.Text.Length > 0)
+            {
+                tbox_Med_Medcine_Quantity.Enabled = true;
+            }
+            else
+            {
+                tbox_Med_Medcine_Quantity.Enabled = false;
+            }
+        }
+
+        private void tbox_Med_Medcine_Quantity_KeyUp(object sender, KeyEventArgs e)
+        {
+            medStockValidator();
         }
 
         private void tbox_ManageMedicine_UpdateMedicineName_TextChanged(object sender, EventArgs e)
@@ -825,16 +932,6 @@ namespace AssetManagement
             {
                 btn_ManageMedicine_Search.Enabled = false;
             }
-        }
-
-        private void btn_Med_Details_Reset_Click(object sender, EventArgs e)
-        {
-            resetMedMedcineData();
-        }
-
-        private void btn_Med_Assign_Click(object sender, EventArgs e)
-        {
-            insertMedAssinment();
         }
 
         private void tbox_ManageMedicine_UpdateMedicineName_EnabledChanged(object sender, EventArgs e)
@@ -861,72 +958,44 @@ namespace AssetManagement
             }
         }
 
-        private void btn_ManageMedicine_Update_Reset_Click(object sender, EventArgs e)
+        private void tbox_Med_Emp_Email_TextChanged(object sender, EventArgs e)
         {
-            resetUpdateMedicine();
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Email, "Employee_Email", "tbl_Employee_Details");
         }
 
-        private void btn_Repoint_Database_Click(object sender, EventArgs e)
+        private void tbox_Med_Emp_Desk_Phone_TextChanged(object sender, EventArgs e)
         {
-            frm_DatabaseSelector fmds = new frm_DatabaseSelector(1);
-            fmds.ShowDialog();
-            databaseSizeCalculator();
-            pgBarColorChanger();
-            pgBar_Database_Size.Update();
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Desk_Phone, "Extension", "tbl_Employee_Details");
         }
 
-        private void btn_Backup_Database_Click(object sender, EventArgs e)
+        private void tbox_InterOffce_Return_Employee_Id_TextChanged(object sender, EventArgs e)
         {
-            try
+            autoCompleteTextbox.autocompletedata(ref tbox_InterOffce_Return_Employee_Id, "Employee_Id", "tbl_Inter_Office_Visitor", "Return_Date", " IS ", "NULL");
+        }
+
+        #endregion tboxEvents
+
+        #region rdBtnEvents
+
+        private void rd_ManageMedicine_PlotActiveMedicine_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rd_ManageMedicine_PlotActiveMedicine.Checked == true)
             {
-                pgBar_Backup_Progress.Value = 0;
-                bg_Worker_BackupDatabase.ProgressChanged -= new ProgressChangedEventHandler(bg_Worker_BackupDatabase_ProgressChanged);
-                bg_Worker_BackupDatabase.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(bg_Worker_BackupDatabase_RunWorkerCompleted);
-                bg_Worker_BackupDatabase.ProgressChanged += new ProgressChangedEventHandler(bg_Worker_BackupDatabase_ProgressChanged);
-                bg_Worker_BackupDatabase.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bg_Worker_BackupDatabase_RunWorkerCompleted);
-                bg_Worker_BackupDatabase.RunWorkerAsync();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                plotGraph("True");
             }
         }
 
-        private void bg_Worker_BackupDatabase_DoWork(object sender, DoWorkEventArgs e)
+        private void rd_ManageMedicine_PlotInActiveMedicine_CheckedChanged(object sender, EventArgs e)
         {
-            backupDatabase();
-        }
-
-        private void bg_Worker_BackupDatabase_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            lbl_BackupStatus.Text = e.UserState as string;
-            pgBar_Backup_Progress.Value = pgBar_Backup_Progress.Value + e.ProgressPercentage > 100 ? 100 : pgBar_Backup_Progress.Value + e.ProgressPercentage;
-        }
-
-        private void bg_Worker_BackupDatabase_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            lbl_Database_Last_BackedUp_On.Text = lbl_Database_Last_BackedUp_On.Text.Substring(0, 19) + Encrypter.Decrypt(RegManager.getKey("backupdatetime"), true);
-            lbl_BackupStatus.Text = "Completed...";
-            DialogResult dresult = MessageBox.Show("Data Backup Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            if (dresult == DialogResult.OK)
+            if (rd_ManageMedicine_PlotInActiveMedicine.Checked == true)
             {
-                pgBar_Backup_Progress.Value = 0;
-                lbl_BackupStatus.Text = string.Empty;
+                plotGraph("False");
             }
         }
 
-        private void btn_Restore_Database_Click(object sender, EventArgs e)
-        {
+        #endregion rdBtnEvents
 
-        }
-
-        private void btn_Change_Admin_Password_Click(object sender, EventArgs e)
-        {
-            //frm_AdminLoginDetailsChanger fraldc = new frm_AdminLoginDetailsChanger();
-            //fraldc.ShowDialog();
-        }
-
-        #endregion
+        #endregion Events
 
         #region Function
 
@@ -1536,7 +1605,6 @@ namespace AssetManagement
                 {
                     resultQuery = resultQuery + " AND Out_Time Is Null";
                 }
-
             }
             else
             {
@@ -1568,7 +1636,6 @@ namespace AssetManagement
 
         private void poupulateData()
         {
-
             tbox_Out_Serial_Number.Text = ds.Tables[0].Rows[0][0].ToString();
             tbox_Out_Name.Text = ds.Tables[0].Rows[0][1].ToString();
             tbox_Out_Address.Text = ds.Tables[0].Rows[0][2].ToString();
@@ -1887,18 +1954,30 @@ namespace AssetManagement
 
         private void insertInterOfficeVisitorDetails()
         {
-            cmd = new OleDbCommand("INSERT INTO tbl_Inter_Office_Visitor (Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Employee_Image,Employee_Signeture) VALUES ('" + tbox_InterOffce_Employee_Id.Text + "','" + tbox_InterOffce_Employee_Name.Text + "','" + tbox_InterOffce_Comming_From.Text + "','" + tbox_InterOffce_Contact_Number.Text + "','" + tbox_InterOffce_Date.Text + "','" + tbox_InterOffce_Remarks.Text + "','" + tbox_InterOffce_Badge_Number.Text + "','" + tbox_InterOffce_Access_Card_Number.Text + "','" + tbox_InterOffce_Issuing_Time.Text + "','" + tbox_InterOffce_No_Of_Days.Text + "',@Employee_Image,@Employee_Signeture)", con);
-            convertPhotoType(3);
-            convertPhotoType(4);
-            con.Open();
-            int n = cmd.ExecuteNonQuery();
-            con.Close();
-            if (n > 0)
+            try
             {
-                MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+                cmd = new OleDbCommand("INSERT INTO tbl_Inter_Office_Visitor (Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Employee_Image,Employee_Signeture) VALUES ('" + tbox_InterOffce_Employee_Id.Text + "','" + tbox_InterOffce_Employee_Name.Text + "','" + tbox_InterOffce_Comming_From.Text + "','" + tbox_InterOffce_Contact_Number.Text + "','" + tbox_InterOffce_Date.Text + "','" + tbox_InterOffce_Remarks.Text + "','" + tbox_InterOffce_Badge_Number.Text + "','" + tbox_InterOffce_Access_Card_Number.Text + "','" + tbox_InterOffce_Issuing_Time.Text + "','" + tbox_InterOffce_No_Of_Days.Text + "',@Employee_Image,@Employee_Signeture)", con);
+                convertPhotoType(3);
+                convertPhotoType(4);
+                con.Open();
+                int n = cmd.ExecuteNonQuery();
+                con.Close();
+                if (n > 0)
+                {
+                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                    MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else
-                MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                con.Close();
+            }
         }
 
         private void importEmployee()
@@ -1942,12 +2021,16 @@ namespace AssetManagement
 
         private void backupDatabase()
         {
+            ////string xmlTags = "";
             var t = new Thread((ThreadStart)(() =>
             {
                 fbDlg_Backup_Database.ShowNewFolderButton = false;
                 DialogResult dr = fbDlg_Backup_Database.ShowDialog();
                 if (dr == DialogResult.Cancel)
+                {
+                    backupSuccessful = false;
                     return;
+                }
                 if (dr == DialogResult.OK)
                     backUpDatabaseLocation = fbDlg_Backup_Database.SelectedPath;
             }));
@@ -1957,10 +2040,11 @@ namespace AssetManagement
             if (backUpDatabaseLocation != null)
             {
                 #region comment
+
                 ////con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
                 ////con.Open();
                 ////DataTable userTables = con.GetSchema("Tables");
-                ////con.Close(); 
+                ////con.Close();
                 ////xmlTags = xmlTags + "<Backups>";
                 ////foreach (DataRow dt in userTables.Rows)
                 ////{
@@ -1983,7 +2067,9 @@ namespace AssetManagement
                 ////    }
                 ////}
                 ////xmlTags = xmlTags + "</Backups>";
-                #endregion
+
+                #endregion comment
+
                 bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Getting the source database"));
                 string src = Encrypter.Decrypt(RegManager.getKey("data source"), true);
                 bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Creating the destination database"));
@@ -1997,6 +2083,60 @@ namespace AssetManagement
             else
             {
                 MessageBox.Show("Please select a folder.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void RestoreDatabase()
+        {
+            var t = new Thread((ThreadStart)(() =>
+            {
+                opFlDlg_SelectFile.Title = "Select the backup file";
+                DialogResult dr = opFlDlg_SelectFile.ShowDialog();
+                if (dr == DialogResult.Cancel)
+                {
+                    backupSuccessful = false;
+                    return;
+                }
+                if (dr == DialogResult.OK)
+                    restoreFrom = opFlDlg_SelectFile.FileName;
+            }));
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            if (restoreFrom != null)
+            {
+                OleDbConnection srcCon = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + ";OLE DB Services=-4; data source=" + restoreFrom);
+                try
+                {
+                    using (TransactionScope scope = new TransactionScope())
+                    {
+                        srcCon.Open();
+                        DataTable userTables = srcCon.GetSchema("Tables");
+                        foreach (DataRow dt in userTables.Rows)
+                        {
+                            if (dt["TABLE_NAME"].ToString().StartsWith("tbl_"))
+                            {
+                                var cmd = new OleDbCommand();
+                                cmd.Connection = srcCon;
+                                cmd.CommandType = System.Data.CommandType.Text;
+                                cmd.CommandText = "INSERT INTO " + dt["TABLE_NAME"].ToString() + " IN '" + Encrypter.Decrypt(RegManager.getKey("data source"), true) + "' SELECT * FROM " + dt["TABLE_NAME"].ToString();
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                        scope.Complete();
+                    }
+                    restoreSuccessful = true;
+                }
+                catch (Exception ex)
+                {
+                    restoreSuccessful = false;
+                    MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    srcCon.Close();
+                }
             }
         }
 
@@ -2699,7 +2839,6 @@ namespace AssetManagement
                         btn_ManageMedicine_Search.Enabled = false;
                         tbox_ManageMedicine_UpdateMedicineName.Enabled = false;
 
-
                         tbox_ManageMedicineId.Text = ds.Tables[0].Rows[0][0].ToString();
                         medicineData.Add("Id", ds.Tables[0].Rows[0][0].ToString());
                         medicineData.Add("Medicine_Name", ds.Tables[0].Rows[0][1].ToString());
@@ -2736,7 +2875,6 @@ namespace AssetManagement
             int databseSize = Convert.ToInt32(databseFile.Length / 1048576);
             pgBar_Database_Size.Value = pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100) > 100 ? 100 : pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100);
             lbl_DatabaseSize.Text = databseSize.ToString() + "MB";
-
         }
 
         private void pgBarColorChanger()
@@ -2763,32 +2901,39 @@ namespace AssetManagement
                     using (dstCon)
                     {
                         dstCon.Open();
+                        bg_Worker_BackupDatabase.ReportProgress(16, string.Format("Processing Databackup!!!"));
                         cmd = new OleDbCommand("DROP TABLE tbl_Employee_Details", dstCon);
                         cmd.ExecuteNonQuery();
+                        bg_Worker_BackupDatabase.ReportProgress(16, string.Format("Processing Databackup!!!"));
                         cmd = new OleDbCommand("DROP TABLE tbl_Medicine_Details", dstCon);
                         cmd.ExecuteNonQuery();
 
                         using (srcCon)
                         {
                             srcCon.Open();
+                            bg_Worker_BackupDatabase.ReportProgress(16, string.Format("Processing Databackup!!!"));
                             cmd = new OleDbCommand("DELETE FROM tbl_Inter_Office_Visitor", srcCon);
                             cmd.ExecuteNonQuery();
+                            bg_Worker_BackupDatabase.ReportProgress(16, string.Format("Processing Databackup!!!"));
                             cmd = new OleDbCommand("DELETE FROM tbl_Medicine_Distrubution", srcCon);
                             cmd.ExecuteNonQuery();
+                            bg_Worker_BackupDatabase.ReportProgress(16, string.Format("Processing Databackup!!!"));
                             cmd = new OleDbCommand("DELETE FROM tbl_Visitor_details", srcCon);
                             cmd.ExecuteNonQuery();
                         }
                     }
                     scope.Complete();
                 }
+                backupSuccessful = true;
             }
             catch (Exception ex)
             {
+                backupSuccessful = false;
                 MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        #endregion
+        #endregion Function
 
     }
 }

@@ -303,6 +303,7 @@
             this.lbl_Log_Find = new System.Windows.Forms.Label();
             this.lbl_Daily_Log = new System.Windows.Forms.Label();
             this.grpbx_Database_Details = new System.Windows.Forms.GroupBox();
+            this.lbl_DatabaseSize = new System.Windows.Forms.Label();
             this.lbl_Database_Last_BackedUp_On = new System.Windows.Forms.Label();
             this.pgBar_Database_Size = new System.Windows.Forms.ProgressBar();
             this.lbl_Database_Size = new System.Windows.Forms.Label();
@@ -317,7 +318,7 @@
             this.bg_Worker_ImportEmployee = new System.ComponentModel.BackgroundWorker();
             this.fbDlg_Backup_Database = new System.Windows.Forms.FolderBrowserDialog();
             this.bg_Worker_BackupDatabase = new System.ComponentModel.BackgroundWorker();
-            this.lbl_DatabaseSize = new System.Windows.Forms.Label();
+            this.bg_Worker_RestoreDatabase = new System.ComponentModel.BackgroundWorker();
             this.sts_Strip.SuspendLayout();
             this.tbCtrl_Asset_Manager.SuspendLayout();
             this.tb_Page_VisitorDetails.SuspendLayout();
@@ -1371,10 +1372,13 @@
             // 
             // tbox_InterOffce_Return_Employee_Id
             // 
+            this.tbox_InterOffce_Return_Employee_Id.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_InterOffce_Return_Employee_Id.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.tbox_InterOffce_Return_Employee_Id.Location = new System.Drawing.Point(137, 24);
             this.tbox_InterOffce_Return_Employee_Id.Name = "tbox_InterOffce_Return_Employee_Id";
             this.tbox_InterOffce_Return_Employee_Id.Size = new System.Drawing.Size(282, 20);
             this.tbox_InterOffce_Return_Employee_Id.TabIndex = 54;
+            this.tbox_InterOffce_Return_Employee_Id.TextChanged += new System.EventHandler(this.tbox_InterOffce_Return_Employee_Id_TextChanged);
             // 
             // lbl_InterOffce_Return_Employee_Id
             // 
@@ -3362,6 +3366,14 @@
             this.grpbx_Database_Details.TabStop = false;
             this.grpbx_Database_Details.Text = "Database Backup Details";
             // 
+            // lbl_DatabaseSize
+            // 
+            this.lbl_DatabaseSize.AutoSize = true;
+            this.lbl_DatabaseSize.Location = new System.Drawing.Point(133, 44);
+            this.lbl_DatabaseSize.Name = "lbl_DatabaseSize";
+            this.lbl_DatabaseSize.Size = new System.Drawing.Size(0, 13);
+            this.lbl_DatabaseSize.TabIndex = 3;
+            // 
             // lbl_Database_Last_BackedUp_On
             // 
             this.lbl_Database_Last_BackedUp_On.AutoSize = true;
@@ -3466,13 +3478,13 @@
             this.bg_Worker_BackupDatabase.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bg_Worker_BackupDatabase_ProgressChanged);
             this.bg_Worker_BackupDatabase.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bg_Worker_BackupDatabase_RunWorkerCompleted);
             // 
-            // lbl_DatabaseSize
+            // bg_Worker_RestoreDatabase
             // 
-            this.lbl_DatabaseSize.AutoSize = true;
-            this.lbl_DatabaseSize.Location = new System.Drawing.Point(133, 44);
-            this.lbl_DatabaseSize.Name = "lbl_DatabaseSize";
-            this.lbl_DatabaseSize.Size = new System.Drawing.Size(0, 13);
-            this.lbl_DatabaseSize.TabIndex = 3;
+            this.bg_Worker_RestoreDatabase.WorkerReportsProgress = true;
+            this.bg_Worker_RestoreDatabase.WorkerSupportsCancellation = true;
+            this.bg_Worker_RestoreDatabase.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bg_Worker_RestoreDatabase_DoWork);
+            this.bg_Worker_RestoreDatabase.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bg_Worker_RestoreDatabase_ProgressChanged);
+            this.bg_Worker_RestoreDatabase.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bg_Worker_RestoreDatabase_RunWorkerCompleted);
             // 
             // frm_Main
             // 
@@ -3864,6 +3876,7 @@
         private System.ComponentModel.BackgroundWorker bg_Worker_BackupDatabase;
         private System.Windows.Forms.Label lbl_BackupStatus;
         private System.Windows.Forms.Label lbl_DatabaseSize;
+        private System.ComponentModel.BackgroundWorker bg_Worker_RestoreDatabase;
     }
 }
 
