@@ -905,7 +905,7 @@ namespace AssetManagement
 
         private void tbox_Med_Medcine_Name_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "=" ,"True");
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "=", "True");
             if (tbox_Med_Medcine_Name.Text.Length > 0)
             {
                 tbox_Med_Medcine_Quantity.Enabled = true;
@@ -2934,6 +2934,5 @@ namespace AssetManagement
         }
 
         #endregion Function
-
     }
 }
