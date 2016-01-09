@@ -13,7 +13,6 @@ namespace AssetManagement
         {
             InitializeComponent();
             this.p = p;
-            this.ControlBox = true;
         }
 
         #endregion Constructor
@@ -67,6 +66,19 @@ namespace AssetManagement
             }
         }
 
+        private void frm_DatabaseSelector_Load(object sender, EventArgs e)
+        {
+            if (p == 0)
+            {
+                this.ControlBox = false;
+            }
+            else
+            {
+                this.ControlBox = true;
+            }
+        }
+
         #endregion Events
+ 
     }
 }

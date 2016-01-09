@@ -199,10 +199,37 @@
             this.lbl_Visitor_Report_Address = new System.Windows.Forms.Label();
             this.lbl_Visitor_Report_Name = new System.Windows.Forms.Label();
             this.tb_Page_KeyDistributionDetails = new System.Windows.Forms.TabPage();
+            this.tbCtrl_Key_Details = new System.Windows.Forms.TabControl();
+            this.tb_Page_KeyDetails_OneTimeDetails = new System.Windows.Forms.TabPage();
+            this.sp_Cont_Key_Distribution = new System.Windows.Forms.SplitContainer();
+            this.sp_Cont_SubTop_Key_Distribution = new System.Windows.Forms.SplitContainer();
+            this.lbl_Key_Error = new System.Windows.Forms.Label();
+            this.btn_Key_Emp_Reset = new System.Windows.Forms.Button();
+            this.btn_Key_Emp_Search = new System.Windows.Forms.Button();
+            this.tbox_Key_Emp_Desk_Phone = new System.Windows.Forms.TextBox();
+            this.lbl_Key_Emp_Desk_Phone = new System.Windows.Forms.Label();
+            this.tbox_Key_Emp_Email = new System.Windows.Forms.TextBox();
+            this.lbl_Key_Emp_Email = new System.Windows.Forms.Label();
+            this.tbox_Key_Emp_Name = new System.Windows.Forms.TextBox();
+            this.lbl_Key_Emp_Name = new System.Windows.Forms.Label();
+            this.tbox_Key_Emp_Id = new System.Windows.Forms.TextBox();
+            this.lbl_Key_Emp_Id = new System.Windows.Forms.Label();
+            this.lbl_KeyDistribution_EmployeeDetails = new System.Windows.Forms.Label();
+            this.lbl_KeyDistribution_KeyDetails = new System.Windows.Forms.Label();
+            this.sp_Cont_SubBot_Key_Distribution = new System.Windows.Forms.SplitContainer();
+            this.lbl_KeyDistribution_TimeDetails = new System.Windows.Forms.Label();
+            this.tb_Page_KeyDetails_TempDetails = new System.Windows.Forms.TabPage();
             this.tb_Page_MedicineDistributionDetails = new System.Windows.Forms.TabPage();
             this.grpBx_Medicine_Distribution_Report = new System.Windows.Forms.GroupBox();
+            this.btn_MedReport_Non_Employee = new System.Windows.Forms.Button();
+            this.btn_MedReport_Specified_Medicine = new System.Windows.Forms.Button();
+            this.btn_MedReport_Today = new System.Windows.Forms.Button();
+            this.btn_MedReport_Specified_Date_Range = new System.Windows.Forms.Button();
+            this.btn_MedReport_Specified_Employee = new System.Windows.Forms.Button();
+            this.btn_MedReport_LastOneMonth = new System.Windows.Forms.Button();
             this.grpBx_Medicine_Distribution = new System.Windows.Forms.GroupBox();
             this.sp_Cont_Medicine_Distribution = new System.Windows.Forms.SplitContainer();
+            this.cbox_Non_Employee_Medicine_Distribution = new System.Windows.Forms.CheckBox();
             this.lbl_Med_Error = new System.Windows.Forms.Label();
             this.btn_Med_Emp_Reset = new System.Windows.Forms.Button();
             this.btn_Med_Emp_Search = new System.Windows.Forms.Button();
@@ -217,7 +244,7 @@
             this.tbox_Med_Medcine_Updated_Stock = new System.Windows.Forms.TextBox();
             this.lbl_medStockCounter = new System.Windows.Forms.Label();
             this.grpBx_MedicineSigneture = new System.Windows.Forms.GroupBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pBox_Medcine_Signeture = new System.Windows.Forms.PictureBox();
             this.btn_Med_Details_Reset = new System.Windows.Forms.Button();
             this.btn_Med_Assign = new System.Windows.Forms.Button();
             this.tbox_Med_Medcine_Quantity = new System.Windows.Forms.TextBox();
@@ -319,6 +346,7 @@
             this.fbDlg_Backup_Database = new System.Windows.Forms.FolderBrowserDialog();
             this.bg_Worker_BackupDatabase = new System.ComponentModel.BackgroundWorker();
             this.bg_Worker_RestoreDatabase = new System.ComponentModel.BackgroundWorker();
+            this.lbl_ConnectedDatabase = new System.Windows.Forms.Label();
             this.sts_Strip.SuspendLayout();
             this.tbCtrl_Asset_Manager.SuspendLayout();
             this.tb_Page_VisitorDetails.SuspendLayout();
@@ -349,14 +377,29 @@
             this.grpBx_Inter_Office_Report.SuspendLayout();
             this.grpBx_QuickReport.SuspendLayout();
             this.grpBx_DetailedReport.SuspendLayout();
+            this.tb_Page_KeyDistributionDetails.SuspendLayout();
+            this.tbCtrl_Key_Details.SuspendLayout();
+            this.tb_Page_KeyDetails_OneTimeDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Key_Distribution)).BeginInit();
+            this.sp_Cont_Key_Distribution.Panel1.SuspendLayout();
+            this.sp_Cont_Key_Distribution.Panel2.SuspendLayout();
+            this.sp_Cont_Key_Distribution.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_SubTop_Key_Distribution)).BeginInit();
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.SuspendLayout();
+            this.sp_Cont_SubTop_Key_Distribution.Panel2.SuspendLayout();
+            this.sp_Cont_SubTop_Key_Distribution.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_SubBot_Key_Distribution)).BeginInit();
+            this.sp_Cont_SubBot_Key_Distribution.Panel1.SuspendLayout();
+            this.sp_Cont_SubBot_Key_Distribution.SuspendLayout();
             this.tb_Page_MedicineDistributionDetails.SuspendLayout();
+            this.grpBx_Medicine_Distribution_Report.SuspendLayout();
             this.grpBx_Medicine_Distribution.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Medicine_Distribution)).BeginInit();
             this.sp_Cont_Medicine_Distribution.Panel1.SuspendLayout();
             this.sp_Cont_Medicine_Distribution.Panel2.SuspendLayout();
             this.sp_Cont_Medicine_Distribution.SuspendLayout();
             this.grpBx_MedicineSigneture.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_Medcine_Signeture)).BeginInit();
             this.tb_Page_Settings.SuspendLayout();
             this.tbCtrl_Settings.SuspendLayout();
             this.tb_Page_Settings_Manage_Employee.SuspendLayout();
@@ -2142,6 +2185,7 @@
             // 
             // tb_Page_KeyDistributionDetails
             // 
+            this.tb_Page_KeyDistributionDetails.Controls.Add(this.tbCtrl_Key_Details);
             this.tb_Page_KeyDistributionDetails.Location = new System.Drawing.Point(4, 22);
             this.tb_Page_KeyDistributionDetails.Name = "tb_Page_KeyDistributionDetails";
             this.tb_Page_KeyDistributionDetails.Padding = new System.Windows.Forms.Padding(3);
@@ -2149,6 +2193,244 @@
             this.tb_Page_KeyDistributionDetails.TabIndex = 1;
             this.tb_Page_KeyDistributionDetails.Text = "Key Distribution";
             this.tb_Page_KeyDistributionDetails.UseVisualStyleBackColor = true;
+            // 
+            // tbCtrl_Key_Details
+            // 
+            this.tbCtrl_Key_Details.Controls.Add(this.tb_Page_KeyDetails_OneTimeDetails);
+            this.tbCtrl_Key_Details.Controls.Add(this.tb_Page_KeyDetails_TempDetails);
+            this.tbCtrl_Key_Details.Location = new System.Drawing.Point(3, 22);
+            this.tbCtrl_Key_Details.Name = "tbCtrl_Key_Details";
+            this.tbCtrl_Key_Details.SelectedIndex = 0;
+            this.tbCtrl_Key_Details.Size = new System.Drawing.Size(872, 541);
+            this.tbCtrl_Key_Details.TabIndex = 0;
+            // 
+            // tb_Page_KeyDetails_OneTimeDetails
+            // 
+            this.tb_Page_KeyDetails_OneTimeDetails.Controls.Add(this.sp_Cont_Key_Distribution);
+            this.tb_Page_KeyDetails_OneTimeDetails.Location = new System.Drawing.Point(4, 22);
+            this.tb_Page_KeyDetails_OneTimeDetails.Name = "tb_Page_KeyDetails_OneTimeDetails";
+            this.tb_Page_KeyDetails_OneTimeDetails.Padding = new System.Windows.Forms.Padding(3);
+            this.tb_Page_KeyDetails_OneTimeDetails.Size = new System.Drawing.Size(864, 515);
+            this.tb_Page_KeyDetails_OneTimeDetails.TabIndex = 0;
+            this.tb_Page_KeyDetails_OneTimeDetails.Text = "One Time Distribution";
+            this.tb_Page_KeyDetails_OneTimeDetails.UseVisualStyleBackColor = true;
+            // 
+            // sp_Cont_Key_Distribution
+            // 
+            this.sp_Cont_Key_Distribution.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sp_Cont_Key_Distribution.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_Key_Distribution.Location = new System.Drawing.Point(3, 3);
+            this.sp_Cont_Key_Distribution.Name = "sp_Cont_Key_Distribution";
+            this.sp_Cont_Key_Distribution.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // sp_Cont_Key_Distribution.Panel1
+            // 
+            this.sp_Cont_Key_Distribution.Panel1.Controls.Add(this.sp_Cont_SubTop_Key_Distribution);
+            // 
+            // sp_Cont_Key_Distribution.Panel2
+            // 
+            this.sp_Cont_Key_Distribution.Panel2.Controls.Add(this.sp_Cont_SubBot_Key_Distribution);
+            this.sp_Cont_Key_Distribution.Size = new System.Drawing.Size(858, 509);
+            this.sp_Cont_Key_Distribution.SplitterDistance = 240;
+            this.sp_Cont_Key_Distribution.TabIndex = 0;
+            // 
+            // sp_Cont_SubTop_Key_Distribution
+            // 
+            this.sp_Cont_SubTop_Key_Distribution.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sp_Cont_SubTop_Key_Distribution.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_SubTop_Key_Distribution.Location = new System.Drawing.Point(0, 0);
+            this.sp_Cont_SubTop_Key_Distribution.Name = "sp_Cont_SubTop_Key_Distribution";
+            // 
+            // sp_Cont_SubTop_Key_Distribution.Panel1
+            // 
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.lbl_Key_Error);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.btn_Key_Emp_Reset);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.btn_Key_Emp_Search);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.tbox_Key_Emp_Desk_Phone);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.lbl_Key_Emp_Desk_Phone);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.tbox_Key_Emp_Email);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.lbl_Key_Emp_Email);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.tbox_Key_Emp_Name);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.lbl_Key_Emp_Name);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.tbox_Key_Emp_Id);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.lbl_Key_Emp_Id);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.Controls.Add(this.lbl_KeyDistribution_EmployeeDetails);
+            // 
+            // sp_Cont_SubTop_Key_Distribution.Panel2
+            // 
+            this.sp_Cont_SubTop_Key_Distribution.Panel2.Controls.Add(this.lbl_KeyDistribution_KeyDetails);
+            this.sp_Cont_SubTop_Key_Distribution.Size = new System.Drawing.Size(858, 240);
+            this.sp_Cont_SubTop_Key_Distribution.SplitterDistance = 432;
+            this.sp_Cont_SubTop_Key_Distribution.TabIndex = 0;
+            // 
+            // lbl_Key_Error
+            // 
+            this.lbl_Key_Error.AutoSize = true;
+            this.lbl_Key_Error.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Key_Error.ForeColor = System.Drawing.Color.Red;
+            this.lbl_Key_Error.Location = new System.Drawing.Point(3, 211);
+            this.lbl_Key_Error.Name = "lbl_Key_Error";
+            this.lbl_Key_Error.Size = new System.Drawing.Size(0, 20);
+            this.lbl_Key_Error.TabIndex = 22;
+            // 
+            // btn_Key_Emp_Reset
+            // 
+            this.btn_Key_Emp_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Key_Emp_Reset.Location = new System.Drawing.Point(321, 173);
+            this.btn_Key_Emp_Reset.Name = "btn_Key_Emp_Reset";
+            this.btn_Key_Emp_Reset.Size = new System.Drawing.Size(95, 33);
+            this.btn_Key_Emp_Reset.TabIndex = 20;
+            this.btn_Key_Emp_Reset.Text = "Reset";
+            this.btn_Key_Emp_Reset.UseVisualStyleBackColor = true;
+            this.btn_Key_Emp_Reset.Click += new System.EventHandler(this.btn_Key_Emp_Reset_Click);
+            // 
+            // btn_Key_Emp_Search
+            // 
+            this.btn_Key_Emp_Search.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Key_Emp_Search.Location = new System.Drawing.Point(220, 173);
+            this.btn_Key_Emp_Search.Name = "btn_Key_Emp_Search";
+            this.btn_Key_Emp_Search.Size = new System.Drawing.Size(95, 33);
+            this.btn_Key_Emp_Search.TabIndex = 19;
+            this.btn_Key_Emp_Search.Text = "Search";
+            this.btn_Key_Emp_Search.UseVisualStyleBackColor = true;
+            this.btn_Key_Emp_Search.Click += new System.EventHandler(this.btn_Key_Emp_Search_Click);
+            // 
+            // tbox_Key_Emp_Desk_Phone
+            // 
+            this.tbox_Key_Emp_Desk_Phone.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_Key_Emp_Desk_Phone.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_Key_Emp_Desk_Phone.Location = new System.Drawing.Point(156, 138);
+            this.tbox_Key_Emp_Desk_Phone.Name = "tbox_Key_Emp_Desk_Phone";
+            this.tbox_Key_Emp_Desk_Phone.Size = new System.Drawing.Size(261, 20);
+            this.tbox_Key_Emp_Desk_Phone.TabIndex = 17;
+            this.tbox_Key_Emp_Desk_Phone.TextChanged += new System.EventHandler(this.tbox_Key_Emp_Desk_Phone_TextChanged);
+            // 
+            // lbl_Key_Emp_Desk_Phone
+            // 
+            this.lbl_Key_Emp_Desk_Phone.AutoSize = true;
+            this.lbl_Key_Emp_Desk_Phone.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Key_Emp_Desk_Phone.Location = new System.Drawing.Point(66, 141);
+            this.lbl_Key_Emp_Desk_Phone.Name = "lbl_Key_Emp_Desk_Phone";
+            this.lbl_Key_Emp_Desk_Phone.Size = new System.Drawing.Size(84, 13);
+            this.lbl_Key_Emp_Desk_Phone.TabIndex = 21;
+            this.lbl_Key_Emp_Desk_Phone.Text = "Desk Phone :";
+            // 
+            // tbox_Key_Emp_Email
+            // 
+            this.tbox_Key_Emp_Email.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_Key_Emp_Email.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_Key_Emp_Email.Location = new System.Drawing.Point(156, 106);
+            this.tbox_Key_Emp_Email.Name = "tbox_Key_Emp_Email";
+            this.tbox_Key_Emp_Email.Size = new System.Drawing.Size(261, 20);
+            this.tbox_Key_Emp_Email.TabIndex = 16;
+            this.tbox_Key_Emp_Email.TextChanged += new System.EventHandler(this.tbox_Key_Emp_Email_TextChanged);
+            // 
+            // lbl_Key_Emp_Email
+            // 
+            this.lbl_Key_Emp_Email.AutoSize = true;
+            this.lbl_Key_Emp_Email.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Key_Emp_Email.Location = new System.Drawing.Point(47, 109);
+            this.lbl_Key_Emp_Email.Name = "lbl_Key_Emp_Email";
+            this.lbl_Key_Emp_Email.Size = new System.Drawing.Size(103, 13);
+            this.lbl_Key_Emp_Email.TabIndex = 18;
+            this.lbl_Key_Emp_Email.Text = "Employee Email :";
+            // 
+            // tbox_Key_Emp_Name
+            // 
+            this.tbox_Key_Emp_Name.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_Key_Emp_Name.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_Key_Emp_Name.Location = new System.Drawing.Point(156, 75);
+            this.tbox_Key_Emp_Name.Name = "tbox_Key_Emp_Name";
+            this.tbox_Key_Emp_Name.Size = new System.Drawing.Size(261, 20);
+            this.tbox_Key_Emp_Name.TabIndex = 14;
+            this.tbox_Key_Emp_Name.TextChanged += new System.EventHandler(this.tbox_Key_Emp_Name_TextChanged);
+            // 
+            // lbl_Key_Emp_Name
+            // 
+            this.lbl_Key_Emp_Name.AutoSize = true;
+            this.lbl_Key_Emp_Name.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Key_Emp_Name.Location = new System.Drawing.Point(45, 78);
+            this.lbl_Key_Emp_Name.Name = "lbl_Key_Emp_Name";
+            this.lbl_Key_Emp_Name.Size = new System.Drawing.Size(105, 13);
+            this.lbl_Key_Emp_Name.TabIndex = 15;
+            this.lbl_Key_Emp_Name.Text = "Employee Name :";
+            // 
+            // tbox_Key_Emp_Id
+            // 
+            this.tbox_Key_Emp_Id.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_Key_Emp_Id.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_Key_Emp_Id.Location = new System.Drawing.Point(156, 44);
+            this.tbox_Key_Emp_Id.Name = "tbox_Key_Emp_Id";
+            this.tbox_Key_Emp_Id.Size = new System.Drawing.Size(261, 20);
+            this.tbox_Key_Emp_Id.TabIndex = 13;
+            this.tbox_Key_Emp_Id.TextChanged += new System.EventHandler(this.tbox_Key_Emp_Id_TextChanged);
+            // 
+            // lbl_Key_Emp_Id
+            // 
+            this.lbl_Key_Emp_Id.AutoSize = true;
+            this.lbl_Key_Emp_Id.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Key_Emp_Id.Location = new System.Drawing.Point(66, 47);
+            this.lbl_Key_Emp_Id.Name = "lbl_Key_Emp_Id";
+            this.lbl_Key_Emp_Id.Size = new System.Drawing.Size(84, 13);
+            this.lbl_Key_Emp_Id.TabIndex = 12;
+            this.lbl_Key_Emp_Id.Text = "Employee Id :";
+            // 
+            // lbl_KeyDistribution_EmployeeDetails
+            // 
+            this.lbl_KeyDistribution_EmployeeDetails.AutoSize = true;
+            this.lbl_KeyDistribution_EmployeeDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_KeyDistribution_EmployeeDetails.ForeColor = System.Drawing.Color.Blue;
+            this.lbl_KeyDistribution_EmployeeDetails.Location = new System.Drawing.Point(0, 0);
+            this.lbl_KeyDistribution_EmployeeDetails.Name = "lbl_KeyDistribution_EmployeeDetails";
+            this.lbl_KeyDistribution_EmployeeDetails.Size = new System.Drawing.Size(195, 25);
+            this.lbl_KeyDistribution_EmployeeDetails.TabIndex = 11;
+            this.lbl_KeyDistribution_EmployeeDetails.Text = "Employee Details";
+            // 
+            // lbl_KeyDistribution_KeyDetails
+            // 
+            this.lbl_KeyDistribution_KeyDetails.AutoSize = true;
+            this.lbl_KeyDistribution_KeyDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_KeyDistribution_KeyDetails.ForeColor = System.Drawing.Color.Blue;
+            this.lbl_KeyDistribution_KeyDetails.Location = new System.Drawing.Point(3, 0);
+            this.lbl_KeyDistribution_KeyDetails.Name = "lbl_KeyDistribution_KeyDetails";
+            this.lbl_KeyDistribution_KeyDetails.Size = new System.Drawing.Size(132, 25);
+            this.lbl_KeyDistribution_KeyDetails.TabIndex = 12;
+            this.lbl_KeyDistribution_KeyDetails.Text = "Key Details";
+            // 
+            // sp_Cont_SubBot_Key_Distribution
+            // 
+            this.sp_Cont_SubBot_Key_Distribution.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sp_Cont_SubBot_Key_Distribution.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_SubBot_Key_Distribution.Location = new System.Drawing.Point(0, 0);
+            this.sp_Cont_SubBot_Key_Distribution.Name = "sp_Cont_SubBot_Key_Distribution";
+            // 
+            // sp_Cont_SubBot_Key_Distribution.Panel1
+            // 
+            this.sp_Cont_SubBot_Key_Distribution.Panel1.Controls.Add(this.lbl_KeyDistribution_TimeDetails);
+            this.sp_Cont_SubBot_Key_Distribution.Size = new System.Drawing.Size(858, 265);
+            this.sp_Cont_SubBot_Key_Distribution.SplitterDistance = 432;
+            this.sp_Cont_SubBot_Key_Distribution.TabIndex = 0;
+            // 
+            // lbl_KeyDistribution_TimeDetails
+            // 
+            this.lbl_KeyDistribution_TimeDetails.AutoSize = true;
+            this.lbl_KeyDistribution_TimeDetails.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_KeyDistribution_TimeDetails.ForeColor = System.Drawing.Color.Blue;
+            this.lbl_KeyDistribution_TimeDetails.Location = new System.Drawing.Point(0, 0);
+            this.lbl_KeyDistribution_TimeDetails.Name = "lbl_KeyDistribution_TimeDetails";
+            this.lbl_KeyDistribution_TimeDetails.Size = new System.Drawing.Size(199, 25);
+            this.lbl_KeyDistribution_TimeDetails.TabIndex = 13;
+            this.lbl_KeyDistribution_TimeDetails.Text = "Date Time Details";
+            // 
+            // tb_Page_KeyDetails_TempDetails
+            // 
+            this.tb_Page_KeyDetails_TempDetails.Location = new System.Drawing.Point(4, 22);
+            this.tb_Page_KeyDetails_TempDetails.Name = "tb_Page_KeyDetails_TempDetails";
+            this.tb_Page_KeyDetails_TempDetails.Padding = new System.Windows.Forms.Padding(3);
+            this.tb_Page_KeyDetails_TempDetails.Size = new System.Drawing.Size(864, 515);
+            this.tb_Page_KeyDetails_TempDetails.TabIndex = 1;
+            this.tb_Page_KeyDetails_TempDetails.Text = "Temp Key Distribution";
+            this.tb_Page_KeyDetails_TempDetails.UseVisualStyleBackColor = true;
             // 
             // tb_Page_MedicineDistributionDetails
             // 
@@ -2163,12 +2445,84 @@
             // 
             // grpBx_Medicine_Distribution_Report
             // 
+            this.grpBx_Medicine_Distribution_Report.Controls.Add(this.btn_MedReport_Non_Employee);
+            this.grpBx_Medicine_Distribution_Report.Controls.Add(this.btn_MedReport_Specified_Medicine);
+            this.grpBx_Medicine_Distribution_Report.Controls.Add(this.btn_MedReport_Today);
+            this.grpBx_Medicine_Distribution_Report.Controls.Add(this.btn_MedReport_Specified_Date_Range);
+            this.grpBx_Medicine_Distribution_Report.Controls.Add(this.btn_MedReport_Specified_Employee);
+            this.grpBx_Medicine_Distribution_Report.Controls.Add(this.btn_MedReport_LastOneMonth);
             this.grpBx_Medicine_Distribution_Report.Location = new System.Drawing.Point(3, 350);
             this.grpBx_Medicine_Distribution_Report.Name = "grpBx_Medicine_Distribution_Report";
             this.grpBx_Medicine_Distribution_Report.Size = new System.Drawing.Size(872, 216);
             this.grpBx_Medicine_Distribution_Report.TabIndex = 1;
             this.grpBx_Medicine_Distribution_Report.TabStop = false;
             this.grpBx_Medicine_Distribution_Report.Text = "Medicine Distribution Report";
+            // 
+            // btn_MedReport_Non_Employee
+            // 
+            this.btn_MedReport_Non_Employee.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_MedReport_Non_Employee.Location = new System.Drawing.Point(599, 56);
+            this.btn_MedReport_Non_Employee.Name = "btn_MedReport_Non_Employee";
+            this.btn_MedReport_Non_Employee.Size = new System.Drawing.Size(185, 47);
+            this.btn_MedReport_Non_Employee.TabIndex = 13;
+            this.btn_MedReport_Non_Employee.Text = "Non Employee\'s Report";
+            this.btn_MedReport_Non_Employee.UseVisualStyleBackColor = true;
+            this.btn_MedReport_Non_Employee.Click += new System.EventHandler(this.btn_MedReport_Non_Employee_Click);
+            // 
+            // btn_MedReport_Specified_Medicine
+            // 
+            this.btn_MedReport_Specified_Medicine.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_MedReport_Specified_Medicine.Location = new System.Drawing.Point(599, 119);
+            this.btn_MedReport_Specified_Medicine.Name = "btn_MedReport_Specified_Medicine";
+            this.btn_MedReport_Specified_Medicine.Size = new System.Drawing.Size(185, 47);
+            this.btn_MedReport_Specified_Medicine.TabIndex = 12;
+            this.btn_MedReport_Specified_Medicine.Text = "Specified Medicine";
+            this.btn_MedReport_Specified_Medicine.UseVisualStyleBackColor = true;
+            this.btn_MedReport_Specified_Medicine.Click += new System.EventHandler(this.btn_MedReport_Specified_Medicine_Click);
+            // 
+            // btn_MedReport_Today
+            // 
+            this.btn_MedReport_Today.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_MedReport_Today.Location = new System.Drawing.Point(106, 56);
+            this.btn_MedReport_Today.Name = "btn_MedReport_Today";
+            this.btn_MedReport_Today.Size = new System.Drawing.Size(185, 47);
+            this.btn_MedReport_Today.TabIndex = 11;
+            this.btn_MedReport_Today.Text = "Today\'s Report";
+            this.btn_MedReport_Today.UseVisualStyleBackColor = true;
+            this.btn_MedReport_Today.Click += new System.EventHandler(this.btn_MedReport_Today_Click);
+            // 
+            // btn_MedReport_Specified_Date_Range
+            // 
+            this.btn_MedReport_Specified_Date_Range.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_MedReport_Specified_Date_Range.Location = new System.Drawing.Point(347, 119);
+            this.btn_MedReport_Specified_Date_Range.Name = "btn_MedReport_Specified_Date_Range";
+            this.btn_MedReport_Specified_Date_Range.Size = new System.Drawing.Size(185, 47);
+            this.btn_MedReport_Specified_Date_Range.TabIndex = 10;
+            this.btn_MedReport_Specified_Date_Range.Text = "Specified Date Range";
+            this.btn_MedReport_Specified_Date_Range.UseVisualStyleBackColor = true;
+            this.btn_MedReport_Specified_Date_Range.Click += new System.EventHandler(this.btn_MedReport_Specified_Date_Range_Click);
+            // 
+            // btn_MedReport_Specified_Employee
+            // 
+            this.btn_MedReport_Specified_Employee.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_MedReport_Specified_Employee.Location = new System.Drawing.Point(106, 119);
+            this.btn_MedReport_Specified_Employee.Name = "btn_MedReport_Specified_Employee";
+            this.btn_MedReport_Specified_Employee.Size = new System.Drawing.Size(185, 47);
+            this.btn_MedReport_Specified_Employee.TabIndex = 9;
+            this.btn_MedReport_Specified_Employee.Text = "Sepcified Employee";
+            this.btn_MedReport_Specified_Employee.UseVisualStyleBackColor = true;
+            this.btn_MedReport_Specified_Employee.Click += new System.EventHandler(this.btn_MedReport_Specified_Employee_Click);
+            // 
+            // btn_MedReport_LastOneMonth
+            // 
+            this.btn_MedReport_LastOneMonth.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_MedReport_LastOneMonth.Location = new System.Drawing.Point(347, 56);
+            this.btn_MedReport_LastOneMonth.Name = "btn_MedReport_LastOneMonth";
+            this.btn_MedReport_LastOneMonth.Size = new System.Drawing.Size(185, 47);
+            this.btn_MedReport_LastOneMonth.TabIndex = 8;
+            this.btn_MedReport_LastOneMonth.Text = "Last 1 Month\'s Report";
+            this.btn_MedReport_LastOneMonth.UseVisualStyleBackColor = true;
+            this.btn_MedReport_LastOneMonth.Click += new System.EventHandler(this.btn_MedReport_LastOneMonth_Click);
             // 
             // grpBx_Medicine_Distribution
             // 
@@ -2190,6 +2544,7 @@
             // 
             // sp_Cont_Medicine_Distribution.Panel1
             // 
+            this.sp_Cont_Medicine_Distribution.Panel1.Controls.Add(this.cbox_Non_Employee_Medicine_Distribution);
             this.sp_Cont_Medicine_Distribution.Panel1.Controls.Add(this.lbl_Med_Error);
             this.sp_Cont_Medicine_Distribution.Panel1.Controls.Add(this.btn_Med_Emp_Reset);
             this.sp_Cont_Medicine_Distribution.Panel1.Controls.Add(this.btn_Med_Emp_Search);
@@ -2216,6 +2571,17 @@
             this.sp_Cont_Medicine_Distribution.Size = new System.Drawing.Size(866, 325);
             this.sp_Cont_Medicine_Distribution.SplitterDistance = 434;
             this.sp_Cont_Medicine_Distribution.TabIndex = 0;
+            // 
+            // cbox_Non_Employee_Medicine_Distribution
+            // 
+            this.cbox_Non_Employee_Medicine_Distribution.AutoSize = true;
+            this.cbox_Non_Employee_Medicine_Distribution.Location = new System.Drawing.Point(136, 15);
+            this.cbox_Non_Employee_Medicine_Distribution.Name = "cbox_Non_Employee_Medicine_Distribution";
+            this.cbox_Non_Employee_Medicine_Distribution.Size = new System.Drawing.Size(95, 17);
+            this.cbox_Non_Employee_Medicine_Distribution.TabIndex = 0;
+            this.cbox_Non_Employee_Medicine_Distribution.Text = "Non-Employee";
+            this.cbox_Non_Employee_Medicine_Distribution.UseVisualStyleBackColor = true;
+            this.cbox_Non_Employee_Medicine_Distribution.CheckedChanged += new System.EventHandler(this.cbox_Non_Employee_Medicine_Distribution_CheckedChanged);
             // 
             // lbl_Med_Error
             // 
@@ -2336,6 +2702,7 @@
             this.tbox_Med_Medcine_Updated_Stock.Size = new System.Drawing.Size(100, 20);
             this.tbox_Med_Medcine_Updated_Stock.TabIndex = 22;
             this.tbox_Med_Medcine_Updated_Stock.Visible = false;
+            this.tbox_Med_Medcine_Updated_Stock.TextChanged += new System.EventHandler(this.tbox_Med_Medcine_Updated_Stock_TextChanged);
             // 
             // lbl_medStockCounter
             // 
@@ -2348,7 +2715,7 @@
             // 
             // grpBx_MedicineSigneture
             // 
-            this.grpBx_MedicineSigneture.Controls.Add(this.pictureBox2);
+            this.grpBx_MedicineSigneture.Controls.Add(this.pBox_Medcine_Signeture);
             this.grpBx_MedicineSigneture.Location = new System.Drawing.Point(10, 128);
             this.grpBx_MedicineSigneture.Name = "grpBx_MedicineSigneture";
             this.grpBx_MedicineSigneture.Size = new System.Drawing.Size(406, 135);
@@ -2356,15 +2723,15 @@
             this.grpBx_MedicineSigneture.TabStop = false;
             this.grpBx_MedicineSigneture.Text = "Signeture";
             // 
-            // pictureBox2
+            // pBox_Medcine_Signeture
             // 
-            this.pictureBox2.Cursor = System.Windows.Forms.Cursors.No;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(6, 19);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(394, 110);
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
+            this.pBox_Medcine_Signeture.Cursor = System.Windows.Forms.Cursors.No;
+            this.pBox_Medcine_Signeture.Image = ((System.Drawing.Image)(resources.GetObject("pBox_Medcine_Signeture.Image")));
+            this.pBox_Medcine_Signeture.Location = new System.Drawing.Point(6, 19);
+            this.pBox_Medcine_Signeture.Name = "pBox_Medcine_Signeture";
+            this.pBox_Medcine_Signeture.Size = new System.Drawing.Size(394, 110);
+            this.pBox_Medcine_Signeture.TabIndex = 0;
+            this.pBox_Medcine_Signeture.TabStop = false;
             // 
             // btn_Med_Details_Reset
             // 
@@ -2379,6 +2746,7 @@
             // 
             // btn_Med_Assign
             // 
+            this.btn_Med_Assign.Enabled = false;
             this.btn_Med_Assign.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Med_Assign.Location = new System.Drawing.Point(215, 274);
             this.btn_Med_Assign.Name = "btn_Med_Assign";
@@ -2390,6 +2758,7 @@
             // 
             // tbox_Med_Medcine_Quantity
             // 
+            this.tbox_Med_Medcine_Quantity.Enabled = false;
             this.tbox_Med_Medcine_Quantity.Location = new System.Drawing.Point(138, 90);
             this.tbox_Med_Medcine_Quantity.Name = "tbox_Med_Medcine_Quantity";
             this.tbox_Med_Medcine_Quantity.Size = new System.Drawing.Size(261, 20);
@@ -3297,6 +3666,7 @@
             // 
             // tb_Page_Settings_Manage_Database
             // 
+            this.tb_Page_Settings_Manage_Database.Controls.Add(this.lbl_ConnectedDatabase);
             this.tb_Page_Settings_Manage_Database.Controls.Add(this.lbl_BackupStatus);
             this.tb_Page_Settings_Manage_Database.Controls.Add(this.tbox_Log_Find);
             this.tb_Page_Settings_Manage_Database.Controls.Add(this.lbl_Log_Find);
@@ -3328,7 +3698,7 @@
             // 
             // tbox_Log_Find
             // 
-            this.tbox_Log_Find.Location = new System.Drawing.Point(487, 111);
+            this.tbox_Log_Find.Location = new System.Drawing.Point(487, 157);
             this.tbox_Log_Find.Name = "tbox_Log_Find";
             this.tbox_Log_Find.Size = new System.Drawing.Size(365, 20);
             this.tbox_Log_Find.TabIndex = 9;
@@ -3337,7 +3707,7 @@
             // 
             this.lbl_Log_Find.AutoSize = true;
             this.lbl_Log_Find.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Log_Find.Location = new System.Drawing.Point(448, 113);
+            this.lbl_Log_Find.Location = new System.Drawing.Point(441, 158);
             this.lbl_Log_Find.Name = "lbl_Log_Find";
             this.lbl_Log_Find.Size = new System.Drawing.Size(40, 15);
             this.lbl_Log_Find.TabIndex = 8;
@@ -3347,7 +3717,7 @@
             // 
             this.lbl_Daily_Log.AutoSize = true;
             this.lbl_Daily_Log.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Daily_Log.Location = new System.Drawing.Point(6, 112);
+            this.lbl_Daily_Log.Location = new System.Drawing.Point(3, 156);
             this.lbl_Daily_Log.Name = "lbl_Daily_Log";
             this.lbl_Daily_Log.Size = new System.Drawing.Size(81, 18);
             this.lbl_Daily_Log.TabIndex = 7;
@@ -3410,9 +3780,9 @@
             // 
             // rtbox_Daily_Log
             // 
-            this.rtbox_Daily_Log.Location = new System.Drawing.Point(6, 131);
+            this.rtbox_Daily_Log.Location = new System.Drawing.Point(6, 177);
             this.rtbox_Daily_Log.Name = "rtbox_Daily_Log";
-            this.rtbox_Daily_Log.Size = new System.Drawing.Size(846, 378);
+            this.rtbox_Daily_Log.Size = new System.Drawing.Size(846, 332);
             this.rtbox_Daily_Log.TabIndex = 4;
             this.rtbox_Daily_Log.Text = "";
             // 
@@ -3486,6 +3856,16 @@
             this.bg_Worker_RestoreDatabase.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bg_Worker_RestoreDatabase_ProgressChanged);
             this.bg_Worker_RestoreDatabase.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bg_Worker_RestoreDatabase_RunWorkerCompleted);
             // 
+            // lbl_ConnectedDatabase
+            // 
+            this.lbl_ConnectedDatabase.AutoSize = true;
+            this.lbl_ConnectedDatabase.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ConnectedDatabase.Location = new System.Drawing.Point(6, 117);
+            this.lbl_ConnectedDatabase.Name = "lbl_ConnectedDatabase";
+            this.lbl_ConnectedDatabase.Size = new System.Drawing.Size(220, 18);
+            this.lbl_ConnectedDatabase.TabIndex = 11;
+            this.lbl_ConnectedDatabase.Text = "Connected Database Location : ";
+            // 
             // frm_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3541,7 +3921,25 @@
             this.grpBx_QuickReport.ResumeLayout(false);
             this.grpBx_DetailedReport.ResumeLayout(false);
             this.grpBx_DetailedReport.PerformLayout();
+            this.tb_Page_KeyDistributionDetails.ResumeLayout(false);
+            this.tbCtrl_Key_Details.ResumeLayout(false);
+            this.tb_Page_KeyDetails_OneTimeDetails.ResumeLayout(false);
+            this.sp_Cont_Key_Distribution.Panel1.ResumeLayout(false);
+            this.sp_Cont_Key_Distribution.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Key_Distribution)).EndInit();
+            this.sp_Cont_Key_Distribution.ResumeLayout(false);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.ResumeLayout(false);
+            this.sp_Cont_SubTop_Key_Distribution.Panel1.PerformLayout();
+            this.sp_Cont_SubTop_Key_Distribution.Panel2.ResumeLayout(false);
+            this.sp_Cont_SubTop_Key_Distribution.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_SubTop_Key_Distribution)).EndInit();
+            this.sp_Cont_SubTop_Key_Distribution.ResumeLayout(false);
+            this.sp_Cont_SubBot_Key_Distribution.Panel1.ResumeLayout(false);
+            this.sp_Cont_SubBot_Key_Distribution.Panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_SubBot_Key_Distribution)).EndInit();
+            this.sp_Cont_SubBot_Key_Distribution.ResumeLayout(false);
             this.tb_Page_MedicineDistributionDetails.ResumeLayout(false);
+            this.grpBx_Medicine_Distribution_Report.ResumeLayout(false);
             this.grpBx_Medicine_Distribution.ResumeLayout(false);
             this.sp_Cont_Medicine_Distribution.Panel1.ResumeLayout(false);
             this.sp_Cont_Medicine_Distribution.Panel1.PerformLayout();
@@ -3550,7 +3948,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Medicine_Distribution)).EndInit();
             this.sp_Cont_Medicine_Distribution.ResumeLayout(false);
             this.grpBx_MedicineSigneture.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_Medcine_Signeture)).EndInit();
             this.tb_Page_Settings.ResumeLayout(false);
             this.tbCtrl_Settings.ResumeLayout(false);
             this.tb_Page_Settings_Manage_Employee.ResumeLayout(false);
@@ -3778,7 +4176,7 @@
         private System.Windows.Forms.TextBox tbox_Med_Medcine_Name;
         private System.Windows.Forms.Label lbl_Med_Medcine_Name;
         private System.Windows.Forms.GroupBox grpBx_MedicineSigneture;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pBox_Medcine_Signeture;
         private System.Windows.Forms.TabPage tb_Page_Settings;
         private System.Windows.Forms.TabControl tbCtrl_Settings;
         private System.Windows.Forms.TabPage tb_Page_Settings_Manage_Database;
@@ -3877,6 +4275,34 @@
         private System.Windows.Forms.Label lbl_BackupStatus;
         private System.Windows.Forms.Label lbl_DatabaseSize;
         private System.ComponentModel.BackgroundWorker bg_Worker_RestoreDatabase;
+        private System.Windows.Forms.CheckBox cbox_Non_Employee_Medicine_Distribution;
+        private System.Windows.Forms.Button btn_MedReport_Non_Employee;
+        private System.Windows.Forms.Button btn_MedReport_Specified_Medicine;
+        private System.Windows.Forms.Button btn_MedReport_Today;
+        private System.Windows.Forms.Button btn_MedReport_Specified_Date_Range;
+        private System.Windows.Forms.Button btn_MedReport_Specified_Employee;
+        private System.Windows.Forms.Button btn_MedReport_LastOneMonth;
+        private System.Windows.Forms.TabControl tbCtrl_Key_Details;
+        private System.Windows.Forms.TabPage tb_Page_KeyDetails_OneTimeDetails;
+        private System.Windows.Forms.TabPage tb_Page_KeyDetails_TempDetails;
+        private System.Windows.Forms.SplitContainer sp_Cont_Key_Distribution;
+        private System.Windows.Forms.SplitContainer sp_Cont_SubTop_Key_Distribution;
+        private System.Windows.Forms.Label lbl_KeyDistribution_EmployeeDetails;
+        private System.Windows.Forms.Label lbl_KeyDistribution_KeyDetails;
+        private System.Windows.Forms.SplitContainer sp_Cont_SubBot_Key_Distribution;
+        private System.Windows.Forms.Button btn_Key_Emp_Reset;
+        private System.Windows.Forms.Button btn_Key_Emp_Search;
+        private System.Windows.Forms.TextBox tbox_Key_Emp_Desk_Phone;
+        private System.Windows.Forms.Label lbl_Key_Emp_Desk_Phone;
+        private System.Windows.Forms.TextBox tbox_Key_Emp_Email;
+        private System.Windows.Forms.Label lbl_Key_Emp_Email;
+        private System.Windows.Forms.TextBox tbox_Key_Emp_Name;
+        private System.Windows.Forms.Label lbl_Key_Emp_Name;
+        private System.Windows.Forms.TextBox tbox_Key_Emp_Id;
+        private System.Windows.Forms.Label lbl_Key_Emp_Id;
+        private System.Windows.Forms.Label lbl_KeyDistribution_TimeDetails;
+        private System.Windows.Forms.Label lbl_Key_Error;
+        private System.Windows.Forms.Label lbl_ConnectedDatabase;
     }
 }
 

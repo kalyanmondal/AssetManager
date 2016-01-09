@@ -6,7 +6,7 @@ namespace AssetManagement
     {
         public static void createKey()
         {
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AssetManager1");
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AssetManager");
             if (key != null)
             {
                 if (key.ValueCount == 0)
@@ -23,7 +23,7 @@ namespace AssetManagement
 
         public static string getKey(string keyToGet)
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AssetManager1");
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\AssetManager");
             string val = null;
             if (key != null)
             {
@@ -35,7 +35,7 @@ namespace AssetManagement
 
         public static void updateKey(string whichToUpdate, string whatToUpdate)
         {
-            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AssetManager1");
+            RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\AssetManager");
             if (key != null)
             {
                 key.SetValue(whichToUpdate, Encrypter.Encrypt(whatToUpdate, true), RegistryValueKind.String);
@@ -50,7 +50,7 @@ namespace AssetManagement
             {
                 if (key != null)
                 {
-                    key.DeleteSubKeyTree("AssetManager1");
+                    key.DeleteSubKeyTree("AssetManager");
                 }
             }
         }

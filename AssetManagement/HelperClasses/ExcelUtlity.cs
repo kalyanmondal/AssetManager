@@ -51,12 +51,13 @@ namespace AssetManagement
                             excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
                         }
                         excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
-
+                        //Time
                         if ((from == 3 && i == 10) || (from == 3 && i == 13) || (from == 4 && i == 10) || (from == 4 && i == 13) || (from == 5 && i == 10) || (from == 5 && i == 13) || (from == 6 && i == 10) || (from == 6 && i == 13) || (from == 7 && i == 10) || (from == 7 && i == 13))
                         {
                             excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString().Substring(datarow[i - 1].ToString().IndexOf(" ") + 1);
                         }
-                        if ((from == 3 && i == 6) || (from == 3 && i == 12) || (from == 4 && i == 6) || (from == 4 && i == 12) || (from == 5 && i == 6) || (from == 5 && i == 12) || (from == 6 && i == 6) || (from == 6 && i == 12) || (from == 7 && i == 6) || (from == 7 && i == 12))
+                        //Date
+                        if ((from == 3 && i == 6) || (from == 3 && i == 12) || (from == 4 && i == 6) || (from == 4 && i == 12) || (from == 5 && i == 6) || (from == 5 && i == 12) || (from == 6 && i == 6) || (from == 6 && i == 12) || (from == 7 && i == 6) || (from == 7 && i == 12) || (from == 8 && i == 7) || (from == 9 && i == 7) || (from == 10 && i == 7) || (from == 11 && i == 7) || (from == 12 && i == 7))
                         {
                             excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString().Substring(0, datarow[i - 1].ToString().IndexOf(" "));
                             excelSheet.Cells[rowcount, i].NumberFormat = "dd-MMMM-yyyy;@";
@@ -150,7 +151,6 @@ namespace AssetManagement
         {
             Microsoft.Office.Interop.Excel.Application excel;
             Microsoft.Office.Interop.Excel.Workbook excelworkBook;
-            Microsoft.Office.Interop.Excel.Worksheet excelSheet;
             try
             {
                 int count = 0;
@@ -173,7 +173,6 @@ namespace AssetManagement
             }
             finally
             {
-                excelSheet = null;
                 excelworkBook = null;
             }
         }
@@ -182,7 +181,6 @@ namespace AssetManagement
         {
             Microsoft.Office.Interop.Excel.Application excel;
             Microsoft.Office.Interop.Excel.Workbook excelworkBook;
-            Microsoft.Office.Interop.Excel.Worksheet excelSheet;
             object misValue = System.Reflection.Missing.Value;
             List<string> sheets = new List<string>();
             try
@@ -205,7 +203,6 @@ namespace AssetManagement
             }
             finally
             {
-                excelSheet = null;
                 excelworkBook = null;
             }
         }

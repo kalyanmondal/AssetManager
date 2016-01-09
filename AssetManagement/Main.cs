@@ -89,7 +89,7 @@ namespace AssetManagement
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Somthing went wrong. Please contact service provider.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Somthing went wrong. Please contact service provider. " +ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 RegManager.deleteAllKey();
                 Application.Exit();
             }
@@ -321,6 +321,7 @@ namespace AssetManagement
             if (inFormInterOfficeVisitorValidate() == 0)
             {
                 insertInterOfficeVisitorDetails();
+                resetVisitorFrom(3);
             }
             else
             {
@@ -418,7 +419,7 @@ namespace AssetManagement
 
         private void btn_Med_Emp_Search_Click(object sender, EventArgs e)
         {
-            searchEmployee(1);
+            searchEmployee(1, ref tbox_Med_Emp_Id, ref tbox_Med_Emp_Name, ref tbox_Med_Emp_Email, ref tbox_Med_Emp_Desk_Phone, ref lbl_Med_Emp_Id, ref lbl_Med_Emp_Name, ref lbl_Med_Emp_Email, ref lbl_Med_Emp_Desk_Phone, ref lbl_Med_Error);
         }
 
         private void btn_Browse_Click(object sender, EventArgs e)
@@ -453,7 +454,7 @@ namespace AssetManagement
 
         private void btn_Employee_Search_Click(object sender, EventArgs e)
         {
-            searchEmployee(0);
+            searchEmployee(0, ref tbox_ManageEmployee_EmployeeId, ref tbox_ManageEmployee_EmployeeName, ref tbox_ManageEmployee_EmployeeEmail, ref tbox_ManageEmployee_EmployeeExtection, ref lbl_ManageEmployee_EmployeeId, ref lbl_ManageEmployee_EmployeeName, ref lbl_ManageEmployee_EmployeeEmail, ref lbl_ManageEmployee_EmployeeExtection, ref lbl_Error);
         }
 
         private void btn_Employee_Reset_Click(object sender, EventArgs e)
@@ -536,14 +537,14 @@ namespace AssetManagement
                     }
                     else
                         MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    populateEmployeeData("SELECT * FROM tbl_Employee_Details WHERE Id=" + tbox_Id.Text, 0);
+                    populateEmployeeData("SELECT * FROM tbl_Employee_Details WHERE Id=" + tbox_Id.Text, 0, ref tbox_ManageEmployee_EmployeeId, ref tbox_ManageEmployee_EmployeeName, ref tbox_ManageEmployee_EmployeeEmail, ref tbox_ManageEmployee_EmployeeExtection);
                 }
             }
         }
 
         private void btn_Med_Emp_Reset_Click(object sender, EventArgs e)
         {
-            resetMedEmpData();
+            resetEmpData(1, ref tbox_Med_Emp_Id, ref tbox_Med_Emp_Name, ref tbox_Med_Emp_Email, ref tbox_Med_Emp_Desk_Phone, ref lbl_Med_Emp_Id, ref lbl_Med_Emp_Name, ref lbl_Med_Emp_Email, ref lbl_Med_Emp_Desk_Phone, ref lbl_Med_Error, ref btn_Med_Emp_Search);
         }
 
         private void btn_ManageMedicine_Add_Click(object sender, EventArgs e)
@@ -596,7 +597,7 @@ namespace AssetManagement
 
         private void btn_Med_Assign_Click(object sender, EventArgs e)
         {
-            insertMedAssinment();
+            insertMedAssinment(cbox_Non_Employee_Medicine_Distribution.Checked);
         }
 
         private void btn_ManageMedicine_Update_Reset_Click(object sender, EventArgs e)
@@ -611,6 +612,8 @@ namespace AssetManagement
             databaseSizeCalculator();
             pgBarColorChanger();
             pgBar_Database_Size.Update();
+            lbl_ConnectedDatabase.Text = string.Empty;
+            lbl_ConnectedDatabase.Text = "Connected Database Location : " + Encrypter.Decrypt(RegManager.getKey("data source"), true);
         }
 
         private void btn_Backup_Database_Click(object sender, EventArgs e)
@@ -653,6 +656,52 @@ namespace AssetManagement
         {
             frm_AdminLoginDetailsChanger fraldc = new frm_AdminLoginDetailsChanger();
             fraldc.ShowDialog();
+        }
+
+        private void btn_MedReport_Today_Click(object sender, EventArgs e)
+        {
+            quickReportGenerator(8);
+        }
+
+        private void btn_MedReport_LastOneMonth_Click(object sender, EventArgs e)
+        {
+            quickReportGenerator(9);
+        }
+
+        private void btn_MedReport_Specified_Medicine_Click(object sender, EventArgs e)
+        {
+            frm_ReportDataCollector rdc = new frm_ReportDataCollector(2);
+            rdc.ShowDialog();
+            quickReportGenerator(10);
+        }
+
+        private void btn_MedReport_Specified_Date_Range_Click(object sender, EventArgs e)
+        {
+            frm_ReportDataCollector rdc = new frm_ReportDataCollector(3);
+            rdc.ShowDialog();
+            quickReportGenerator(11);
+        }
+
+        private void btn_MedReport_Specified_Employee_Click(object sender, EventArgs e)
+        {
+            frm_ReportDataCollector rdc = new frm_ReportDataCollector(4);
+            rdc.ShowDialog();
+            quickReportGenerator(12);
+        }
+
+        private void btn_MedReport_Non_Employee_Click(object sender, EventArgs e)
+        {
+            quickReportGenerator(13);
+        }
+
+        private void btn_Key_Emp_Search_Click(object sender, EventArgs e)
+        {
+            searchEmployee(2, ref tbox_Key_Emp_Id, ref tbox_Key_Emp_Name, ref tbox_Key_Emp_Email, ref tbox_Key_Emp_Desk_Phone, ref lbl_Key_Emp_Id, ref lbl_Key_Emp_Name, ref lbl_Key_Emp_Email, ref lbl_Key_Emp_Desk_Phone, ref lbl_Key_Error);
+        }
+
+        private void btn_Key_Emp_Reset_Click(object sender, EventArgs e)
+        {
+            resetEmpData(0, ref tbox_Key_Emp_Id, ref tbox_Key_Emp_Name, ref tbox_Key_Emp_Email, ref tbox_Key_Emp_Desk_Phone, ref lbl_Key_Emp_Id, ref lbl_Key_Emp_Name, ref lbl_Key_Emp_Email, ref lbl_Key_Emp_Desk_Phone, ref lbl_Key_Error, ref btn_Key_Emp_Search);
         }
 
         #endregion btnEvents
@@ -711,6 +760,8 @@ namespace AssetManagement
 
         private void tb_Page_Settings_Manage_Database_Enter(object sender, EventArgs e)
         {
+            lbl_ConnectedDatabase.Text = string.Empty;
+            lbl_ConnectedDatabase.Text = "Connected Database Location : " + Encrypter.Decrypt(RegManager.getKey("data source"), true);
             databaseSizeCalculator();
             pgBarColorChanger();
             if (RegManager.getKey("backupdatetime") != "")
@@ -789,9 +840,30 @@ namespace AssetManagement
             interviewCheckboxStatusChange(2);
         }
 
+        private void cbox_Non_Employee_Medicine_Distribution_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbox_Non_Employee_Medicine_Distribution.Checked == true)
+            {
+                changeLabel(false);
+                btn_Med_Emp_Search.Enabled = false;
+            }
+            else
+            {
+                changeLabel(true);
+                btn_Med_Emp_Search.Enabled = true;
+            }
+        }
+
+
+
         #endregion cboxEvents
 
         #region bgPgrsEvents
+
+        private void bg_Worker_ImportEmployee_DoWork(object sender, DoWorkEventArgs e)
+        {
+            importEmployee();
+        }
 
         private void bg_Worker_ImportEmployee_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -811,11 +883,6 @@ namespace AssetManagement
                 tbox_Browse.Text = string.Empty;
             }
             btn_Start.Enabled = true;
-        }
-
-        private void bg_Worker_ImportEmployee_DoWork(object sender, DoWorkEventArgs e)
-        {
-            importEmployee();
         }
 
         private void bg_Worker_BackupDatabase_DoWork(object sender, DoWorkEventArgs e)
@@ -843,6 +910,17 @@ namespace AssetManagement
                 }
                 btn_Backup_Database.Enabled = true;
             }
+            else
+            {
+                lbl_BackupStatus.Text = "Cancelled...";
+                DialogResult dresult = MessageBox.Show("Data backup aborted by user", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (dresult == DialogResult.OK)
+                {
+                    pgBar_Backup_Progress.Value = 0;
+                    lbl_BackupStatus.Text = string.Empty;
+                }
+                btn_Backup_Database.Enabled = true;
+            }
         }
 
         private void bg_Worker_RestoreDatabase_DoWork(object sender, DoWorkEventArgs e)
@@ -860,6 +938,17 @@ namespace AssetManagement
             {
                 lbl_BackupStatus.Text = "Completed...";
                 DialogResult dresult = MessageBox.Show("Data Restore Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (dresult == DialogResult.OK)
+                {
+                    pgBar_Backup_Progress.Value = 0;
+                    lbl_BackupStatus.Text = string.Empty;
+                }
+                btn_Restore_Database.Enabled = true;
+            }
+            else
+            {
+                lbl_BackupStatus.Text = "Cancelled...";
+                DialogResult dresult = MessageBox.Show("Data restore aborted by user", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (dresult == DialogResult.OK)
                 {
                     pgBar_Backup_Progress.Value = 0;
@@ -895,12 +984,18 @@ namespace AssetManagement
 
         private void tbox_Med_Emp_Id_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Id, "Employee_Id", "tbl_Employee_Details");
+            if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
+            {
+                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Id, "Employee_Id", "tbl_Employee_Details", "Active", " = ", "True");
+            }
         }
 
         private void tbox_Med_Emp_Name_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Name, "Employee_Name", "tbl_Employee_Details");
+            if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
+            {
+                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Name, "Employee_Name", "tbl_Employee_Details", "Active", " = ", "True");
+            }
         }
 
         private void tbox_Med_Medcine_Name_TextChanged(object sender, EventArgs e)
@@ -960,17 +1055,55 @@ namespace AssetManagement
 
         private void tbox_Med_Emp_Email_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Email, "Employee_Email", "tbl_Employee_Details");
+            if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
+            {
+                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Email, "Employee_Email", "tbl_Employee_Details", "Active", " = ", "True");
+            }
         }
 
         private void tbox_Med_Emp_Desk_Phone_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Desk_Phone, "Extension", "tbl_Employee_Details");
+            if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
+            {
+                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Desk_Phone, "Extension", "tbl_Employee_Details", "Active", " = ", "True");
+            }
         }
 
         private void tbox_InterOffce_Return_Employee_Id_TextChanged(object sender, EventArgs e)
         {
             autoCompleteTextbox.autocompletedata(ref tbox_InterOffce_Return_Employee_Id, "Employee_Id", "tbl_Inter_Office_Visitor", "Return_Date", " IS ", "NULL");
+        }
+
+        private void tbox_Med_Medcine_Updated_Stock_TextChanged(object sender, EventArgs e)
+        {
+            if(tbox_Med_Medcine_Updated_Stock.Text.Length > 0 )
+            {
+                btn_Med_Assign.Enabled = true;
+            }
+            else
+            {
+                btn_Med_Assign.Enabled = false;
+            }
+        }
+
+        private void tbox_Key_Emp_Id_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Id, "Employee_Id", "tbl_Employee_Details", "Active", " = ", "True");
+        }
+
+        private void tbox_Key_Emp_Name_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Name, "Employee_Name", "tbl_Employee_Details", "Active", " = ", "True");
+        }
+
+        private void tbox_Key_Emp_Email_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Email, "Employee_Email", "tbl_Employee_Details", "Active", " = ", "True");
+        }
+
+        private void tbox_Key_Emp_Desk_Phone_TextChanged(object sender, EventArgs e)
+        {
+            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Desk_Phone, "Extension", "tbl_Employee_Details", "Active", " = ", "True");
         }
 
         #endregion tboxEvents
@@ -999,6 +1132,10 @@ namespace AssetManagement
 
         #region Function
 
+        /// <summary>
+        /// Resets the visitor from.
+        /// </summary>
+        /// <param name="from">From.</param>
         private void resetVisitorFrom(int from)
         {
             if (from == 1)
@@ -1089,7 +1226,10 @@ namespace AssetManagement
                 tbox_Report_Id_Proof.Text = string.Empty;
             }
         }
-
+        /// <summary>
+        /// Ins the form validate.
+        /// </summary>
+        /// <returns></returns>
         private int inFormValidate()
         {
             int result = 0;
@@ -1176,7 +1316,9 @@ namespace AssetManagement
             }
             return result;
         }
-
+        /// <summary>
+        /// Inserts the visitor details.
+        /// </summary>
         private void insertVisitorDetails()
         {
             try
@@ -1201,7 +1343,10 @@ namespace AssetManagement
                 MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        /// <summary>
+        /// Converts the type of the photo.
+        /// </summary>
+        /// <param name="from">From.</param>
         private void convertPhotoType(int from)
         {
             if (from == 1)
@@ -1252,20 +1397,24 @@ namespace AssetManagement
                     cmd.Parameters.AddWithValue("@Employee_Signeture", photo_aray);
                 }
             }
-            //if (from == 5)
-            //{
-            //    if (pBox_Medcine_Signeture.Image != null)
-            //    {
-            //        ms = new MemoryStream();
-            //        pBox_Medcine_Signeture.Image.Save(ms, ImageFormat.Jpeg);
-            //        byte[] photo_aray = new byte[ms.Length];
-            //        ms.Position = 0;
-            //        ms.Read(photo_aray, 0, photo_aray.Length);
-            //        cmd.Parameters.AddWithValue("@Employee_Signeture", photo_aray);
-            //    }
-            //}
+            if (from == 5)
+            {
+                if (pBox_Medcine_Signeture.Image != null)
+                {
+                    ms = new MemoryStream();
+                    pBox_Medcine_Signeture.Image.Save(ms, ImageFormat.Jpeg);
+                    byte[] photo_aray = new byte[ms.Length];
+                    ms.Position = 0;
+                    ms.Read(photo_aray, 0, photo_aray.Length);
+                    cmd.Parameters.AddWithValue("@Employee_Signeture", photo_aray);
+                }
+            }
         }
-
+        /// <summary>
+        /// Queries the generator.
+        /// </summary>
+        /// <param name="from">From.</param>
+        /// <returns></returns>
         private string queryGenerator(int from)
         {
             bool whereFlag = false;
@@ -1623,7 +1772,10 @@ namespace AssetManagement
             }
             return resultQuery;
         }
-
+        /// <summary>
+        /// Fetches the data by serial number.
+        /// </summary>
+        /// <param name="serialNumber">The serial number.</param>
         private void fetchDataBySerialNumber(string serialNumber)
         {
             string query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof,Photo,Signeture_Image FROM tbl_Visitor_details WHERE Serial_Number = " + serialNumber + "";
@@ -1633,7 +1785,9 @@ namespace AssetManagement
             serialNumber = null;
             poupulateData();
         }
-
+        /// <summary>
+        /// Poupulates the data.
+        /// </summary>
         private void poupulateData()
         {
             tbox_Out_Serial_Number.Text = ds.Tables[0].Rows[0][0].ToString();
@@ -1664,7 +1818,10 @@ namespace AssetManagement
             }
             controlDisabler(false);
         }
-
+        /// <summary>
+        /// Controls the disabler.
+        /// </summary>
+        /// <param name="type">if set to <c>true</c> [type].</param>
         private void controlDisabler(bool type)
         {
             tbox_Out_Serial_Number.Enabled = type;
@@ -1681,7 +1838,10 @@ namespace AssetManagement
             tbox_Out_Carrying_Laptop.Enabled = type;
             tbox_Out_Id_Proof.Enabled = type;
         }
-
+        /// <summary>
+        /// Quicks the report generator.
+        /// </summary>
+        /// <param name="type">The type.</param>
         private void quickReportGenerator(int type)
         {
             string query = string.Empty;
@@ -1691,17 +1851,17 @@ namespace AssetManagement
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             if (type == 0)
             {
-                query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number,In_Time,Out_Time, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof FROM tbl_Visitor_details WHERE In_Time >= #" + time.ToShortDateString() + " 12:00:00 AM# AND In_Time <=#" + time.ToShortDateString() + " 11:59:59 PM#";
+                query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number,In_Time,Out_Time, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof FROM tbl_Visitor_details WHERE In_Time BETWEEN #" + time.ToShortDateString() + " 12:00:00 AM# AND #" + time.ToShortDateString() + " 11:59:59 PM#";
                 reportName = "Today's Visitor Details";
             }
             if (type == 1)
             {
-                query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number,In_Time,Out_Time, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof FROM tbl_Visitor_details WHERE In_Time >= #" + DateTime.Now.AddDays(-7).ToShortDateString() + " 12:00:00 AM# AND In_Time <= #" + DateTime.Now.ToShortDateString() + " 11:59:59 PM#";
+                query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number,In_Time,Out_Time, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof FROM tbl_Visitor_details WHERE In_Time BETWEEN #" + DateTime.Now.AddDays(-7).ToShortDateString() + " 12:00:00 AM# AND #" + DateTime.Now.ToShortDateString() + " 11:59:59 PM#";
                 reportName = "Last 7 Days Visitor Details";
             }
             if (type == 2)
             {
-                query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number,In_Time,Out_Time, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof FROM tbl_Visitor_details WHERE Purpose='Interview' AND In_Time >= #" + DateTime.Now.AddDays(-30).ToShortDateString() + " 12:00:00 AM# AND In_Time <= #" + DateTime.Now.ToShortDateString() + " 11:59:59 PM#";
+                query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number,In_Time,Out_Time, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof FROM tbl_Visitor_details WHERE Purpose='Interview' AND In_Time BETWEEN #" + DateTime.Now.AddDays(-30).ToShortDateString() + " 12:00:00 AM# AND #" + DateTime.Now.ToShortDateString() + " 11:59:59 PM#";
                 reportName = "Last 30 Days Interview Candidate";
             }
             if (type == 3)
@@ -1711,12 +1871,12 @@ namespace AssetManagement
             }
             if (type == 4)
             {
-                query = "SELECT Serial_No_Inter_Office,Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Return_Date,Return_Time FROM tbl_Inter_Office_Visitor WHERE Assign_Date >= #" + DateTime.Now.AddDays(-7).ToShortDateString() + "# AND Assign_Date >= #" + DateTime.Now.ToShortDateString() + "#";
+                query = "SELECT Serial_No_Inter_Office,Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Return_Date,Return_Time FROM tbl_Inter_Office_Visitor WHERE Assign_Date BETWEEN #" + DateTime.Now.AddDays(-7).ToShortDateString() + "# AND #" + DateTime.Now.ToShortDateString() + "#";
                 reportName = "Last 7 Days Inter Office Employee Details";
             }
             if (type == 5)
             {
-                query = "SELECT Serial_No_Inter_Office,Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Return_Date,Return_Time FROM tbl_Inter_Office_Visitor WHERE Assign_Date >= #" + DateTime.Now.AddDays(-30).ToShortDateString() + "# AND Assign_Date >= #" + DateTime.Now.ToShortDateString() + "#";
+                query = "SELECT Serial_No_Inter_Office,Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Return_Date,Return_Time FROM tbl_Inter_Office_Visitor WHERE Assign_Date BETWEEN #" + DateTime.Now.AddDays(-30).ToShortDateString() + "# AND #" + DateTime.Now.ToShortDateString() + "#";
                 reportName = "Last 30 Days Inter Office Employee Details";
             }
             if (type == 6)
@@ -1743,7 +1903,7 @@ namespace AssetManagement
                     }
                     if (InTime != null && OutTime != null)
                     {
-                        query = "SELECT Serial_No_Inter_Office,Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Return_Date,Return_Time FROM tbl_Inter_Office_Visitor WHERE Assign_Date = #" + InTime.Value.ToShortDateString() + "# AND Return_Date = #" + OutTime.Value.ToShortDateString() + "#";
+                        query = "SELECT Serial_No_Inter_Office,Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Return_Date,Return_Time FROM tbl_Inter_Office_Visitor WHERE Assign_Date >= #" + InTime.Value.ToShortDateString() + "# AND Return_Date <= #" + OutTime.Value.ToShortDateString() + "#";
                         reportName = "Inter Office between" + InTime.Value.ToString(format) + " and " + OutTime.Value.ToString(format);
                     }
                     if (InTime == null && OutTime == null)
@@ -1760,8 +1920,8 @@ namespace AssetManagement
             }
             if (type == 9)
             {
-                query = "SELECT Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign FROM tbl_Medicine_Distrubution WHERE Date_Assign >= #" + DateTime.Now.AddDays(-7).ToShortDateString() + "# AND Date_Assign >= #" + DateTime.Now.ToShortDateString() + "#";
-                reportName = "Last 7 Days Medicine Distribution Details";
+                query = "SELECT Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign FROM tbl_Medicine_Distrubution WHERE Date_Assign BETWEEN #" + DateTime.Now.AddDays(-30).ToShortDateString() + "# AND #" + DateTime.Now.ToShortDateString() + "#";
+                reportName = "Last 30 Days Medicine Distribution Details";
             }
             if (type == 10)
             {
@@ -1794,6 +1954,11 @@ namespace AssetManagement
                     query = "SELECT Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign FROM tbl_Medicine_Distrubution WHERE Employee_Id = " + employeeId + "";
                     reportName = "Medicine Distribution Details for employee-" + employeeId;
                 }
+            }
+            if (type == 13)
+            {
+                query = "SELECT Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign FROM tbl_Medicine_Distrubution WHERE Employee_Id = 0";
+                reportName = "Medicine Distribution Details for non-employee";
             }
             if (query != "")
             {
@@ -1832,7 +1997,10 @@ namespace AssetManagement
                 toDo = 0;
             }
         }
-
+        /// <summary>
+        /// Interviews the checkbox status change.
+        /// </summary>
+        /// <param name="from">From.</param>
         private void interviewCheckboxStatusChange(int from)
         {
             if (from == 0)
@@ -1875,7 +2043,10 @@ namespace AssetManagement
                 }
             }
         }
-
+        /// <summary>
+        /// Ins the form inter office visitor validate.
+        /// </summary>
+        /// <returns></returns>
         private int inFormInterOfficeVisitorValidate()
         {
             int result = 0;
@@ -1951,7 +2122,9 @@ namespace AssetManagement
             }
             return result;
         }
-
+        /// <summary>
+        /// Inserts the inter office visitor details.
+        /// </summary>
         private void insertInterOfficeVisitorDetails()
         {
             try
@@ -1979,7 +2152,9 @@ namespace AssetManagement
                 con.Close();
             }
         }
-
+        /// <summary>
+        /// Imports the employee.
+        /// </summary>
         private void importEmployee()
         {
             if (tbox_Browse.Text == string.Empty)
@@ -1988,6 +2163,7 @@ namespace AssetManagement
                 bg_Worker_ImportEmployee.ReportProgress(0, string.Format("Complete with no Data Upload"));
                 return;
             }
+
             bg_Worker_ImportEmployee.ReportProgress(0, string.Format("Opening the file."));
             if (excelUtlity.noOfSheetCounter(tbox_Browse.Text) > 1)
             {
@@ -1995,6 +2171,7 @@ namespace AssetManagement
                 frm_SheetSelector ss = new frm_SheetSelector(excelUtlity.sheetNames(tbox_Browse.Text));
                 ss.ShowDialog();
             }
+
             int rowcount = excelUtlity.noOfRowsCounter(tbox_Browse.Text, sheetName);
             maxValProgressBar = rowcount;
             string connectionString = "";
@@ -2018,7 +2195,9 @@ namespace AssetManagement
             WriteToAccess(dt, rowcount);
             conn.Close();
         }
-
+        /// <summary>
+        /// Backups the database.
+        /// </summary>
         private void backupDatabase()
         {
             ////string xmlTags = "";
@@ -2031,15 +2210,25 @@ namespace AssetManagement
                     backupSuccessful = false;
                     return;
                 }
+
                 if (dr == DialogResult.OK)
+                {
                     backUpDatabaseLocation = fbDlg_Backup_Database.SelectedPath;
+                    bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Getting the source database"));
+                    string src = Encrypter.Decrypt(RegManager.getKey("data source"), true);
+                    bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Creating the destination database"));
+                    string dst = backUpDatabaseLocation + "/Backup_" + DateTime.Now.ToString("dd MMMM yyyy hh-mm-ss");
+                    bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Copying database started"));
+                    System.IO.File.Copy(src, dst, true);
+                    bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Copying database finished"));
+                    RegManager.updateKey("backupdatetime", DateTime.Now.ToString("dd MMM yyyy hh:mm:ss tt"));
+                    processBackupAndOriginalDatabase(src, dst);
+                }
             }));
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
-            if (backUpDatabaseLocation != null)
-            {
-                #region comment
+            #region comment
 
                 ////con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
                 ////con.Open();
@@ -2069,23 +2258,10 @@ namespace AssetManagement
                 ////xmlTags = xmlTags + "</Backups>";
 
                 #endregion comment
-
-                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Getting the source database"));
-                string src = Encrypter.Decrypt(RegManager.getKey("data source"), true);
-                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Creating the destination database"));
-                string dst = backUpDatabaseLocation + "/Backup_" + DateTime.Now.ToString("dd MMMM yyyy hh-mm-ss");
-                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Copying database started"));
-                System.IO.File.Copy(src, dst, true);
-                bg_Worker_BackupDatabase.ReportProgress(5, string.Format("Copying database finished"));
-                RegManager.updateKey("backupdatetime", DateTime.Now.ToString("dd MMM yyyy hh:mm:ss tt"));
-                processBackupAndOriginalDatabase(src, dst);
-            }
-            else
-            {
-                MessageBox.Show("Please select a folder.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
         }
-
+        /// <summary>
+        /// Restores the database.
+        /// </summary>
         private void RestoreDatabase()
         {
             var t = new Thread((ThreadStart)(() =>
@@ -2098,48 +2274,50 @@ namespace AssetManagement
                     return;
                 }
                 if (dr == DialogResult.OK)
+                {
                     restoreFrom = opFlDlg_SelectFile.FileName;
+                    OleDbConnection srcCon = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + ";OLE DB Services=-4; data source=" + restoreFrom);
+                    try
+                    {
+                        using (TransactionScope scope = new TransactionScope())
+                        {
+                            srcCon.Open();
+                            DataTable userTables = srcCon.GetSchema("Tables");
+                            foreach (DataRow dt in userTables.Rows)
+                            {
+                                if (dt["TABLE_NAME"].ToString().StartsWith("tbl_"))
+                                {
+                                    var cmd = new OleDbCommand();
+                                    cmd.Connection = srcCon;
+                                    cmd.CommandType = System.Data.CommandType.Text;
+                                    cmd.CommandText = "INSERT INTO " + dt["TABLE_NAME"].ToString() + " IN '" + Encrypter.Decrypt(RegManager.getKey("data source"), true) + "' SELECT * FROM " + dt["TABLE_NAME"].ToString();
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                            scope.Complete();
+                        }
+                        restoreSuccessful = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        restoreSuccessful = false;
+                        MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    finally
+                    {
+                        srcCon.Close();
+                    }
+                }
             }));
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
-
-            if (restoreFrom != null)
-            {
-                OleDbConnection srcCon = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + ";OLE DB Services=-4; data source=" + restoreFrom);
-                try
-                {
-                    using (TransactionScope scope = new TransactionScope())
-                    {
-                        srcCon.Open();
-                        DataTable userTables = srcCon.GetSchema("Tables");
-                        foreach (DataRow dt in userTables.Rows)
-                        {
-                            if (dt["TABLE_NAME"].ToString().StartsWith("tbl_"))
-                            {
-                                var cmd = new OleDbCommand();
-                                cmd.Connection = srcCon;
-                                cmd.CommandType = System.Data.CommandType.Text;
-                                cmd.CommandText = "INSERT INTO " + dt["TABLE_NAME"].ToString() + " IN '" + Encrypter.Decrypt(RegManager.getKey("data source"), true) + "' SELECT * FROM " + dt["TABLE_NAME"].ToString();
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                        scope.Complete();
-                    }
-                    restoreSuccessful = true;
-                }
-                catch (Exception ex)
-                {
-                    restoreSuccessful = false;
-                    MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                finally
-                {
-                    srcCon.Close();
-                }
-            }
         }
-
+        /// <summary>
+        /// Writes to access.
+        /// </summary>
+        /// <param name="dt">The dt.</param>
+        /// <param name="rowcount">The rowcount.</param>
         private void WriteToAccess(DataTable dt, int rowcount)
         {
             int j = 1;
@@ -2182,53 +2360,35 @@ namespace AssetManagement
                 }
             }
         }
-
-        private bool validateSearchCritaria(int from)
+        /// <summary>
+        /// Validates the search critaria.
+        /// </summary>
+        /// <param name="from">From.</param>
+        /// <returns></returns>
+        private bool validateSearchCritaria(int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone, ref Label EmployeeIdLabel, ref Label EmployeeNameLabel, ref Label EmployeeEmailLabel, ref Label EmployeeDeskPhoneLabel, ref Label ErrorLabel)
         {
-            if (from == 0)
+            if (EmployeeId.Text == string.Empty && EmployeeName.Text == string.Empty && EmployeeEmail.Text == string.Empty && EmployeeDeskPhone.Text == string.Empty)
             {
-                if (tbox_ManageEmployee_EmployeeId.Text == string.Empty && tbox_ManageEmployee_EmployeeName.Text == string.Empty && tbox_ManageEmployee_EmployeeEmail.Text == string.Empty && tbox_ManageEmployee_EmployeeExtection.Text == string.Empty)
-                {
-                    lbl_Error.Text = "Kindly provide atleast one search criteria";
-                    lbl_ManageEmployee_EmployeeId.ForeColor = System.Drawing.Color.Red;
-                    lbl_ManageEmployee_EmployeeName.ForeColor = System.Drawing.Color.Red;
-                    lbl_ManageEmployee_EmployeeEmail.ForeColor = System.Drawing.Color.Red;
-                    lbl_ManageEmployee_EmployeeExtection.ForeColor = System.Drawing.Color.Red;
-                    return true;
-                }
-                else
-                {
-                    lbl_Error.Text = string.Empty;
-                    lbl_ManageEmployee_EmployeeId.ForeColor = System.Drawing.Color.Black;
-                    lbl_ManageEmployee_EmployeeName.ForeColor = System.Drawing.Color.Black;
-                    lbl_ManageEmployee_EmployeeEmail.ForeColor = System.Drawing.Color.Black;
-                    lbl_ManageEmployee_EmployeeExtection.ForeColor = System.Drawing.Color.Black;
-                    return false;
-                }
+                ErrorLabel.Text = "Kindly provide atleast one search criteria";
+                EmployeeIdLabel.ForeColor = System.Drawing.Color.Red;
+                EmployeeNameLabel.ForeColor = System.Drawing.Color.Red;
+                EmployeeEmailLabel.ForeColor = System.Drawing.Color.Red;
+                EmployeeDeskPhoneLabel.ForeColor = System.Drawing.Color.Red;
+                return true;
             }
             else
             {
-                if (tbox_Med_Emp_Id.Text == string.Empty && tbox_Med_Emp_Name.Text == string.Empty && tbox_Med_Emp_Email.Text == string.Empty && tbox_Med_Emp_Desk_Phone.Text == string.Empty)
-                {
-                    lbl_Med_Error.Text = "Kindly provide atleast one search criteria";
-                    lbl_Med_Emp_Id.ForeColor = System.Drawing.Color.Red;
-                    lbl_Med_Emp_Name.ForeColor = System.Drawing.Color.Red;
-                    lbl_Med_Emp_Email.ForeColor = System.Drawing.Color.Red;
-                    lbl_Med_Emp_Desk_Phone.ForeColor = System.Drawing.Color.Red;
-                    return true;
-                }
-                else
-                {
-                    lbl_Med_Error.Text = string.Empty;
-                    lbl_Med_Emp_Id.ForeColor = System.Drawing.Color.Black;
-                    lbl_Med_Emp_Name.ForeColor = System.Drawing.Color.Black;
-                    lbl_Med_Emp_Email.ForeColor = System.Drawing.Color.Black;
-                    lbl_Med_Emp_Desk_Phone.ForeColor = System.Drawing.Color.Black;
-                    return false;
-                }
+                ErrorLabel.Text = string.Empty;
+                EmployeeIdLabel.ForeColor = System.Drawing.Color.Black;
+                EmployeeNameLabel.ForeColor = System.Drawing.Color.Black;
+                EmployeeEmailLabel.ForeColor = System.Drawing.Color.Black;
+                EmployeeDeskPhoneLabel.ForeColor = System.Drawing.Color.Black;
+                return false;
             }
         }
-
+        /// <summary>
+        /// Resets the employee form.
+        /// </summary>
         private void resetEmployeeForm()
         {
             tbox_Browse.Text = string.Empty;
@@ -2237,6 +2397,10 @@ namespace AssetManagement
             tbox_ManageEmployee_EmployeeName.Text = string.Empty;
             tbox_ManageEmployee_EmployeeEmail.Text = string.Empty;
             tbox_ManageEmployee_EmployeeExtection.Text = string.Empty;
+            tbox_ManageEmployee_EmployeeId.Enabled = true;
+            tbox_ManageEmployee_EmployeeName.Enabled = true;
+            tbox_ManageEmployee_EmployeeEmail.Enabled = true;
+            tbox_ManageEmployee_EmployeeExtection.Enabled = true;
             tbox_ManageEmployee_EmployeePersonalMobile.Text = string.Empty;
             tbox_ManageEmployee_EmployeePersonalEmail.Text = string.Empty;
             tbox_ManageEmployee_EmployeeOfficialMobile.Text = string.Empty;
@@ -2253,58 +2417,83 @@ namespace AssetManagement
             lbl_ManageEmployee_EmployeeEmail.ForeColor = System.Drawing.Color.Black;
             lbl_ManageEmployee_EmployeeExtection.ForeColor = System.Drawing.Color.Black;
         }
-
-        private void makeInactive(int from)
+        /// <summary>
+        /// Makes the inactive.
+        /// </summary>
+        /// <param name="from">From.</param>
+        /// <param name="EmployeeId">The employee identifier.</param>
+        /// <param name="EmployeeName">Name of the employee.</param>
+        /// <param name="EmployeeEmail">The employee email.</param>
+        /// <param name="EmployeeDeskPhone">The employee desk phone.</param>
+        private void makeInactive(int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone)
         {
             if (from == 0)
             {
-                if (tbox_ManageEmployee_EmployeeId.Text != string.Empty && tbox_ManageEmployee_EmployeeName.Text != string.Empty && tbox_ManageEmployee_EmployeeEmail.Text != string.Empty && tbox_ManageEmployee_EmployeeExtection.Text != string.Empty)
+                if (EmployeeId.Text != string.Empty && EmployeeName.Text != string.Empty && EmployeeEmail.Text != string.Empty && EmployeeDeskPhone.Text != string.Empty)
                 {
-                    tbox_ManageEmployee_EmployeeId.Enabled = false;
-                    tbox_ManageEmployee_EmployeeName.Enabled = false;
-                    tbox_ManageEmployee_EmployeeEmail.Enabled = false;
-                    tbox_ManageEmployee_EmployeeExtection.Enabled = false;
+                    EmployeeId.Enabled = false;
+                    EmployeeName.Enabled = false;
+                    EmployeeEmail.Enabled = false;
+                    EmployeeDeskPhone.Enabled = false;
                 }
                 else
                 {
-                    tbox_ManageEmployee_EmployeeId.Enabled = true;
-                    tbox_ManageEmployee_EmployeeName.Enabled = true;
-                    tbox_ManageEmployee_EmployeeEmail.Enabled = true;
-                    tbox_ManageEmployee_EmployeeExtection.Enabled = true;
+                    EmployeeId.Enabled = true;
+                    EmployeeName.Enabled = true;
+                    EmployeeEmail.Enabled = true;
+                    EmployeeDeskPhone.Enabled = true;
                 }
             }
+            if (from == 1 || from == 2)
+            {
+
+                if (EmployeeId.Text != string.Empty || EmployeeName.Text != string.Empty || EmployeeEmail.Text != string.Empty || EmployeeDeskPhone.Text != string.Empty)
+                {
+                    EmployeeId.Enabled = false;
+                    EmployeeName.Enabled = false;
+                    EmployeeEmail.Enabled = false;
+                    EmployeeDeskPhone.Enabled = false;
+                    if (from == 1)
+                    {
+                        btn_Med_Emp_Search.Enabled = false;
+                    }
+                    else if(from == 2)
+                    {
+                        btn_Key_Emp_Search.Enabled = false;
+                    }
+                }
+            }
+        }
+        /// <summary>
+        /// Resets the med emp data.
+        /// </summary>
+        private void resetEmpData(int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone, ref Label EmployeeIdLabel, ref Label EmployeeNameLabel, ref Label EmployeeEmailLabel, ref Label EmployeeDeskPhoneLabel, ref Label ErrorLabel, ref Button SearchButton)
+        {
+            EmployeeId.Text = string.Empty;
+            EmployeeName.Text = string.Empty;
+            EmployeeEmail.Text = string.Empty;
+            EmployeeDeskPhone.Text = string.Empty;
+            EmployeeId.Enabled = true;
+            EmployeeName.Enabled = true;
+            EmployeeEmail.Enabled = true;
+            EmployeeDeskPhone.Enabled = true;
+            SearchButton.Enabled = true;
+            ErrorLabel.Text = string.Empty;
+            EmployeeIdLabel.ForeColor = System.Drawing.Color.Black;
+            EmployeeNameLabel.ForeColor = System.Drawing.Color.Black;
+            EmployeeEmailLabel.ForeColor = System.Drawing.Color.Black;
+            EmployeeDeskPhoneLabel.ForeColor = System.Drawing.Color.Black;
             if (from == 1)
             {
-                if (tbox_Med_Emp_Id.Text != string.Empty || tbox_Med_Emp_Name.Text != string.Empty || tbox_Med_Emp_Email.Text != string.Empty || tbox_Med_Emp_Desk_Phone.Text != string.Empty)
-                {
-                    tbox_Med_Emp_Id.Enabled = false;
-                    tbox_Med_Emp_Name.Enabled = false;
-                    tbox_Med_Emp_Email.Enabled = false;
-                    tbox_Med_Emp_Desk_Phone.Enabled = false;
-                    btn_Med_Emp_Search.Enabled = false;
-                }
+                cbox_Non_Employee_Medicine_Distribution.Checked = false;
             }
         }
-
-        private void resetMedEmpData()
-        {
-            tbox_Med_Emp_Id.Text = string.Empty;
-            tbox_Med_Emp_Name.Text = string.Empty;
-            tbox_Med_Emp_Email.Text = string.Empty;
-            tbox_Med_Emp_Desk_Phone.Text = string.Empty;
-            tbox_Med_Emp_Id.Enabled = true;
-            tbox_Med_Emp_Name.Enabled = true;
-            tbox_Med_Emp_Email.Enabled = true;
-            tbox_Med_Emp_Desk_Phone.Enabled = true;
-            btn_Med_Emp_Search.Enabled = true;
-            lbl_Med_Error.Text = string.Empty;
-            lbl_Med_Emp_Id.ForeColor = System.Drawing.Color.Black;
-            lbl_Med_Emp_Name.ForeColor = System.Drawing.Color.Black;
-            lbl_Med_Emp_Email.ForeColor = System.Drawing.Color.Black;
-            lbl_Med_Emp_Desk_Phone.ForeColor = System.Drawing.Color.Black;
-        }
-
-        private void populateEmployeeData(string resultQuery, int from)
+        /// <summary>
+        /// Populates the employee data.
+        /// </summary>
+        /// <param name="resultQuery">The result query.</param>
+        /// <param name="from">From.</param>
+        private void populateEmployeeData(string resultQuery, int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             try
@@ -2321,13 +2510,13 @@ namespace AssetManagement
                         {
                             tbox_Id.Text = ds.Tables[0].Rows[0][0].ToString();
                             employeeData.Add("Id", ds.Tables[0].Rows[0][0].ToString());
-                            tbox_ManageEmployee_EmployeeId.Text = ds.Tables[0].Rows[0][1].ToString();
+                            EmployeeId.Text = ds.Tables[0].Rows[0][1].ToString();
                             employeeData.Add("Employee_Id", ds.Tables[0].Rows[0][1].ToString());
-                            tbox_ManageEmployee_EmployeeName.Text = ds.Tables[0].Rows[0][2].ToString();
+                            EmployeeName.Text = ds.Tables[0].Rows[0][2].ToString();
                             employeeData.Add("Employee_Name", ds.Tables[0].Rows[0][2].ToString());
-                            tbox_ManageEmployee_EmployeeEmail.Text = ds.Tables[0].Rows[0][3].ToString();
+                            EmployeeEmail.Text = ds.Tables[0].Rows[0][3].ToString();
                             employeeData.Add("Employee_Email", ds.Tables[0].Rows[0][3].ToString());
-                            tbox_ManageEmployee_EmployeeExtection.Text = ds.Tables[0].Rows[0][4].ToString();
+                            EmployeeDeskPhone.Text = ds.Tables[0].Rows[0][4].ToString();
                             employeeData.Add("Extension", ds.Tables[0].Rows[0][4].ToString());
                             tbox_ManageEmployee_EmployeePersonalMobile.Text = ds.Tables[0].Rows[0][5].ToString();
                             employeeData.Add("Personal_Mobile", ds.Tables[0].Rows[0][5].ToString());
@@ -2354,25 +2543,25 @@ namespace AssetManagement
                                 rdBtn_EmployeeInActive.Checked = true;
                             }
                             employeeData.Add("Active", ds.Tables[0].Rows[0][13].ToString());
-                            makeInactive(0);
+                            makeInactive(0, ref  EmployeeId, ref  EmployeeName, ref  EmployeeEmail, ref  EmployeeDeskPhone);
                         }
                         else
                         {
                             MessageBox.Show("No Employee found!", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
-                    else if (from == 1)
+                    else if (from == 1 || from == 2)
                     {
                         adapter = new OleDbDataAdapter(resultQuery, con);
                         ds = new DataSet();
                         adapter.Fill(ds, "tbl_Employee_Details");
                         if (ds.Tables[0].Rows.Count > 0)
                         {
-                            tbox_Med_Emp_Id.Text = ds.Tables[0].Rows[0][1].ToString();
-                            tbox_Med_Emp_Name.Text = ds.Tables[0].Rows[0][2].ToString();
-                            tbox_Med_Emp_Email.Text = ds.Tables[0].Rows[0][3].ToString();
-                            tbox_Med_Emp_Desk_Phone.Text = ds.Tables[0].Rows[0][4].ToString();
-                            makeInactive(1);
+                            EmployeeId.Text = ds.Tables[0].Rows[0][1].ToString();
+                            EmployeeName.Text = ds.Tables[0].Rows[0][2].ToString();
+                            EmployeeEmail.Text = ds.Tables[0].Rows[0][3].ToString();
+                            EmployeeDeskPhone.Text = ds.Tables[0].Rows[0][4].ToString();
+                            makeInactive(from, ref EmployeeId, ref EmployeeName, ref EmployeeEmail, ref EmployeeDeskPhone);
                         }
                         else
                         {
@@ -2383,148 +2572,87 @@ namespace AssetManagement
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
-        private void searchEmployee(int from)
+        /// <summary>
+        /// Searches the employee.
+        /// </summary>
+        /// <param name="from">From.</param>
+        /// <param name="EmployeeId">The employee identifier.</param>
+        /// <param name="EmployeeName">Name of the employee.</param>
+        /// <param name="EmployeeEmail">The employee email.</param>
+        /// <param name="EmployeeDeskPhone">The employee desk phone.</param>
+        private void searchEmployee(int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone, ref Label EmployeeIdLabel, ref Label EmployeeNameLabel, ref Label EmployeeEmailLabel, ref Label EmployeeDeskPhoneLabel, ref Label ErrorLabel)
         {
             string resultQuery = "SELECT * FROM tbl_Employee_Details";
-            bool validateFrom = validateSearchCritaria(from);
+            bool validateFrom = validateSearchCritaria(from, ref EmployeeId, ref  EmployeeName, ref  EmployeeEmail, ref  EmployeeDeskPhone, ref EmployeeIdLabel, ref EmployeeNameLabel, ref EmployeeEmailLabel, ref EmployeeDeskPhoneLabel, ref ErrorLabel);
             if (validateFrom != true)
             {
                 bool whereFlag = false;
-                if (from == 0)
+                if (EmployeeId.Text != string.Empty)
                 {
-                    if (tbox_ManageEmployee_EmployeeId.Text != string.Empty)
+                    if (whereFlag == false)
                     {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Employee_Id = '" + tbox_ManageEmployee_EmployeeId.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Employee_Id = '" + tbox_ManageEmployee_EmployeeId.Text + "'";
-                        }
+                        resultQuery = resultQuery + " WHERE Employee_Id = '" + EmployeeId.Text + "'";
+                        whereFlag = true;
+                    }
+                    else
+                    {
+                        resultQuery = resultQuery + " AND Employee_Id = '" + EmployeeId.Text + "'";
                     }
                 }
-                else if (from == 1)
+                if (EmployeeName.Text != string.Empty)
                 {
-                    if (tbox_Med_Emp_Id.Text != string.Empty)
+                    if (whereFlag == false)
                     {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Employee_Id = '" + tbox_Med_Emp_Id.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Employee_Id = '" + tbox_Med_Emp_Id.Text + "'";
-                        }
+                        resultQuery = resultQuery + " WHERE Employee_Name = '" + EmployeeName.Text + "'";
+                        whereFlag = true;
+                    }
+                    else
+                    {
+                        resultQuery = resultQuery + " AND Employee_Name = '" + EmployeeName.Text + "'";
                     }
                 }
-                if (from == 0)
+                if (EmployeeEmail.Text != string.Empty)
                 {
-                    if (tbox_ManageEmployee_EmployeeName.Text != string.Empty)
+                    if (whereFlag == false)
                     {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Employee_Name = '" + tbox_ManageEmployee_EmployeeName.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Employee_Name = '" + tbox_ManageEmployee_EmployeeName.Text + "'";
-                        }
+                        resultQuery = resultQuery + " WHERE Employee_Email = '" + EmployeeEmail.Text + "'";
+                        whereFlag = true;
+                    }
+                    else
+                    {
+                        resultQuery = resultQuery + " AND Employee_Email = '" + EmployeeEmail.Text + "'";
                     }
                 }
-                else if (from == 1)
+                if (tbox_ManageEmployee_EmployeeExtection.Text != string.Empty)
                 {
-                    if (tbox_Med_Emp_Name.Text != string.Empty)
+                    if (whereFlag == false)
                     {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Employee_Name = '" + tbox_Med_Emp_Name.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Employee_Name = '" + tbox_Med_Emp_Name.Text + "'";
-                        }
+                        resultQuery = resultQuery + " WHERE Extension = '" + EmployeeDeskPhone.Text + "'";
+                        whereFlag = true;
+                    }
+                    else
+                    {
+                        resultQuery = resultQuery + " AND Extension = '" + EmployeeDeskPhone.Text + "'";
                     }
                 }
-                if (from == 0)
-                {
-                    if (tbox_ManageEmployee_EmployeeEmail.Text != string.Empty)
-                    {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Employee_Email = '" + tbox_ManageEmployee_EmployeeEmail.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Employee_Email = '" + tbox_ManageEmployee_EmployeeEmail.Text + "'";
-                        }
-                    }
-                }
-                else if (from == 1)
-                {
-                    if (tbox_Med_Emp_Email.Text != string.Empty)
-                    {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Employee_Email = '" + tbox_Med_Emp_Email.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Employee_Email = '" + tbox_Med_Emp_Email.Text + "'";
-                        }
-                    }
-                }
-                if (from == 0)
-                {
-                    if (tbox_ManageEmployee_EmployeeExtection.Text != string.Empty)
-                    {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Extension = '" + tbox_ManageEmployee_EmployeeExtection.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Extension = '" + tbox_ManageEmployee_EmployeeExtection.Text + "'";
-                        }
-                    }
-                }
-                else if (from == 1)
-                {
-                    if (tbox_Med_Emp_Desk_Phone.Text != string.Empty)
-                    {
-                        if (whereFlag == false)
-                        {
-                            resultQuery = resultQuery + " WHERE Extension = '" + tbox_Med_Emp_Desk_Phone.Text + "'";
-                            whereFlag = true;
-                        }
-                        else
-                        {
-                            resultQuery = resultQuery + " AND Extension = '" + tbox_Med_Emp_Desk_Phone.Text + "'";
-                        }
-                    }
-                }
-                populateEmployeeData(resultQuery, from);
+                populateEmployeeData(resultQuery, from, ref EmployeeId, ref  EmployeeName, ref  EmployeeEmail, ref  EmployeeDeskPhone);
             }
         }
-
+        /// <summary>
+        /// Resets the med medcine data.
+        /// </summary>
         private void resetMedMedcineData()
         {
             tbox_Med_Medcine_Name.Text = string.Empty;
             tbox_Med_Medcine_Quantity.Text = string.Empty;
             //pBox_Medcine_Signeture.Image = null;
         }
-
+        /// <summary>
+        /// Meds the stock validator.
+        /// </summary>
         private void medStockValidator()
         {
             int? stock = medicineStockCounter(tbox_Med_Medcine_Name.Text);
@@ -2582,7 +2710,11 @@ namespace AssetManagement
                 MessageBox.Show("Please check the medicine name.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
+        /// <summary>
+        /// Medicines the stock counter.
+        /// </summary>
+        /// <param name="medcineName">Name of the medcine.</param>
+        /// <returns></returns>
         private int? medicineStockCounter(string medcineName)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
@@ -2604,26 +2736,36 @@ namespace AssetManagement
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return stockCount;
             }
         }
-
-        private void insertMedAssinment()
+        /// <summary>
+        /// Inserts the med assinment.
+        /// </summary>
+        /// <param name="stat">if set to <c>true</c> [stat].</param>
+        private void insertMedAssinment(bool stat)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             con.Open();
             OleDbTransaction transaction = con.BeginTransaction();
             try
             {
-                cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES ('" + tbox_Med_Emp_Id.Text + "','" + tbox_Med_Emp_Name.Text + "','" + tbox_Med_Emp_Email.Text + "','" + tbox_Med_Emp_Desk_Phone.Text + "','" + tbox_Med_Medcine_Name.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", con, transaction);
+                if (stat == false)
+                {
+                    cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES (" + tbox_Med_Emp_Id.Text + ",'" + tbox_Med_Emp_Name.Text + "','" + tbox_Med_Emp_Email.Text + "','" + tbox_Med_Emp_Desk_Phone.Text + "','" + tbox_Med_Medcine_Name.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", con, transaction);
+                }
+                else if (stat == true)
+                {
+                    cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES ( " + 00000 +" ,'" + tbox_Med_Emp_Name.Text + "','NON_EMPLOYEE_EMAIL','NON_EMPLOYEE_DESK_PHONE','" + tbox_Med_Medcine_Name.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", con, transaction);
+                }
                 convertPhotoType(5);
                 cmd.ExecuteNonQuery();
                 cmd = new OleDbCommand("UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name.Text + "'", con, transaction);
                 cmd.ExecuteNonQuery();
                 transaction.Commit();
                 MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                resetMedEmpData();
+                resetEmpData(1, ref tbox_Med_Emp_Id, ref tbox_Med_Emp_Name, ref tbox_Med_Emp_Email, ref tbox_Med_Emp_Desk_Phone, ref lbl_Med_Emp_Id, ref lbl_Med_Emp_Name, ref lbl_Med_Emp_Email, ref lbl_Med_Emp_Desk_Phone, ref lbl_Med_Error, ref btn_Med_Emp_Search);
                 resetMedMedcineData();
             }
             catch (Exception ex)
@@ -2633,7 +2775,10 @@ namespace AssetManagement
             }
             con.Close();
         }
-
+        /// <summary>
+        /// Plots the graph.
+        /// </summary>
+        /// <param name="type">The type.</param>
         private void plotGraph(string type)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
@@ -2682,7 +2827,9 @@ namespace AssetManagement
                 lbl_GraphDataError.Visible = true;
             }
         }
-
+        /// <summary>
+        /// Insers the medicine details.
+        /// </summary>
         private void inserMedicineDetails()
         {
             try
@@ -2704,7 +2851,9 @@ namespace AssetManagement
                 MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        /// <summary>
+        /// Updates the medicine details.
+        /// </summary>
         private void updateMedicineDetails()
         {
             if (tbox_ManageMedicineId.Text != string.Empty)
@@ -2777,7 +2926,9 @@ namespace AssetManagement
                 }
             }
         }
-
+        /// <summary>
+        /// Resets the add medicine.
+        /// </summary>
         private void resetAddMedicine()
         {
             lbl_ExistingMedicine.Text = string.Empty;
@@ -2785,7 +2936,9 @@ namespace AssetManagement
             nemUD_ManageMedicine_InsertMedicineStock.Value = nemUD_ManageMedicine_InsertMedicineStock.Minimum;
             nemUD_ManageMedicine_InsertWarning.Value = nemUD_ManageMedicine_InsertWarning.Minimum;
         }
-
+        /// <summary>
+        /// Resets the update medicine.
+        /// </summary>
         private void resetUpdateMedicine()
         {
             tbox_ManageMedicineId.Text = string.Empty;
@@ -2796,7 +2949,10 @@ namespace AssetManagement
             rdBtn_MedicineActive.Checked = false; ;
             rdBtn_MedicineInActive.Checked = false;
         }
-
+        /// <summary>
+        /// Gets the existing medicine names.
+        /// </summary>
+        /// <returns></returns>
         private List<string> getExistingMedicineNames()
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
@@ -2818,11 +2974,13 @@ namespace AssetManagement
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return MedicineNames;
             }
         }
-
+        /// <summary>
+        /// Gets the medicine details.
+        /// </summary>
         private void getMedicineDetails()
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
@@ -2864,10 +3022,12 @@ namespace AssetManagement
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
+        /// <summary>
+        /// Databases the size calculator.
+        /// </summary>
         private void databaseSizeCalculator()
         {
             pgBar_Database_Size.Value = 0;
@@ -2876,7 +3036,9 @@ namespace AssetManagement
             pgBar_Database_Size.Value = pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100) > 100 ? 100 : pgBar_Database_Size.Value + Convert.ToInt32((databseSize / 1000.0) * 100);
             lbl_DatabaseSize.Text = databseSize.ToString() + "MB";
         }
-
+        /// <summary>
+        /// Pgs the bar color changer.
+        /// </summary>
         private void pgBarColorChanger()
         {
             ModifyProgressBarColor.SetState(pgBar_Database_Size, 1);
@@ -2889,7 +3051,11 @@ namespace AssetManagement
                 ModifyProgressBarColor.SetState(pgBar_Database_Size, 2);
             }
         }
-
+        /// <summary>
+        /// Processes the backup and original database.
+        /// </summary>
+        /// <param name="src">The source.</param>
+        /// <param name="dst">The DST.</param>
         private void processBackupAndOriginalDatabase(string src, string dst)
         {
             OleDbConnection dstCon = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + ";OLE DB Services=-4; data source=" + dst);
@@ -2932,7 +3098,57 @@ namespace AssetManagement
                 MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// Changes the label.
+        /// </summary>
+        /// <param name="stat">if set to <c>true</c> [stat].</param>
+        private void changeLabel(bool stat)
+        {
+            if (stat == true)
+            {
+                tbox_Med_Emp_Id.Text = string.Empty;
+                tbox_Med_Emp_Name.Text = string.Empty;
+                tbox_Med_Emp_Email.Text = string.Empty;
+                tbox_Med_Emp_Desk_Phone.Text = string.Empty;
+                tbox_Med_Emp_Id.Enabled = stat;
+                tbox_Med_Emp_Name.Enabled = true;
+                tbox_Med_Emp_Email.Enabled = stat;
+                tbox_Med_Emp_Desk_Phone.Enabled = stat;
+                lbl_Med_Error.Text = string.Empty;
+                lbl_Med_Emp_Id.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Name.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Email.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Desk_Phone.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Id.Enabled = stat;
+                lbl_Med_Emp_Name.Text = "Employee Name : ";
+                lbl_Med_Emp_Name.Location = new Point(25, 93);
+                lbl_Med_Emp_Email.Enabled = stat;
+                lbl_Med_Emp_Desk_Phone.Enabled = stat;
+            }
+            else if (stat == false)
+            {
+                tbox_Med_Emp_Id.Text = string.Empty;
+                tbox_Med_Emp_Name.Text = string.Empty;
+                tbox_Med_Emp_Email.Text = string.Empty;
+                tbox_Med_Emp_Desk_Phone.Text = string.Empty;
+                tbox_Med_Emp_Id.Enabled = stat;
+                tbox_Med_Emp_Name.Enabled = true;
+                tbox_Med_Emp_Email.Enabled = stat;
+                tbox_Med_Emp_Desk_Phone.Enabled = stat;
+                lbl_Med_Error.Text = string.Empty;
+                lbl_Med_Emp_Id.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Name.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Email.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Desk_Phone.ForeColor = System.Drawing.Color.Black;
+                lbl_Med_Emp_Id.Enabled = stat;
+                lbl_Med_Emp_Name.Text = "Name : ";
+                lbl_Med_Emp_Name.Location = new Point(83, 93);
+                lbl_Med_Emp_Email.Enabled = stat;
+                lbl_Med_Emp_Desk_Phone.Enabled = stat;
+            }
+        }
 
         #endregion Function
+
     }
 }

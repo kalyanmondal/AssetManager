@@ -29,7 +29,7 @@ namespace AssetManagement
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             textControl.AutoCompleteCustomSource = source;
         }
@@ -55,7 +55,7 @@ namespace AssetManagement
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Connection to the database failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             textControl.AutoCompleteCustomSource = source;
         }

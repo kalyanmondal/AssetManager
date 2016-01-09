@@ -39,20 +39,20 @@
             // dtPk_Report_DataCollector_OutTime
             // 
             this.dtPk_Report_DataCollector_OutTime.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
-            this.dtPk_Report_DataCollector_OutTime.Location = new System.Drawing.Point(130, 34);
+            this.dtPk_Report_DataCollector_OutTime.Location = new System.Drawing.Point(153, 34);
             this.dtPk_Report_DataCollector_OutTime.Name = "dtPk_Report_DataCollector_OutTime";
             this.dtPk_Report_DataCollector_OutTime.ShowCheckBox = true;
-            this.dtPk_Report_DataCollector_OutTime.Size = new System.Drawing.Size(282, 20);
+            this.dtPk_Report_DataCollector_OutTime.Size = new System.Drawing.Size(259, 20);
             this.dtPk_Report_DataCollector_OutTime.TabIndex = 55;
             this.dtPk_Report_DataCollector_OutTime.Visible = false;
             // 
             // dtPk_Report_DataCollector_InTime
             // 
             this.dtPk_Report_DataCollector_InTime.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
-            this.dtPk_Report_DataCollector_InTime.Location = new System.Drawing.Point(130, 8);
+            this.dtPk_Report_DataCollector_InTime.Location = new System.Drawing.Point(153, 8);
             this.dtPk_Report_DataCollector_InTime.Name = "dtPk_Report_DataCollector_InTime";
             this.dtPk_Report_DataCollector_InTime.ShowCheckBox = true;
-            this.dtPk_Report_DataCollector_InTime.Size = new System.Drawing.Size(282, 20);
+            this.dtPk_Report_DataCollector_InTime.Size = new System.Drawing.Size(259, 20);
             this.dtPk_Report_DataCollector_InTime.TabIndex = 54;
             this.dtPk_Report_DataCollector_InTime.Visible = false;
             // 
@@ -60,7 +60,7 @@
             // 
             this.lbl_Visitor_Report_DataCollector_OutTime.AutoSize = true;
             this.lbl_Visitor_Report_DataCollector_OutTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lbl_Visitor_Report_DataCollector_OutTime.Location = new System.Drawing.Point(46, 36);
+            this.lbl_Visitor_Report_DataCollector_OutTime.Location = new System.Drawing.Point(69, 38);
             this.lbl_Visitor_Report_DataCollector_OutTime.Name = "lbl_Visitor_Report_DataCollector_OutTime";
             this.lbl_Visitor_Report_DataCollector_OutTime.Size = new System.Drawing.Size(78, 16);
             this.lbl_Visitor_Report_DataCollector_OutTime.TabIndex = 57;
@@ -71,7 +71,7 @@
             // 
             this.lbl_Visitor_Report_DataCollector_EmployeeId.AutoSize = true;
             this.lbl_Visitor_Report_DataCollector_EmployeeId.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold);
-            this.lbl_Visitor_Report_DataCollector_EmployeeId.Location = new System.Drawing.Point(22, 9);
+            this.lbl_Visitor_Report_DataCollector_EmployeeId.Location = new System.Drawing.Point(44, 9);
             this.lbl_Visitor_Report_DataCollector_EmployeeId.Name = "lbl_Visitor_Report_DataCollector_EmployeeId";
             this.lbl_Visitor_Report_DataCollector_EmployeeId.Size = new System.Drawing.Size(103, 16);
             this.lbl_Visitor_Report_DataCollector_EmployeeId.TabIndex = 56;
@@ -92,11 +92,14 @@
             // 
             // tbox_Visitor_Report_DataCollector_EmployeeId
             // 
-            this.tbox_Visitor_Report_DataCollector_EmployeeId.Location = new System.Drawing.Point(131, 8);
+            this.tbox_Visitor_Report_DataCollector_EmployeeId.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_Visitor_Report_DataCollector_EmployeeId.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_Visitor_Report_DataCollector_EmployeeId.Location = new System.Drawing.Point(153, 8);
             this.tbox_Visitor_Report_DataCollector_EmployeeId.Name = "tbox_Visitor_Report_DataCollector_EmployeeId";
-            this.tbox_Visitor_Report_DataCollector_EmployeeId.Size = new System.Drawing.Size(282, 20);
+            this.tbox_Visitor_Report_DataCollector_EmployeeId.Size = new System.Drawing.Size(260, 20);
             this.tbox_Visitor_Report_DataCollector_EmployeeId.TabIndex = 59;
             this.tbox_Visitor_Report_DataCollector_EmployeeId.Visible = false;
+            this.tbox_Visitor_Report_DataCollector_EmployeeId.TextChanged += new System.EventHandler(this.tbox_Visitor_Report_DataCollector_EmployeeId_TextChanged);
             // 
             // frm_ReportDataCollector
             // 
