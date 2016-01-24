@@ -47,6 +47,9 @@ namespace AssetManagement
         public Dictionary<string, string> medicineData = new Dictionary<string, string>();
         public Dictionary<string, string> medicineUpdatedData = new Dictionary<string, string>();
 
+        public Dictionary<string, string> pedistalData = new Dictionary<string, string>();
+        public Dictionary<string, string> pedistalUpdatedData = new Dictionary<string, string>();
+
         public static int maxValProgressBar { get; set; }
 
         #endregion Private Variable
@@ -59,6 +62,8 @@ namespace AssetManagement
             lbl_LoggedinUser.Text = string.Format("Login User : {0}", System.Security.Principal.WindowsIdentity.GetCurrent().Name);
             lbl_Date.Text = string.Format("Date : {0}", DateTime.Now.ToString("dd MMMM yyyy"));
             tmr_Asset_Timer.Start();
+            cBox_Floor_Number.SelectedIndex = 0;
+
         }
 
         #endregion Construction
@@ -203,6 +208,7 @@ namespace AssetManagement
 
         private void btn_Out_Update_Click(object sender, EventArgs e)
         {
+            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             string query = "UPDATE tbl_Visitor_details SET OUT_TIME  = '" + tbox_Out_Time.Text + "' WHERE Serial_Number =" + tbox_Out_Serial_Number.Text + "";
             cmd = new OleDbCommand(query, con);
             con.Open();
@@ -553,14 +559,14 @@ namespace AssetManagement
             {
                 lbl_ExistingMedicine.Text = "Please provide the name of the medicine!!!";
             }
-            else if (getExistingMedicineNames().Contains(tbox_ManageMedicine_InsertMedicineName.Text))
+            else if (getExistingData("SELECT Medicine_Name FROM tbl_Medicine_Details").Contains(tbox_ManageMedicine_InsertMedicineName.Text))
             {
                 lbl_ExistingMedicine.Text = "Existing Medicine!!!";
             }
             else
             {
                 lbl_ExistingMedicine.Text = string.Empty;
-                inserMedicineDetails();
+                inserDetails("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)");
                 resetAddMedicine();
                 plotGraph("True");
             }
@@ -704,6 +710,76 @@ namespace AssetManagement
             resetEmpData(0, ref tbox_Key_Emp_Id, ref tbox_Key_Emp_Name, ref tbox_Key_Emp_Email, ref tbox_Key_Emp_Desk_Phone, ref lbl_Key_Emp_Id, ref lbl_Key_Emp_Name, ref lbl_Key_Emp_Email, ref lbl_Key_Emp_Desk_Phone, ref lbl_Key_Error, ref btn_Key_Emp_Search);
         }
 
+        private void btn_ManageKeys_Add_Click(object sender, EventArgs e)
+        {
+            bool validatPedistalNo = false;
+            bool validateKeyNo = false;
+            bool validateFloor = false;
+            if (tbox_ManageKeys_InsertKeysPedistalNo.Text.Length == 0)
+            {
+                lbl_ExistingPedistal.Text = "Please provide the number of the pedistal!!!";
+                validatPedistalNo = false;
+            }
+            else
+            {
+                if (getExistingData("SELECT Pedistal_No FROM tbl_Pedistal_Details").Contains(tbox_ManageKeys_InsertKeysPedistalNo.Text))
+                {
+                    lbl_ExistingPedistal.Text = "Existing Pedistal!!!";
+                    validatPedistalNo = false;
+                }
+                else
+                {
+                    lbl_ExistingPedistal.Text = string.Empty;
+                    validatPedistalNo = true;
+                }
+            }
+            if (tbox_ManageKeys_InsertKeysKeyNo.Text.Length == 0)
+            {
+                lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.Text = "Provide the key number!!!";
+                validateKeyNo = false;
+            }
+            else
+            {
+                lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.Text = string.Empty;
+                validateKeyNo = true;
+            }
+            if (cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem.ToString().Equals("--------------------Select--------------------"))
+            {
+                lbl_ManageKeys_InsertKeys_Select_Floor.Text = "Select a floor";
+                validateFloor = false;
+            }
+            else
+            {
+                lbl_ManageKeys_InsertKeys_Select_Floor.Text = string.Empty;
+                validateFloor = true;
+            }
+            if (validatPedistalNo && validateKeyNo && validateFloor)
+            {
+                inserDetails("INSERT INTO tbl_Pedistal_Details (Pedistal_No,Key_No,No_Of_Keys,Location,Active) VALUES ('" + tbox_ManageKeys_InsertKeysPedistalNo.Text.Trim() + "','" + tbox_ManageKeys_InsertKeysKeyNo.Text.Trim() + "','" + nemUD_ManageKeys_InsertKeys.Value + "','" + cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem + "',True)");
+                resetAddPedistal();
+            }
+        }
+
+        private void btn_ManageKeys_Insert_Reset_Click(object sender, EventArgs e)
+        {
+            resetAddPedistal();
+        }
+
+        private void btn_ManageKeys_Update_Reset_Click(object sender, EventArgs e)
+        {
+            resetUpdatePedstal();
+        }
+
+        private void btn_ManageKeys_Search_By_PedistalNo_Click(object sender, EventArgs e)
+        {
+            getPedistalDetails();
+        }
+        
+        private void btn_ManageKeys_Update_Click(object sender, EventArgs e)
+        {
+            updatePedistalDetails();
+        }
+
         #endregion btnEvents
 
         #region tbPageEvents
@@ -799,6 +875,11 @@ namespace AssetManagement
             }
         }
 
+        private void tb_Page_Settings_Manage_Keys_Enter(object sender, EventArgs e)
+        {
+            resetAddPedistal();
+            resetUpdatePedstal();
+        }
         #endregion tbPageEvents
 
         #region cboxEvents
@@ -1104,6 +1185,60 @@ namespace AssetManagement
         private void tbox_Key_Emp_Desk_Phone_TextChanged(object sender, EventArgs e)
         {
             autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Desk_Phone, "Extension", "tbl_Employee_Details", "Active", " = ", "True");
+        }
+
+        private void tbox_Out_Serial_Number_TextChanged(object sender, EventArgs e)
+        {
+            if (tbox_Out_Serial_Number.Text != string.Empty)
+            {
+                btn_Out_Update.Enabled = true;
+            }
+            else
+            {
+                btn_Out_Update.Enabled = false;
+            }
+        }
+
+        private void tbox_ManageKeys_UpdateKeysPedistalNo_TextChanged(object sender, EventArgs e)
+        {
+            if (tbox_ManageKeys_UpdateKeysPedistalNo.Text.Length > 0)
+            {
+                btn_ManageKeys_Search_By_PedistalNo.Enabled = true;
+                autoCompleteTextbox.autocompletedata(ref tbox_ManageKeys_UpdateKeysPedistalNo, "Pedistal_No", "tbl_Pedistal_Details");
+            }
+            else
+            {
+                btn_ManageKeys_Search_By_PedistalNo.Enabled = false;
+            }
+        }
+
+        private void tbox_ManageKeys_UpdateKeysPedistalNo_EnabledChanged(object sender, EventArgs e)
+        {
+            if (tbox_ManageKeys_UpdateKeysPedistalNo.Enabled == true)
+            {
+                lbl_ManageKeys_UpdateKeysKeyNo.Enabled = false;
+                lbl_ManageKeys_UpdateKeysNoOfKeys.Enabled = false;
+                lbl_ManageKeys_UpdateKeysWhichFloor.Enabled = false;
+                tbox_ManageKeys_UpdateKeysKeyNo.Enabled = false;
+                nemUD_ManageKeys_UpdateKeys.Enabled = false;
+                cbox_ManageKeys_UpdateKeysWhichFloor.Enabled = false;
+                rdBtn_PedistalActive.Enabled = false;
+                rdBtn_PedistalInActive.Enabled = false;
+                btn_ManageKeys_Update.Enabled = false;
+            }
+            else
+            {
+
+                lbl_ManageKeys_UpdateKeysKeyNo.Enabled = true;
+                lbl_ManageKeys_UpdateKeysNoOfKeys.Enabled = true;
+                lbl_ManageKeys_UpdateKeysWhichFloor.Enabled = true;
+                tbox_ManageKeys_UpdateKeysKeyNo.Enabled = true;
+                nemUD_ManageKeys_UpdateKeys.Enabled = true;
+                cbox_ManageKeys_UpdateKeysWhichFloor.Enabled = true;
+                rdBtn_PedistalActive.Enabled = true;
+                rdBtn_PedistalInActive.Enabled = true;
+                btn_ManageKeys_Update.Enabled = true;
+            }
         }
 
         #endregion tboxEvents
@@ -1778,6 +1913,7 @@ namespace AssetManagement
         /// <param name="serialNumber">The serial number.</param>
         private void fetchDataBySerialNumber(string serialNumber)
         {
+            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             string query = "SELECT Serial_Number,Visitor_Name, From_Address, Contact_Number, Purpose, Whom_To_Meet, Badge_Number, Escort_Name, Which_Floor, Remarks, Carrying_Laptop, ID_Proof,Photo,Signeture_Image FROM tbl_Visitor_details WHERE Serial_Number = " + serialNumber + "";
             adapter = new OleDbDataAdapter(query, con);
             ds = new DataSet();
@@ -2828,30 +2964,6 @@ namespace AssetManagement
             }
         }
         /// <summary>
-        /// Insers the medicine details.
-        /// </summary>
-        private void inserMedicineDetails()
-        {
-            try
-            {
-                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)", con);
-                con.Open();
-                int n = cmd.ExecuteNonQuery();
-                con.Close();
-                if (n > 0)
-                {
-                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                    MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        /// <summary>
         /// Updates the medicine details.
         /// </summary>
         private void updateMedicineDetails()
@@ -2953,29 +3065,29 @@ namespace AssetManagement
         /// Gets the existing medicine names.
         /// </summary>
         /// <returns></returns>
-        private List<string> getExistingMedicineNames()
+        private List<string> getExistingData(string query)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-            List<string> MedicineNames = new List<string>();
+            List<string> ExistingData = new List<string>();
             try
             {
                 using (con)
                 {
-                    adapter = new OleDbDataAdapter("SELECT Medicine_Name FROM tbl_Medicine_Details", con);
+                    adapter = new OleDbDataAdapter(query, con);
                     ds = new DataSet();
                     adapter.Fill(ds);
 
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-                        MedicineNames.Add(dr[0].ToString());
+                        ExistingData.Add(dr[0].ToString());
                     }
                 }
-                return MedicineNames;
+                return ExistingData;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return MedicineNames;
+                return ExistingData;
             }
         }
         /// <summary>
@@ -2991,7 +3103,7 @@ namespace AssetManagement
                     adapter = new OleDbDataAdapter("SELECT Id,Medicine_Name,Stock_Quantity,Warning_Quantity,Active FROM tbl_Medicine_Details WHERE Medicine_Name = '" + tbox_ManageMedicine_UpdateMedicineName.Text + "'", con);
                     ds = new DataSet();
                     adapter.Fill(ds);
-
+                    medicineData.Clear();
                     if (ds.Tables[0].Rows.Count > 0)
                     {
                         btn_ManageMedicine_Search.Enabled = false;
@@ -3145,6 +3257,157 @@ namespace AssetManagement
                 lbl_Med_Emp_Name.Location = new Point(83, 93);
                 lbl_Med_Emp_Email.Enabled = stat;
                 lbl_Med_Emp_Desk_Phone.Enabled = stat;
+            }
+        }
+
+        private void resetAddPedistal()
+        {
+            lbl_ExistingPedistal.Text = string.Empty;
+            lbl_ManageKeys_InsertKeys_Select_Floor.Text = string.Empty;
+            lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.Text = string.Empty;
+            tbox_ManageKeys_InsertKeysPedistalNo.Text = string.Empty;
+            tbox_ManageKeys_InsertKeysKeyNo.Text = string.Empty;
+            nemUD_ManageKeys_InsertKeys.Value = nemUD_ManageKeys_InsertKeys.Minimum;
+            cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem = "--------------------Select--------------------";
+        }
+
+        private void inserDetails(string query)
+        {
+            try
+            {
+                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+                cmd = new OleDbCommand(query, con);
+                con.Open();
+                int n = cmd.ExecuteNonQuery();
+                con.Close();
+                if (n > 0)
+                {
+                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                    MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void resetUpdatePedstal()
+        {
+            //throw new NotImplementedException();
+        }
+
+        private void getPedistalDetails()
+        {
+            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+            try
+            {
+                using (con)
+                {
+                    adapter = new OleDbDataAdapter("SELECT Pedistal_No,Key_No,No_Of_Keys,Location,Active FROM tbl_Pedistal_Details WHERE Pedistal_No = '" + tbox_ManageKeys_UpdateKeysPedistalNo.Text + "'", con);
+                    ds = new DataSet();
+                    adapter.Fill(ds);
+                    pedistalData.Clear();
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        btn_ManageKeys_Search_By_PedistalNo.Enabled = false;
+                        tbox_ManageKeys_UpdateKeysPedistalNo.Enabled = false;
+
+                        pedistalData.Add("Pedistal_No", ds.Tables[0].Rows[0][0].ToString());
+
+                        tbox_ManageKeys_UpdateKeysKeyNo.Text = ds.Tables[0].Rows[0][1].ToString();
+                        pedistalData.Add("Key_No", ds.Tables[0].Rows[0][2].ToString());
+
+                        nemUD_ManageKeys_UpdateKeys.Value = int.Parse(ds.Tables[0].Rows[0][2].ToString());
+                        pedistalData.Add("No_Of_Keys", ds.Tables[0].Rows[0][3].ToString());
+
+                        cbox_ManageKeys_UpdateKeysWhichFloor.SelectedItem = ds.Tables[0].Rows[0][3].ToString();
+                        pedistalData.Add("Which_Floor", ds.Tables[0].Rows[0][3].ToString());
+
+                        if (ds.Tables[0].Rows[0][4].ToString() == "True")
+                        {
+                            rdBtn_PedistalActive.Checked = true;
+                        }
+                        else
+                        {
+                            rdBtn_PedistalInActive.Checked = true;
+                        }
+                        pedistalData.Add("Active", ds.Tables[0].Rows[0][4].ToString());
+                    }
+                    else
+                    {
+                        MessageBox.Show("No pedistal found!", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void updatePedistalDetails()
+        {
+            if (tbox_ManageKeys_UpdateKeysPedistalNo.Enabled == false)
+            {
+                pedistalUpdatedData.Add("Pedistal_No", tbox_ManageKeys_UpdateKeysPedistalNo.Text.Trim());
+                pedistalUpdatedData.Add("Key_No", tbox_ManageKeys_UpdateKeysKeyNo.Text.Trim());
+                pedistalUpdatedData.Add("No_Of_Keys", nemUD_ManageKeys_UpdateKeys.Value.ToString());
+                pedistalUpdatedData.Add("Which_Floor", cbox_ManageKeys_UpdateKeysWhichFloor.SelectedItem.ToString());
+
+                if (rdBtn_PedistalActive.Checked == true)
+                {
+                    pedistalUpdatedData.Add("Active", "True");
+                }
+                else
+                {
+                    pedistalUpdatedData.Add("Active", "False");
+                }
+
+                bool equal = false;
+                if (pedistalData.Count == pedistalUpdatedData.Count) // Require equal count.
+                {
+                    equal = true;
+                    foreach (var pair in pedistalData)
+                    {
+                        string value;
+                        if (pedistalUpdatedData.TryGetValue(pair.Key, out value))
+                        {
+                            if (!value.Equals(pair.Value))
+                            {
+                                equal = false;
+                            }
+                        }
+                        else
+                        {
+                            equal = true;
+                        }
+                    }
+                }
+                pedistalData.Clear();
+                pedistalUpdatedData.Clear();
+                if (equal == true)
+                {
+                    MessageBox.Show("There is no changes in data to update", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    //con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+                    //string query = "UPDATE tbl_Medicine_Details SET Medicine_Name  = '" + tbox_ManageMedicine_UpdateMedicineName.Text.Trim() + "',Stock_Quantity=" + nemUD_ManageMedicine_UpdateMedicineStock.Value + ",Warning_Quantity='" + nemUD_ManageMedicine_UpdateWarning.Value + "',Active=" + active + " WHERE Id =" + tbox_ManageMedicineId.Text + "";
+                    //cmd = new OleDbCommand(query, con);
+                    //con.Open();
+                    //int n = cmd.ExecuteNonQuery();
+                    //con.Close();
+                    //if (n > 0)
+                    //{
+                    //    MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //}
+                }
             }
         }
 

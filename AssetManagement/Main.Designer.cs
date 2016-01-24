@@ -302,7 +302,7 @@
             this.btn_ManageMedicine_Insert_Reset = new System.Windows.Forms.Button();
             this.btn_ManageMedicine_Add = new System.Windows.Forms.Button();
             this.nemUD_ManageMedicine_InsertWarning = new System.Windows.Forms.NumericUpDown();
-            this.lbl__ManageMedicine_InsertWarning = new System.Windows.Forms.Label();
+            this.lbl_ManageMedicine_InsertWarning = new System.Windows.Forms.Label();
             this.nemUD_ManageMedicine_InsertMedicineStock = new System.Windows.Forms.NumericUpDown();
             this.lbl_ManageMedicine_InsertMedicineStock = new System.Windows.Forms.Label();
             this.tbox_ManageMedicine_InsertMedicineName = new System.Windows.Forms.TextBox();
@@ -324,7 +324,33 @@
             this.rd_ManageMedicine_PlotInActiveMedicine = new System.Windows.Forms.RadioButton();
             this.rd_ManageMedicine_PlotActiveMedicine = new System.Windows.Forms.RadioButton();
             this.chrt_Medicine_Stock = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.tb_Page_Settings_Manage_Keys = new System.Windows.Forms.TabPage();
+            this.sp_Cont_Manage_Kyes_Data = new System.Windows.Forms.SplitContainer();
+            this.sp_Cont_Manage_Keys_Add_And_Update = new System.Windows.Forms.SplitContainer();
+            this.nemUD_ManageKeys_InsertKeys = new System.Windows.Forms.NumericUpDown();
+            this.btn_ManageKeys_Insert_Reset = new System.Windows.Forms.Button();
+            this.btn_ManageKeys_Add = new System.Windows.Forms.Button();
+            this.cbox_ManageKeys_InsertKeysWhichFloor = new System.Windows.Forms.ComboBox();
+            this.lbl_ManageKeys_InsertKeysWhichFloor = new System.Windows.Forms.Label();
+            this.lbl_ManageKeys_InsertKeysNoOfKeys = new System.Windows.Forms.Label();
+            this.tbox_ManageKeys_InsertKeysPedistalNo = new System.Windows.Forms.TextBox();
+            this.lbl_ManageKeys_InsertKeysPedistalNo = new System.Windows.Forms.Label();
+            this.tbox_ManageKeys_InsertKeysKeyNo = new System.Windows.Forms.TextBox();
+            this.lbl_InsertKeys = new System.Windows.Forms.Label();
+            this.lbl_ManageKeys_InsertKeysKeyNo = new System.Windows.Forms.Label();
+            this.nemUD_ManageKeys_UpdateKeys = new System.Windows.Forms.NumericUpDown();
+            this.btn_ManageKeys_Update_Reset = new System.Windows.Forms.Button();
+            this.lbl_ManageKeys_UpdateKeysKeyNo = new System.Windows.Forms.Label();
+            this.btn_ManageKeys_Update = new System.Windows.Forms.Button();
+            this.cbox_ManageKeys_UpdateKeysWhichFloor = new System.Windows.Forms.ComboBox();
+            this.tbox_ManageKeys_UpdateKeysKeyNo = new System.Windows.Forms.TextBox();
+            this.lbl_ManageKeys_UpdateKeysWhichFloor = new System.Windows.Forms.Label();
+            this.lbl_ManageKeys_UpdateKeysPedistalNo = new System.Windows.Forms.Label();
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys = new System.Windows.Forms.Label();
+            this.tbox_ManageKeys_UpdateKeysPedistalNo = new System.Windows.Forms.TextBox();
+            this.lbl_UpdateKeys = new System.Windows.Forms.Label();
             this.tb_Page_Settings_Manage_Database = new System.Windows.Forms.TabPage();
+            this.lbl_ConnectedDatabase = new System.Windows.Forms.Label();
             this.lbl_BackupStatus = new System.Windows.Forms.Label();
             this.tbox_Log_Find = new System.Windows.Forms.TextBox();
             this.lbl_Log_Find = new System.Windows.Forms.Label();
@@ -346,7 +372,14 @@
             this.fbDlg_Backup_Database = new System.Windows.Forms.FolderBrowserDialog();
             this.bg_Worker_BackupDatabase = new System.ComponentModel.BackgroundWorker();
             this.bg_Worker_RestoreDatabase = new System.ComponentModel.BackgroundWorker();
-            this.lbl_ConnectedDatabase = new System.Windows.Forms.Label();
+            this.btn_ManageKeys_Search_By_PedistalNo = new System.Windows.Forms.Button();
+            this.lbl_ExistingPedistal = new System.Windows.Forms.Label();
+            this.lbl_ManageKeys_InsertKeys_Select_Floor = new System.Windows.Forms.Label();
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor = new System.Windows.Forms.Label();
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo = new System.Windows.Forms.Label();
+            this.rdBtn_PedistalInActive = new System.Windows.Forms.RadioButton();
+            this.rdBtn_PedistalActive = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
             this.sts_Strip.SuspendLayout();
             this.tbCtrl_Asset_Manager.SuspendLayout();
             this.tb_Page_VisitorDetails.SuspendLayout();
@@ -421,6 +454,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateWarning)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateMedicineStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chrt_Medicine_Stock)).BeginInit();
+            this.tb_Page_Settings_Manage_Keys.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Kyes_Data)).BeginInit();
+            this.sp_Cont_Manage_Kyes_Data.Panel1.SuspendLayout();
+            this.sp_Cont_Manage_Kyes_Data.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Keys_Add_And_Update)).BeginInit();
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.SuspendLayout();
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.SuspendLayout();
+            this.sp_Cont_Manage_Keys_Add_And_Update.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageKeys_InsertKeys)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageKeys_UpdateKeys)).BeginInit();
             this.tb_Page_Settings_Manage_Database.SuspendLayout();
             this.grpbx_Database_Details.SuspendLayout();
             this.SuspendLayout();
@@ -506,7 +549,6 @@
             // 
             // tb_Page_VisitorDetails_InDetails
             // 
-            this.tb_Page_VisitorDetails_InDetails.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tb_Page_VisitorDetails_InDetails.Controls.Add(this.grpBx_InTimeSigneture);
             this.tb_Page_VisitorDetails_InDetails.Controls.Add(this.btn_Reset);
             this.tb_Page_VisitorDetails_InDetails.Controls.Add(this.btn_Save);
@@ -906,7 +948,6 @@
             // 
             // tb_Page_VisitorDetails_OutDetails
             // 
-            this.tb_Page_VisitorDetails_OutDetails.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tb_Page_VisitorDetails_OutDetails.Controls.Add(this.btn_Search);
             this.tb_Page_VisitorDetails_OutDetails.Controls.Add(this.grpBx_OutTimeSigneture);
             this.tb_Page_VisitorDetails_OutDetails.Controls.Add(this.btn_Out_Reset);
@@ -966,6 +1007,7 @@
             // 
             // btn_Out_Update
             // 
+            this.btn_Out_Update.Enabled = false;
             this.btn_Out_Update.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Out_Update.Location = new System.Drawing.Point(625, 465);
             this.btn_Out_Update.Name = "btn_Out_Update";
@@ -1088,6 +1130,7 @@
             this.tbox_Out_Serial_Number.Size = new System.Drawing.Size(39, 20);
             this.tbox_Out_Serial_Number.TabIndex = 27;
             this.tbox_Out_Serial_Number.Visible = false;
+            this.tbox_Out_Serial_Number.TextChanged += new System.EventHandler(this.tbox_Out_Serial_Number_TextChanged);
             // 
             // cBox_Out_Floor_Number
             // 
@@ -2238,6 +2281,7 @@
             // 
             this.sp_Cont_SubTop_Key_Distribution.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sp_Cont_SubTop_Key_Distribution.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_SubTop_Key_Distribution.IsSplitterFixed = true;
             this.sp_Cont_SubTop_Key_Distribution.Location = new System.Drawing.Point(0, 0);
             this.sp_Cont_SubTop_Key_Distribution.Name = "sp_Cont_SubTop_Key_Distribution";
             // 
@@ -2401,6 +2445,7 @@
             // 
             this.sp_Cont_SubBot_Key_Distribution.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sp_Cont_SubBot_Key_Distribution.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_SubBot_Key_Distribution.IsSplitterFixed = true;
             this.sp_Cont_SubBot_Key_Distribution.Location = new System.Drawing.Point(0, 0);
             this.sp_Cont_SubBot_Key_Distribution.Name = "sp_Cont_SubBot_Key_Distribution";
             // 
@@ -2811,6 +2856,7 @@
             // 
             this.tbCtrl_Settings.Controls.Add(this.tb_Page_Settings_Manage_Employee);
             this.tbCtrl_Settings.Controls.Add(this.tb_Page_Settings_Manage_Medicine);
+            this.tbCtrl_Settings.Controls.Add(this.tb_Page_Settings_Manage_Keys);
             this.tbCtrl_Settings.Controls.Add(this.tb_Page_Settings_Manage_Database);
             this.tbCtrl_Settings.Location = new System.Drawing.Point(6, 19);
             this.tbCtrl_Settings.Name = "tbCtrl_Settings";
@@ -3305,7 +3351,7 @@
             this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.btn_ManageMedicine_Insert_Reset);
             this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.btn_ManageMedicine_Add);
             this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.nemUD_ManageMedicine_InsertWarning);
-            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl__ManageMedicine_InsertWarning);
+            this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageMedicine_InsertWarning);
             this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.nemUD_ManageMedicine_InsertMedicineStock);
             this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageMedicine_InsertMedicineStock);
             this.sp_Cont_Manage_Medicine_Add_And_Update.Panel1.Controls.Add(this.tbox_ManageMedicine_InsertMedicineName);
@@ -3345,7 +3391,7 @@
             // 
             this.lbl_ExistingMedicine.AutoSize = true;
             this.lbl_ExistingMedicine.ForeColor = System.Drawing.Color.Red;
-            this.lbl_ExistingMedicine.Location = new System.Drawing.Point(144, 47);
+            this.lbl_ExistingMedicine.Location = new System.Drawing.Point(142, 47);
             this.lbl_ExistingMedicine.Name = "lbl_ExistingMedicine";
             this.lbl_ExistingMedicine.Size = new System.Drawing.Size(0, 13);
             this.lbl_ExistingMedicine.TabIndex = 8;
@@ -3380,11 +3426,6 @@
             2,
             0,
             0});
-            this.nemUD_ManageMedicine_InsertWarning.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nemUD_ManageMedicine_InsertWarning.Name = "nemUD_ManageMedicine_InsertWarning";
             this.nemUD_ManageMedicine_InsertWarning.Size = new System.Drawing.Size(195, 20);
             this.nemUD_ManageMedicine_InsertWarning.TabIndex = 3;
@@ -3394,15 +3435,15 @@
             0,
             0});
             // 
-            // lbl__ManageMedicine_InsertWarning
+            // lbl_ManageMedicine_InsertWarning
             // 
-            this.lbl__ManageMedicine_InsertWarning.AutoSize = true;
-            this.lbl__ManageMedicine_InsertWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl__ManageMedicine_InsertWarning.Location = new System.Drawing.Point(7, 135);
-            this.lbl__ManageMedicine_InsertWarning.Name = "lbl__ManageMedicine_InsertWarning";
-            this.lbl__ManageMedicine_InsertWarning.Size = new System.Drawing.Size(136, 15);
-            this.lbl__ManageMedicine_InsertWarning.TabIndex = 4;
-            this.lbl__ManageMedicine_InsertWarning.Text = "Warnning Quantity : ";
+            this.lbl_ManageMedicine_InsertWarning.AutoSize = true;
+            this.lbl_ManageMedicine_InsertWarning.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageMedicine_InsertWarning.Location = new System.Drawing.Point(7, 135);
+            this.lbl_ManageMedicine_InsertWarning.Name = "lbl_ManageMedicine_InsertWarning";
+            this.lbl_ManageMedicine_InsertWarning.Size = new System.Drawing.Size(136, 15);
+            this.lbl_ManageMedicine_InsertWarning.TabIndex = 4;
+            this.lbl_ManageMedicine_InsertWarning.Text = "Warnning Quantity : ";
             // 
             // nemUD_ManageMedicine_InsertMedicineStock
             // 
@@ -3410,11 +3451,6 @@
             this.nemUD_ManageMedicine_InsertMedicineStock.Maximum = new decimal(new int[] {
             1410065407,
             2,
-            0,
-            0});
-            this.nemUD_ManageMedicine_InsertMedicineStock.Minimum = new decimal(new int[] {
-            1,
-            0,
             0,
             0});
             this.nemUD_ManageMedicine_InsertMedicineStock.Name = "nemUD_ManageMedicine_InsertMedicineStock";
@@ -3519,11 +3555,6 @@
             2,
             0,
             0});
-            this.nemUD_ManageMedicine_UpdateWarning.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nemUD_ManageMedicine_UpdateWarning.Name = "nemUD_ManageMedicine_UpdateWarning";
             this.nemUD_ManageMedicine_UpdateWarning.Size = new System.Drawing.Size(195, 20);
             this.nemUD_ManageMedicine_UpdateWarning.TabIndex = 15;
@@ -3551,11 +3582,6 @@
             this.nemUD_ManageMedicine_UpdateMedicineStock.Maximum = new decimal(new int[] {
             1410065407,
             2,
-            0,
-            0});
-            this.nemUD_ManageMedicine_UpdateMedicineStock.Minimum = new decimal(new int[] {
-            1,
-            0,
             0,
             0});
             this.nemUD_ManageMedicine_UpdateMedicineStock.Name = "nemUD_ManageMedicine_UpdateMedicineStock";
@@ -3664,6 +3690,352 @@
             this.chrt_Medicine_Stock.TabIndex = 0;
             this.chrt_Medicine_Stock.Text = "chart1";
             // 
+            // tb_Page_Settings_Manage_Keys
+            // 
+            this.tb_Page_Settings_Manage_Keys.Controls.Add(this.sp_Cont_Manage_Kyes_Data);
+            this.tb_Page_Settings_Manage_Keys.Location = new System.Drawing.Point(4, 22);
+            this.tb_Page_Settings_Manage_Keys.Name = "tb_Page_Settings_Manage_Keys";
+            this.tb_Page_Settings_Manage_Keys.Padding = new System.Windows.Forms.Padding(3);
+            this.tb_Page_Settings_Manage_Keys.Size = new System.Drawing.Size(861, 515);
+            this.tb_Page_Settings_Manage_Keys.TabIndex = 3;
+            this.tb_Page_Settings_Manage_Keys.Text = "Manage Keys";
+            this.tb_Page_Settings_Manage_Keys.UseVisualStyleBackColor = true;
+            this.tb_Page_Settings_Manage_Keys.Enter += new System.EventHandler(this.tb_Page_Settings_Manage_Keys_Enter);
+            // 
+            // sp_Cont_Manage_Kyes_Data
+            // 
+            this.sp_Cont_Manage_Kyes_Data.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sp_Cont_Manage_Kyes_Data.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_Manage_Kyes_Data.IsSplitterFixed = true;
+            this.sp_Cont_Manage_Kyes_Data.Location = new System.Drawing.Point(3, 3);
+            this.sp_Cont_Manage_Kyes_Data.Name = "sp_Cont_Manage_Kyes_Data";
+            // 
+            // sp_Cont_Manage_Kyes_Data.Panel1
+            // 
+            this.sp_Cont_Manage_Kyes_Data.Panel1.Controls.Add(this.sp_Cont_Manage_Keys_Add_And_Update);
+            this.sp_Cont_Manage_Kyes_Data.Size = new System.Drawing.Size(855, 509);
+            this.sp_Cont_Manage_Kyes_Data.SplitterDistance = 348;
+            this.sp_Cont_Manage_Kyes_Data.TabIndex = 0;
+            // 
+            // sp_Cont_Manage_Keys_Add_And_Update
+            // 
+            this.sp_Cont_Manage_Keys_Add_And_Update.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.sp_Cont_Manage_Keys_Add_And_Update.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sp_Cont_Manage_Keys_Add_And_Update.IsSplitterFixed = true;
+            this.sp_Cont_Manage_Keys_Add_And_Update.Location = new System.Drawing.Point(0, 0);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Name = "sp_Cont_Manage_Keys_Add_And_Update";
+            this.sp_Cont_Manage_Keys_Add_And_Update.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // sp_Cont_Manage_Keys_Add_And_Update.Panel1
+            // 
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageKeys_InsertKeys_Select_Floor);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_ExistingPedistal);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.tbox_ManageKeys_InsertKeysPedistalNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.nemUD_ManageKeys_InsertKeys);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageKeys_InsertKeysPedistalNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.btn_ManageKeys_Insert_Reset);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.btn_ManageKeys_Add);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.cbox_ManageKeys_InsertKeysWhichFloor);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageKeys_InsertKeysWhichFloor);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageKeys_InsertKeysNoOfKeys);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.tbox_ManageKeys_InsertKeysKeyNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_InsertKeys);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.Controls.Add(this.lbl_ManageKeys_InsertKeysKeyNo);
+            // 
+            // sp_Cont_Manage_Keys_Add_And_Update.Panel2
+            // 
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.label1);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.rdBtn_PedistalInActive);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.rdBtn_PedistalActive);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageKeys_UpdateKeys_Select_Floor);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.tbox_ManageKeys_UpdateKeysKeyNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageKeys_UpdateKeysKeyNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.nemUD_ManageKeys_UpdateKeys);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.btn_ManageKeys_Update_Reset);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.btn_ManageKeys_Update);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.btn_ManageKeys_Search_By_PedistalNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.cbox_ManageKeys_UpdateKeysWhichFloor);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageKeys_UpdateKeysWhichFloor);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageKeys_UpdateKeysPedistalNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.lbl_ManageKeys_UpdateKeysNoOfKeys);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.tbox_ManageKeys_UpdateKeysPedistalNo);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.Controls.Add(this.lbl_UpdateKeys);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Size = new System.Drawing.Size(348, 509);
+            this.sp_Cont_Manage_Keys_Add_And_Update.SplitterDistance = 242;
+            this.sp_Cont_Manage_Keys_Add_And_Update.TabIndex = 0;
+            // 
+            // nemUD_ManageKeys_InsertKeys
+            // 
+            this.nemUD_ManageKeys_InsertKeys.Location = new System.Drawing.Point(123, 116);
+            this.nemUD_ManageKeys_InsertKeys.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.nemUD_ManageKeys_InsertKeys.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nemUD_ManageKeys_InsertKeys.Name = "nemUD_ManageKeys_InsertKeys";
+            this.nemUD_ManageKeys_InsertKeys.Size = new System.Drawing.Size(204, 20);
+            this.nemUD_ManageKeys_InsertKeys.TabIndex = 3;
+            this.nemUD_ManageKeys_InsertKeys.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // btn_ManageKeys_Insert_Reset
+            // 
+            this.btn_ManageKeys_Insert_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageKeys_Insert_Reset.Location = new System.Drawing.Point(240, 188);
+            this.btn_ManageKeys_Insert_Reset.Name = "btn_ManageKeys_Insert_Reset";
+            this.btn_ManageKeys_Insert_Reset.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageKeys_Insert_Reset.TabIndex = 6;
+            this.btn_ManageKeys_Insert_Reset.Text = "Reset";
+            this.btn_ManageKeys_Insert_Reset.UseVisualStyleBackColor = true;
+            this.btn_ManageKeys_Insert_Reset.Click += new System.EventHandler(this.btn_ManageKeys_Insert_Reset_Click);
+            // 
+            // btn_ManageKeys_Add
+            // 
+            this.btn_ManageKeys_Add.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageKeys_Add.Location = new System.Drawing.Point(147, 188);
+            this.btn_ManageKeys_Add.Name = "btn_ManageKeys_Add";
+            this.btn_ManageKeys_Add.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageKeys_Add.TabIndex = 5;
+            this.btn_ManageKeys_Add.Text = "Insert";
+            this.btn_ManageKeys_Add.UseVisualStyleBackColor = true;
+            this.btn_ManageKeys_Add.Click += new System.EventHandler(this.btn_ManageKeys_Add_Click);
+            // 
+            // cbox_ManageKeys_InsertKeysWhichFloor
+            // 
+            this.cbox_ManageKeys_InsertKeysWhichFloor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbox_ManageKeys_InsertKeysWhichFloor.FormattingEnabled = true;
+            this.cbox_ManageKeys_InsertKeysWhichFloor.Items.AddRange(new object[] {
+            "--------------------Select--------------------",
+            "Floor - G",
+            "Floor - 1",
+            "Floor - 2",
+            "Floor - 3",
+            "Floor - 4",
+            "Floor - 5",
+            "Floor - 6",
+            "Floor - 7",
+            "Floor - 8",
+            "Floor - 9"});
+            this.cbox_ManageKeys_InsertKeysWhichFloor.Location = new System.Drawing.Point(123, 150);
+            this.cbox_ManageKeys_InsertKeysWhichFloor.Name = "cbox_ManageKeys_InsertKeysWhichFloor";
+            this.cbox_ManageKeys_InsertKeysWhichFloor.Size = new System.Drawing.Size(204, 21);
+            this.cbox_ManageKeys_InsertKeysWhichFloor.TabIndex = 4;
+            // 
+            // lbl_ManageKeys_InsertKeysWhichFloor
+            // 
+            this.lbl_ManageKeys_InsertKeysWhichFloor.AutoSize = true;
+            this.lbl_ManageKeys_InsertKeysWhichFloor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_InsertKeysWhichFloor.Location = new System.Drawing.Point(52, 153);
+            this.lbl_ManageKeys_InsertKeysWhichFloor.Name = "lbl_ManageKeys_InsertKeysWhichFloor";
+            this.lbl_ManageKeys_InsertKeysWhichFloor.Size = new System.Drawing.Size(64, 13);
+            this.lbl_ManageKeys_InsertKeysWhichFloor.TabIndex = 17;
+            this.lbl_ManageKeys_InsertKeysWhichFloor.Text = "Location :";
+            // 
+            // lbl_ManageKeys_InsertKeysNoOfKeys
+            // 
+            this.lbl_ManageKeys_InsertKeysNoOfKeys.AutoSize = true;
+            this.lbl_ManageKeys_InsertKeysNoOfKeys.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_InsertKeysNoOfKeys.Location = new System.Drawing.Point(37, 118);
+            this.lbl_ManageKeys_InsertKeysNoOfKeys.Name = "lbl_ManageKeys_InsertKeysNoOfKeys";
+            this.lbl_ManageKeys_InsertKeysNoOfKeys.Size = new System.Drawing.Size(79, 13);
+            this.lbl_ManageKeys_InsertKeysNoOfKeys.TabIndex = 15;
+            this.lbl_ManageKeys_InsertKeysNoOfKeys.Text = "No Of Keys :";
+            // 
+            // tbox_ManageKeys_InsertKeysPedistalNo
+            // 
+            this.tbox_ManageKeys_InsertKeysPedistalNo.Location = new System.Drawing.Point(122, 41);
+            this.tbox_ManageKeys_InsertKeysPedistalNo.Name = "tbox_ManageKeys_InsertKeysPedistalNo";
+            this.tbox_ManageKeys_InsertKeysPedistalNo.Size = new System.Drawing.Size(204, 20);
+            this.tbox_ManageKeys_InsertKeysPedistalNo.TabIndex = 1;
+            // 
+            // lbl_ManageKeys_InsertKeysPedistalNo
+            // 
+            this.lbl_ManageKeys_InsertKeysPedistalNo.AutoSize = true;
+            this.lbl_ManageKeys_InsertKeysPedistalNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_InsertKeysPedistalNo.Location = new System.Drawing.Point(36, 44);
+            this.lbl_ManageKeys_InsertKeysPedistalNo.Name = "lbl_ManageKeys_InsertKeysPedistalNo";
+            this.lbl_ManageKeys_InsertKeysPedistalNo.Size = new System.Drawing.Size(80, 13);
+            this.lbl_ManageKeys_InsertKeysPedistalNo.TabIndex = 13;
+            this.lbl_ManageKeys_InsertKeysPedistalNo.Text = "Pedistal No :";
+            // 
+            // tbox_ManageKeys_InsertKeysKeyNo
+            // 
+            this.tbox_ManageKeys_InsertKeysKeyNo.Location = new System.Drawing.Point(122, 78);
+            this.tbox_ManageKeys_InsertKeysKeyNo.Name = "tbox_ManageKeys_InsertKeysKeyNo";
+            this.tbox_ManageKeys_InsertKeysKeyNo.Size = new System.Drawing.Size(204, 20);
+            this.tbox_ManageKeys_InsertKeysKeyNo.TabIndex = 2;
+            // 
+            // lbl_InsertKeys
+            // 
+            this.lbl_InsertKeys.AutoSize = true;
+            this.lbl_InsertKeys.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_InsertKeys.ForeColor = System.Drawing.Color.Blue;
+            this.lbl_InsertKeys.Location = new System.Drawing.Point(-1, 0);
+            this.lbl_InsertKeys.Name = "lbl_InsertKeys";
+            this.lbl_InsertKeys.Size = new System.Drawing.Size(198, 25);
+            this.lbl_InsertKeys.TabIndex = 11;
+            this.lbl_InsertKeys.Text = "Insert Key Details";
+            // 
+            // lbl_ManageKeys_InsertKeysKeyNo
+            // 
+            this.lbl_ManageKeys_InsertKeysKeyNo.AutoSize = true;
+            this.lbl_ManageKeys_InsertKeysKeyNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_InsertKeysKeyNo.Location = new System.Drawing.Point(60, 81);
+            this.lbl_ManageKeys_InsertKeysKeyNo.Name = "lbl_ManageKeys_InsertKeysKeyNo";
+            this.lbl_ManageKeys_InsertKeysKeyNo.Size = new System.Drawing.Size(56, 13);
+            this.lbl_ManageKeys_InsertKeysKeyNo.TabIndex = 0;
+            this.lbl_ManageKeys_InsertKeysKeyNo.Text = "Key No :";
+            // 
+            // nemUD_ManageKeys_UpdateKeys
+            // 
+            this.nemUD_ManageKeys_UpdateKeys.Enabled = false;
+            this.nemUD_ManageKeys_UpdateKeys.Location = new System.Drawing.Point(123, 112);
+            this.nemUD_ManageKeys_UpdateKeys.Maximum = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.nemUD_ManageKeys_UpdateKeys.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nemUD_ManageKeys_UpdateKeys.Name = "nemUD_ManageKeys_UpdateKeys";
+            this.nemUD_ManageKeys_UpdateKeys.Size = new System.Drawing.Size(204, 20);
+            this.nemUD_ManageKeys_UpdateKeys.TabIndex = 10;
+            this.nemUD_ManageKeys_UpdateKeys.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // btn_ManageKeys_Update_Reset
+            // 
+            this.btn_ManageKeys_Update_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageKeys_Update_Reset.Location = new System.Drawing.Point(240, 207);
+            this.btn_ManageKeys_Update_Reset.Name = "btn_ManageKeys_Update_Reset";
+            this.btn_ManageKeys_Update_Reset.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageKeys_Update_Reset.TabIndex = 13;
+            this.btn_ManageKeys_Update_Reset.Text = "Reset";
+            this.btn_ManageKeys_Update_Reset.UseVisualStyleBackColor = true;
+            this.btn_ManageKeys_Update_Reset.Click += new System.EventHandler(this.btn_ManageKeys_Update_Reset_Click);
+            // 
+            // lbl_ManageKeys_UpdateKeysKeyNo
+            // 
+            this.lbl_ManageKeys_UpdateKeysKeyNo.AutoSize = true;
+            this.lbl_ManageKeys_UpdateKeysKeyNo.Enabled = false;
+            this.lbl_ManageKeys_UpdateKeysKeyNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_UpdateKeysKeyNo.Location = new System.Drawing.Point(60, 81);
+            this.lbl_ManageKeys_UpdateKeysKeyNo.Name = "lbl_ManageKeys_UpdateKeysKeyNo";
+            this.lbl_ManageKeys_UpdateKeysKeyNo.Size = new System.Drawing.Size(56, 13);
+            this.lbl_ManageKeys_UpdateKeysKeyNo.TabIndex = 22;
+            this.lbl_ManageKeys_UpdateKeysKeyNo.Text = "Key No :";
+            // 
+            // btn_ManageKeys_Update
+            // 
+            this.btn_ManageKeys_Update.Enabled = false;
+            this.btn_ManageKeys_Update.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_ManageKeys_Update.Location = new System.Drawing.Point(146, 207);
+            this.btn_ManageKeys_Update.Name = "btn_ManageKeys_Update";
+            this.btn_ManageKeys_Update.Size = new System.Drawing.Size(87, 38);
+            this.btn_ManageKeys_Update.TabIndex = 12;
+            this.btn_ManageKeys_Update.Text = "Update";
+            this.btn_ManageKeys_Update.UseVisualStyleBackColor = true;
+            this.btn_ManageKeys_Update.Click += new System.EventHandler(this.btn_ManageKeys_Update_Click);
+            // 
+            // cbox_ManageKeys_UpdateKeysWhichFloor
+            // 
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.Enabled = false;
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.FormattingEnabled = true;
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.Items.AddRange(new object[] {
+            "--------------------Select--------------------",
+            "Floor - G",
+            "Floor - 1",
+            "Floor - 2",
+            "Floor - 3",
+            "Floor - 4",
+            "Floor - 5",
+            "Floor - 6",
+            "Floor - 7",
+            "Floor - 8",
+            "Floor - 9"});
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.Location = new System.Drawing.Point(123, 152);
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.Name = "cbox_ManageKeys_UpdateKeysWhichFloor";
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.Size = new System.Drawing.Size(204, 21);
+            this.cbox_ManageKeys_UpdateKeysWhichFloor.TabIndex = 11;
+            // 
+            // tbox_ManageKeys_UpdateKeysKeyNo
+            // 
+            this.tbox_ManageKeys_UpdateKeysKeyNo.Enabled = false;
+            this.tbox_ManageKeys_UpdateKeysKeyNo.Location = new System.Drawing.Point(122, 78);
+            this.tbox_ManageKeys_UpdateKeysKeyNo.Name = "tbox_ManageKeys_UpdateKeysKeyNo";
+            this.tbox_ManageKeys_UpdateKeysKeyNo.Size = new System.Drawing.Size(204, 20);
+            this.tbox_ManageKeys_UpdateKeysKeyNo.TabIndex = 9;
+            // 
+            // lbl_ManageKeys_UpdateKeysWhichFloor
+            // 
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.AutoSize = true;
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.Enabled = false;
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.Location = new System.Drawing.Point(52, 155);
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.Name = "lbl_ManageKeys_UpdateKeysWhichFloor";
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.Size = new System.Drawing.Size(64, 13);
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.TabIndex = 27;
+            this.lbl_ManageKeys_UpdateKeysWhichFloor.Text = "Location :";
+            // 
+            // lbl_ManageKeys_UpdateKeysPedistalNo
+            // 
+            this.lbl_ManageKeys_UpdateKeysPedistalNo.AutoSize = true;
+            this.lbl_ManageKeys_UpdateKeysPedistalNo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_UpdateKeysPedistalNo.Location = new System.Drawing.Point(35, 37);
+            this.lbl_ManageKeys_UpdateKeysPedistalNo.Name = "lbl_ManageKeys_UpdateKeysPedistalNo";
+            this.lbl_ManageKeys_UpdateKeysPedistalNo.Size = new System.Drawing.Size(80, 13);
+            this.lbl_ManageKeys_UpdateKeysPedistalNo.TabIndex = 24;
+            this.lbl_ManageKeys_UpdateKeysPedistalNo.Text = "Pedistal No :";
+            // 
+            // lbl_ManageKeys_UpdateKeysNoOfKeys
+            // 
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.AutoSize = true;
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.Enabled = false;
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.Location = new System.Drawing.Point(37, 114);
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.Name = "lbl_ManageKeys_UpdateKeysNoOfKeys";
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.Size = new System.Drawing.Size(79, 13);
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.TabIndex = 26;
+            this.lbl_ManageKeys_UpdateKeysNoOfKeys.Text = "No Of Keys :";
+            // 
+            // tbox_ManageKeys_UpdateKeysPedistalNo
+            // 
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.Location = new System.Drawing.Point(122, 34);
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.Name = "tbox_ManageKeys_UpdateKeysPedistalNo";
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.Size = new System.Drawing.Size(141, 20);
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.TabIndex = 7;
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.EnabledChanged += new System.EventHandler(this.tbox_ManageKeys_UpdateKeysPedistalNo_EnabledChanged);
+            this.tbox_ManageKeys_UpdateKeysPedistalNo.TextChanged += new System.EventHandler(this.tbox_ManageKeys_UpdateKeysPedistalNo_TextChanged);
+            // 
+            // lbl_UpdateKeys
+            // 
+            this.lbl_UpdateKeys.AutoSize = true;
+            this.lbl_UpdateKeys.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_UpdateKeys.ForeColor = System.Drawing.Color.Blue;
+            this.lbl_UpdateKeys.Location = new System.Drawing.Point(-1, 0);
+            this.lbl_UpdateKeys.Name = "lbl_UpdateKeys";
+            this.lbl_UpdateKeys.Size = new System.Drawing.Size(214, 25);
+            this.lbl_UpdateKeys.TabIndex = 12;
+            this.lbl_UpdateKeys.Text = "Update Key Details";
+            // 
             // tb_Page_Settings_Manage_Database
             // 
             this.tb_Page_Settings_Manage_Database.Controls.Add(this.lbl_ConnectedDatabase);
@@ -3686,6 +4058,16 @@
             this.tb_Page_Settings_Manage_Database.Text = "Manage Database And Password";
             this.tb_Page_Settings_Manage_Database.UseVisualStyleBackColor = true;
             this.tb_Page_Settings_Manage_Database.Enter += new System.EventHandler(this.tb_Page_Settings_Manage_Database_Enter);
+            // 
+            // lbl_ConnectedDatabase
+            // 
+            this.lbl_ConnectedDatabase.AutoSize = true;
+            this.lbl_ConnectedDatabase.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ConnectedDatabase.Location = new System.Drawing.Point(6, 117);
+            this.lbl_ConnectedDatabase.Name = "lbl_ConnectedDatabase";
+            this.lbl_ConnectedDatabase.Size = new System.Drawing.Size(220, 18);
+            this.lbl_ConnectedDatabase.TabIndex = 11;
+            this.lbl_ConnectedDatabase.Text = "Connected Database Location : ";
             // 
             // lbl_BackupStatus
             // 
@@ -3856,15 +4238,90 @@
             this.bg_Worker_RestoreDatabase.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bg_Worker_RestoreDatabase_ProgressChanged);
             this.bg_Worker_RestoreDatabase.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bg_Worker_RestoreDatabase_RunWorkerCompleted);
             // 
-            // lbl_ConnectedDatabase
+            // btn_ManageKeys_Search_By_PedistalNo
             // 
-            this.lbl_ConnectedDatabase.AutoSize = true;
-            this.lbl_ConnectedDatabase.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_ConnectedDatabase.Location = new System.Drawing.Point(6, 117);
-            this.lbl_ConnectedDatabase.Name = "lbl_ConnectedDatabase";
-            this.lbl_ConnectedDatabase.Size = new System.Drawing.Size(220, 18);
-            this.lbl_ConnectedDatabase.TabIndex = 11;
-            this.lbl_ConnectedDatabase.Text = "Connected Database Location : ";
+            this.btn_ManageKeys_Search_By_PedistalNo.Enabled = false;
+            this.btn_ManageKeys_Search_By_PedistalNo.Location = new System.Drawing.Point(270, 34);
+            this.btn_ManageKeys_Search_By_PedistalNo.Name = "btn_ManageKeys_Search_By_PedistalNo";
+            this.btn_ManageKeys_Search_By_PedistalNo.Size = new System.Drawing.Size(57, 20);
+            this.btn_ManageKeys_Search_By_PedistalNo.TabIndex = 8;
+            this.btn_ManageKeys_Search_By_PedistalNo.Text = "Search";
+            this.btn_ManageKeys_Search_By_PedistalNo.UseVisualStyleBackColor = true;
+            this.btn_ManageKeys_Search_By_PedistalNo.Click += new System.EventHandler(this.btn_ManageKeys_Search_By_PedistalNo_Click);
+            // 
+            // lbl_ExistingPedistal
+            // 
+            this.lbl_ExistingPedistal.AutoSize = true;
+            this.lbl_ExistingPedistal.ForeColor = System.Drawing.Color.Red;
+            this.lbl_ExistingPedistal.Location = new System.Drawing.Point(121, 25);
+            this.lbl_ExistingPedistal.Name = "lbl_ExistingPedistal";
+            this.lbl_ExistingPedistal.Size = new System.Drawing.Size(0, 13);
+            this.lbl_ExistingPedistal.TabIndex = 22;
+            // 
+            // lbl_ManageKeys_InsertKeys_Select_Floor
+            // 
+            this.lbl_ManageKeys_InsertKeys_Select_Floor.AutoSize = true;
+            this.lbl_ManageKeys_InsertKeys_Select_Floor.ForeColor = System.Drawing.Color.Red;
+            this.lbl_ManageKeys_InsertKeys_Select_Floor.Location = new System.Drawing.Point(124, 174);
+            this.lbl_ManageKeys_InsertKeys_Select_Floor.Name = "lbl_ManageKeys_InsertKeys_Select_Floor";
+            this.lbl_ManageKeys_InsertKeys_Select_Floor.Size = new System.Drawing.Size(0, 13);
+            this.lbl_ManageKeys_InsertKeys_Select_Floor.TabIndex = 23;
+            // 
+            // lbl_ManageKeys_UpdateKeys_Select_Floor
+            // 
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor.AutoSize = true;
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor.ForeColor = System.Drawing.Color.Red;
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor.Location = new System.Drawing.Point(124, 135);
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor.Name = "lbl_ManageKeys_UpdateKeys_Select_Floor";
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor.Size = new System.Drawing.Size(19, 13);
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor.TabIndex = 34;
+            this.lbl_ManageKeys_UpdateKeys_Select_Floor.Text = "kk";
+            // 
+            // lbl_ManageKeys_InsertKeys_InsertKeysKeyNo
+            // 
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.AutoSize = true;
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.ForeColor = System.Drawing.Color.Red;
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.Location = new System.Drawing.Point(124, 101);
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.Name = "lbl_ManageKeys_InsertKeys_InsertKeysKeyNo";
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.Size = new System.Drawing.Size(19, 13);
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.TabIndex = 24;
+            this.lbl_ManageKeys_InsertKeys_InsertKeysKeyNo.Text = "kk";
+            // 
+            // rdBtn_PedistalInActive
+            // 
+            this.rdBtn_PedistalInActive.AutoSize = true;
+            this.rdBtn_PedistalInActive.Enabled = false;
+            this.rdBtn_PedistalInActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdBtn_PedistalInActive.Location = new System.Drawing.Point(183, 183);
+            this.rdBtn_PedistalInActive.Name = "rdBtn_PedistalInActive";
+            this.rdBtn_PedistalInActive.Size = new System.Drawing.Size(76, 17);
+            this.rdBtn_PedistalInActive.TabIndex = 36;
+            this.rdBtn_PedistalInActive.TabStop = true;
+            this.rdBtn_PedistalInActive.Text = "In-Active";
+            this.rdBtn_PedistalInActive.UseVisualStyleBackColor = true;
+            // 
+            // rdBtn_PedistalActive
+            // 
+            this.rdBtn_PedistalActive.AutoSize = true;
+            this.rdBtn_PedistalActive.Enabled = false;
+            this.rdBtn_PedistalActive.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rdBtn_PedistalActive.Location = new System.Drawing.Point(122, 183);
+            this.rdBtn_PedistalActive.Name = "rdBtn_PedistalActive";
+            this.rdBtn_PedistalActive.Size = new System.Drawing.Size(61, 17);
+            this.rdBtn_PedistalActive.TabIndex = 35;
+            this.rdBtn_PedistalActive.TabStop = true;
+            this.rdBtn_PedistalActive.Text = "Active";
+            this.rdBtn_PedistalActive.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(124, 59);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(19, 13);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "kk";
             // 
             // frm_Main
             // 
@@ -3975,6 +4432,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateWarning)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageMedicine_UpdateMedicineStock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chrt_Medicine_Stock)).EndInit();
+            this.tb_Page_Settings_Manage_Keys.ResumeLayout(false);
+            this.sp_Cont_Manage_Kyes_Data.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Kyes_Data)).EndInit();
+            this.sp_Cont_Manage_Kyes_Data.ResumeLayout(false);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.ResumeLayout(false);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel1.PerformLayout();
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.ResumeLayout(false);
+            this.sp_Cont_Manage_Keys_Add_And_Update.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sp_Cont_Manage_Keys_Add_And_Update)).EndInit();
+            this.sp_Cont_Manage_Keys_Add_And_Update.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageKeys_InsertKeys)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nemUD_ManageKeys_UpdateKeys)).EndInit();
             this.tb_Page_Settings_Manage_Database.ResumeLayout(false);
             this.tb_Page_Settings_Manage_Database.PerformLayout();
             this.grpbx_Database_Details.ResumeLayout(false);
@@ -4235,7 +4704,7 @@
         private System.Windows.Forms.Button btn_ManageMedicine_Insert_Reset;
         private System.Windows.Forms.Button btn_ManageMedicine_Add;
         private System.Windows.Forms.NumericUpDown nemUD_ManageMedicine_InsertWarning;
-        private System.Windows.Forms.Label lbl__ManageMedicine_InsertWarning;
+        private System.Windows.Forms.Label lbl_ManageMedicine_InsertWarning;
         private System.Windows.Forms.NumericUpDown nemUD_ManageMedicine_InsertMedicineStock;
         private System.Windows.Forms.Label lbl_ManageMedicine_InsertMedicineStock;
         private System.Windows.Forms.TextBox tbox_ManageMedicine_InsertMedicineName;
@@ -4303,6 +4772,39 @@
         private System.Windows.Forms.Label lbl_KeyDistribution_TimeDetails;
         private System.Windows.Forms.Label lbl_Key_Error;
         private System.Windows.Forms.Label lbl_ConnectedDatabase;
+        private System.Windows.Forms.TabPage tb_Page_Settings_Manage_Keys;
+        private System.Windows.Forms.SplitContainer sp_Cont_Manage_Kyes_Data;
+        private System.Windows.Forms.SplitContainer sp_Cont_Manage_Keys_Add_And_Update;
+        private System.Windows.Forms.ComboBox cbox_ManageKeys_InsertKeysWhichFloor;
+        private System.Windows.Forms.Label lbl_ManageKeys_InsertKeysWhichFloor;
+        private System.Windows.Forms.Label lbl_ManageKeys_InsertKeysNoOfKeys;
+        private System.Windows.Forms.TextBox tbox_ManageKeys_InsertKeysPedistalNo;
+        private System.Windows.Forms.Label lbl_ManageKeys_InsertKeysPedistalNo;
+        private System.Windows.Forms.TextBox tbox_ManageKeys_InsertKeysKeyNo;
+        private System.Windows.Forms.Label lbl_InsertKeys;
+        private System.Windows.Forms.Label lbl_ManageKeys_InsertKeysKeyNo;
+        private System.Windows.Forms.Label lbl_UpdateKeys;
+        private System.Windows.Forms.Button btn_ManageKeys_Insert_Reset;
+        private System.Windows.Forms.Button btn_ManageKeys_Add;
+        private System.Windows.Forms.NumericUpDown nemUD_ManageKeys_InsertKeys;
+        private System.Windows.Forms.NumericUpDown nemUD_ManageKeys_UpdateKeys;
+        private System.Windows.Forms.Button btn_ManageKeys_Update_Reset;
+        private System.Windows.Forms.Button btn_ManageKeys_Update;
+        private System.Windows.Forms.ComboBox cbox_ManageKeys_UpdateKeysWhichFloor;
+        private System.Windows.Forms.Label lbl_ManageKeys_UpdateKeysWhichFloor;
+        private System.Windows.Forms.Label lbl_ManageKeys_UpdateKeysNoOfKeys;
+        private System.Windows.Forms.TextBox tbox_ManageKeys_UpdateKeysPedistalNo;
+        private System.Windows.Forms.Label lbl_ManageKeys_UpdateKeysPedistalNo;
+        private System.Windows.Forms.TextBox tbox_ManageKeys_UpdateKeysKeyNo;
+        private System.Windows.Forms.Label lbl_ManageKeys_UpdateKeysKeyNo;
+        private System.Windows.Forms.Button btn_ManageKeys_Search_By_PedistalNo;
+        private System.Windows.Forms.Label lbl_ExistingPedistal;
+        private System.Windows.Forms.Label lbl_ManageKeys_InsertKeys_Select_Floor;
+        private System.Windows.Forms.Label lbl_ManageKeys_UpdateKeys_Select_Floor;
+        private System.Windows.Forms.Label lbl_ManageKeys_InsertKeys_InsertKeysKeyNo;
+        private System.Windows.Forms.RadioButton rdBtn_PedistalInActive;
+        private System.Windows.Forms.RadioButton rdBtn_PedistalActive;
+        private System.Windows.Forms.Label label1;
     }
 }
 
