@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace AssetManagement
+namespace AssetManagement.HelperClasses
 {
     public static class RegManager
     {

@@ -90,6 +90,7 @@
       <DependentUpon>AdminLoginDetailsChanger.cs</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\autoCompleteTextbox.cs" />
+    <Compile Include="HelperClasses\DatabaseOperation.cs" />
     <Compile Include="HelperClasses\Encrypter.cs" />
     <Compile Include="HelperClasses\ExcelUtlity.cs" />
     <Compile Include="DatabaseSelector.cs">

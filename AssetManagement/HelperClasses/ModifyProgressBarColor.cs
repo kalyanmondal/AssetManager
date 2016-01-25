@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace AssetManagement
+namespace AssetManagement.HelperClasses
 {
     public static class ModifyProgressBarColor
     {

@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace AssetManagement
+namespace AssetManagement.HelperClasses
 {
     internal static class Encrypter
     {

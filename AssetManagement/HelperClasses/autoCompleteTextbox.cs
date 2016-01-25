@@ -2,7 +2,7 @@
 using System.Data.OleDb;
 using System.Windows.Forms;
 
-namespace AssetManagement
+namespace AssetManagement.HelperClasses
 {
     public static class autoCompleteTextbox
     {

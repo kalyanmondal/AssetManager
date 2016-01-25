@@ -1,6 +1,6 @@
 ﻿using WebCam_Capture;
 
-namespace AssetManagement
+namespace AssetManagement.HelperClasses
 {
     public class WebCam
     {

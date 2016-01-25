@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AssetManagement.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -208,13 +209,7 @@ namespace AssetManagement
 
         private void btn_Out_Update_Click(object sender, EventArgs e)
         {
-            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-            string query = "UPDATE tbl_Visitor_details SET OUT_TIME  = '" + tbox_Out_Time.Text + "' WHERE Serial_Number =" + tbox_Out_Serial_Number.Text + "";
-            cmd = new OleDbCommand(query, con);
-            con.Open();
-            int n = cmd.ExecuteNonQuery();
-            con.Close();
-            if (n > 0)
+            if (DatabaseOperation.updateData("UPDATE tbl_Visitor_details SET OUT_TIME  = '" + tbox_Out_Time.Text + "' WHERE Serial_Number =" + tbox_Out_Serial_Number.Text + "") > 0)
             {
                 MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 resetVisitorFrom(2);
@@ -380,12 +375,7 @@ namespace AssetManagement
 
         private void btn_Inter_Office_Return_Click(object sender, EventArgs e)
         {
-            string query = "UPDATE tbl_Inter_Office_Visitor SET Return_Date  = '" + tbox_InterOffce_Return_Return_Date.Text + "', Return_Time = '" + tbox_InterOffce_Return_Return_Time.Text + "' WHERE Serial_No_Inter_Office =" + tbox_InterOffice_Serial_Number.Text + "";
-            cmd = new OleDbCommand(query, con);
-            con.Open();
-            int n = cmd.ExecuteNonQuery();
-            con.Close();
-            if (n > 0)
+            if (DatabaseOperation.updateData("UPDATE tbl_Inter_Office_Visitor SET Return_Date  = '" + tbox_InterOffce_Return_Return_Date.Text + "', Return_Time = '" + tbox_InterOffce_Return_Return_Time.Text + "' WHERE Serial_No_Inter_Office =" + tbox_InterOffice_Serial_Number.Text + "") > 0)
             {
                 MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 resetVisitorFrom(3);
@@ -494,26 +484,8 @@ namespace AssetManagement
                     employeeUpdatedData.Add("Active", "False");
                 }
 
-                bool equal = false;
-                if (employeeData.Count == employeeUpdatedData.Count) // Require equal count.
-                {
-                    equal = true;
-                    foreach (var pair in employeeData)
-                    {
-                        string value;
-                        if (employeeUpdatedData.TryGetValue(pair.Key, out value))
-                        {
-                            if (!value.Equals(pair.Value))
-                            {
-                                equal = false;
-                            }
-                        }
-                        else
-                        {
-                            equal = true;
-                        }
-                    }
-                }
+                bool equal = compareData(employeeData, employeeUpdatedData);
+
                 employeeUpdatedData.Clear();
                 if (equal == true)
                 {
@@ -530,13 +502,8 @@ namespace AssetManagement
                     {
                         active = false;
                     }
-                    con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                    string query = "UPDATE tbl_Employee_Details SET Employee_Id  = '" + tbox_ManageEmployee_EmployeeId.Text.Trim() + "',Employee_Name='" + tbox_ManageEmployee_EmployeeName.Text.Trim() + "',Employee_Email='" + tbox_ManageEmployee_EmployeeEmail.Text.Trim() + "',Extension='" + tbox_ManageEmployee_EmployeeExtection.Text.Trim() + "',Personal_Mobile='" + tbox_ManageEmployee_EmployeePersonalMobile.Text.Trim() + "',Personal_Email='" + tbox_ManageEmployee_EmployeePersonalEmail.Text.Trim() + "',Official_Mobile='" + tbox_ManageEmployee_EmployeeOfficialMobile.Text.Trim() + "',Department='" + tbox_ManageEmployee_EmployeeDepartment.Text.Trim() + "',Company='" + tbox_ManageEmployee_EmployeeCompany.Text.Trim() + "',Current_Manager_Name='" + tbox_ManageEmployee_EmployeeManager.Text.Trim() + "',Current_Manager_Employee_Id='" + tbox_ManageEmployee_EmployeeManagerId.Text.Trim() + "',Location='" + tbox_ManageEmployee_EmployeeLocation.Text.Trim() + "',Active=" + active + " WHERE Id =" + tbox_Id.Text + "";
-                    cmd = new OleDbCommand(query, con);
-                    con.Open();
-                    int n = cmd.ExecuteNonQuery();
-                    con.Close();
-                    if (n > 0)
+
+                    if (DatabaseOperation.updateData("UPDATE tbl_Employee_Details SET Employee_Id  = '" + tbox_ManageEmployee_EmployeeId.Text.Trim() + "',Employee_Name='" + tbox_ManageEmployee_EmployeeName.Text.Trim() + "',Employee_Email='" + tbox_ManageEmployee_EmployeeEmail.Text.Trim() + "',Extension='" + tbox_ManageEmployee_EmployeeExtection.Text.Trim() + "',Personal_Mobile='" + tbox_ManageEmployee_EmployeePersonalMobile.Text.Trim() + "',Personal_Email='" + tbox_ManageEmployee_EmployeePersonalEmail.Text.Trim() + "',Official_Mobile='" + tbox_ManageEmployee_EmployeeOfficialMobile.Text.Trim() + "',Department='" + tbox_ManageEmployee_EmployeeDepartment.Text.Trim() + "',Company='" + tbox_ManageEmployee_EmployeeCompany.Text.Trim() + "',Current_Manager_Name='" + tbox_ManageEmployee_EmployeeManager.Text.Trim() + "',Current_Manager_Employee_Id='" + tbox_ManageEmployee_EmployeeManagerId.Text.Trim() + "',Location='" + tbox_ManageEmployee_EmployeeLocation.Text.Trim() + "',Active=" + active + " WHERE Id =" + tbox_Id.Text + "") > 0)
                     {
                         MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         resetVisitorFrom(2);
@@ -566,7 +533,7 @@ namespace AssetManagement
             else
             {
                 lbl_ExistingMedicine.Text = string.Empty;
-                inserDetails("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)");
+                DatabaseOperation.insertDetails("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)");
                 resetAddMedicine();
                 plotGraph("True");
             }
@@ -755,7 +722,7 @@ namespace AssetManagement
             }
             if (validatPedistalNo && validateKeyNo && validateFloor)
             {
-                inserDetails("INSERT INTO tbl_Pedistal_Details (Pedistal_No,Key_No,No_Of_Keys,Location,Active) VALUES ('" + tbox_ManageKeys_InsertKeysPedistalNo.Text.Trim() + "','" + tbox_ManageKeys_InsertKeysKeyNo.Text.Trim() + "','" + nemUD_ManageKeys_InsertKeys.Value + "','" + cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem + "',True)");
+                DatabaseOperation.insertDetails("INSERT INTO tbl_Pedistal_Details (Pedistal_No,Key_No,No_Of_Keys,Location,Active) VALUES ('" + tbox_ManageKeys_InsertKeysPedistalNo.Text.Trim() + "','" + tbox_ManageKeys_InsertKeysKeyNo.Text.Trim() + "','" + nemUD_ManageKeys_InsertKeys.Value + "','" + cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem + "',True)");
                 resetAddPedistal();
             }
         }
@@ -2601,8 +2568,19 @@ namespace AssetManagement
             }
         }
         /// <summary>
-        /// Resets the med emp data.
+        /// Resets the emp data.
         /// </summary>
+        /// <param name="from">From.</param>
+        /// <param name="EmployeeId">The employee identifier.</param>
+        /// <param name="EmployeeName">Name of the employee.</param>
+        /// <param name="EmployeeEmail">The employee email.</param>
+        /// <param name="EmployeeDeskPhone">The employee desk phone.</param>
+        /// <param name="EmployeeIdLabel">The employee identifier label.</param>
+        /// <param name="EmployeeNameLabel">The employee name label.</param>
+        /// <param name="EmployeeEmailLabel">The employee email label.</param>
+        /// <param name="EmployeeDeskPhoneLabel">The employee desk phone label.</param>
+        /// <param name="ErrorLabel">The error label.</param>
+        /// <param name="SearchButton">The search button.</param>
         private void resetEmpData(int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone, ref Label EmployeeIdLabel, ref Label EmployeeNameLabel, ref Label EmployeeEmailLabel, ref Label EmployeeDeskPhoneLabel, ref Label ErrorLabel, ref Button SearchButton)
         {
             EmployeeId.Text = string.Empty;
@@ -2629,6 +2607,10 @@ namespace AssetManagement
         /// </summary>
         /// <param name="resultQuery">The result query.</param>
         /// <param name="from">From.</param>
+        /// <param name="EmployeeId">The employee identifier.</param>
+        /// <param name="EmployeeName">Name of the employee.</param>
+        /// <param name="EmployeeEmail">The employee email.</param>
+        /// <param name="EmployeeDeskPhone">The employee desk phone.</param>
         private void populateEmployeeData(string resultQuery, int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
@@ -2719,6 +2701,11 @@ namespace AssetManagement
         /// <param name="EmployeeName">Name of the employee.</param>
         /// <param name="EmployeeEmail">The employee email.</param>
         /// <param name="EmployeeDeskPhone">The employee desk phone.</param>
+        /// <param name="EmployeeIdLabel">The employee identifier label.</param>
+        /// <param name="EmployeeNameLabel">The employee name label.</param>
+        /// <param name="EmployeeEmailLabel">The employee email label.</param>
+        /// <param name="EmployeeDeskPhoneLabel">The employee desk phone label.</param>
+        /// <param name="ErrorLabel">The error label.</param>
         private void searchEmployee(int from, ref TextBox EmployeeId, ref TextBox EmployeeName, ref TextBox EmployeeEmail, ref TextBox EmployeeDeskPhone, ref Label EmployeeIdLabel, ref Label EmployeeNameLabel, ref Label EmployeeEmailLabel, ref Label EmployeeDeskPhoneLabel, ref Label ErrorLabel)
         {
             string resultQuery = "SELECT * FROM tbl_Employee_Details";
@@ -2984,26 +2971,8 @@ namespace AssetManagement
                     medicineUpdatedData.Add("Active", "False");
                 }
 
-                bool equal = false;
-                if (medicineData.Count == medicineUpdatedData.Count) // Require equal count.
-                {
-                    equal = true;
-                    foreach (var pair in medicineData)
-                    {
-                        string value;
-                        if (medicineUpdatedData.TryGetValue(pair.Key, out value))
-                        {
-                            if (!value.Equals(pair.Value))
-                            {
-                                equal = false;
-                            }
-                        }
-                        else
-                        {
-                            equal = true;
-                        }
-                    }
-                }
+                bool equal = compareData(medicineData, medicineUpdatedData);
+
                 medicineData.Clear();
                 medicineUpdatedData.Clear();
                 if (equal == true)
@@ -3021,13 +2990,7 @@ namespace AssetManagement
                     {
                         active = false;
                     }
-                    con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                    string query = "UPDATE tbl_Medicine_Details SET Medicine_Name  = '" + tbox_ManageMedicine_UpdateMedicineName.Text.Trim() + "',Stock_Quantity=" + nemUD_ManageMedicine_UpdateMedicineStock.Value + ",Warning_Quantity='" + nemUD_ManageMedicine_UpdateWarning.Value + "',Active=" + active + " WHERE Id =" + tbox_ManageMedicineId.Text + "";
-                    cmd = new OleDbCommand(query, con);
-                    con.Open();
-                    int n = cmd.ExecuteNonQuery();
-                    con.Close();
-                    if (n > 0)
+                    if (DatabaseOperation.updateData("UPDATE tbl_Medicine_Details SET Medicine_Name  = '" + tbox_ManageMedicine_UpdateMedicineName.Text.Trim() + "',Stock_Quantity=" + nemUD_ManageMedicine_UpdateMedicineStock.Value + ",Warning_Quantity='" + nemUD_ManageMedicine_UpdateWarning.Value + "',Active=" + active + " WHERE Id =" + tbox_ManageMedicineId.Text + "") > 0)
                     {
                         MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -3259,7 +3222,9 @@ namespace AssetManagement
                 lbl_Med_Emp_Desk_Phone.Enabled = stat;
             }
         }
-
+        /// <summary>
+        /// Resets the add pedistal.
+        /// </summary>
         private void resetAddPedistal()
         {
             lbl_ExistingPedistal.Text = string.Empty;
@@ -3270,34 +3235,16 @@ namespace AssetManagement
             nemUD_ManageKeys_InsertKeys.Value = nemUD_ManageKeys_InsertKeys.Minimum;
             cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem = "--------------------Select--------------------";
         }
-
-        private void inserDetails(string query)
-        {
-            try
-            {
-                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                cmd = new OleDbCommand(query, con);
-                con.Open();
-                int n = cmd.ExecuteNonQuery();
-                con.Close();
-                if (n > 0)
-                {
-                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                    MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
+        /// <summary>
+        /// Resets the update pedstal.
+        /// </summary>
         private void resetUpdatePedstal()
         {
-            //throw new NotImplementedException();
+            
         }
-
+        /// <summary>
+        /// Gets the pedistal details.
+        /// </summary>
         private void getPedistalDetails()
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
@@ -3317,10 +3264,10 @@ namespace AssetManagement
                         pedistalData.Add("Pedistal_No", ds.Tables[0].Rows[0][0].ToString());
 
                         tbox_ManageKeys_UpdateKeysKeyNo.Text = ds.Tables[0].Rows[0][1].ToString();
-                        pedistalData.Add("Key_No", ds.Tables[0].Rows[0][2].ToString());
+                        pedistalData.Add("Key_No", ds.Tables[0].Rows[0][1].ToString());
 
                         nemUD_ManageKeys_UpdateKeys.Value = int.Parse(ds.Tables[0].Rows[0][2].ToString());
-                        pedistalData.Add("No_Of_Keys", ds.Tables[0].Rows[0][3].ToString());
+                        pedistalData.Add("No_Of_Keys", ds.Tables[0].Rows[0][2].ToString());
 
                         cbox_ManageKeys_UpdateKeysWhichFloor.SelectedItem = ds.Tables[0].Rows[0][3].ToString();
                         pedistalData.Add("Which_Floor", ds.Tables[0].Rows[0][3].ToString());
@@ -3346,7 +3293,9 @@ namespace AssetManagement
                 MessageBox.Show("Connection to the database failed " + ex, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
+        /// <summary>
+        /// Updates the pedistal details.
+        /// </summary>
         private void updatePedistalDetails()
         {
             if (tbox_ManageKeys_UpdateKeysPedistalNo.Enabled == false)
@@ -3365,26 +3314,8 @@ namespace AssetManagement
                     pedistalUpdatedData.Add("Active", "False");
                 }
 
-                bool equal = false;
-                if (pedistalData.Count == pedistalUpdatedData.Count) // Require equal count.
-                {
-                    equal = true;
-                    foreach (var pair in pedistalData)
-                    {
-                        string value;
-                        if (pedistalUpdatedData.TryGetValue(pair.Key, out value))
-                        {
-                            if (!value.Equals(pair.Value))
-                            {
-                                equal = false;
-                            }
-                        }
-                        else
-                        {
-                            equal = true;
-                        }
-                    }
-                }
+                bool equal = compareData(pedistalData, pedistalUpdatedData);
+                
                 pedistalData.Clear();
                 pedistalUpdatedData.Clear();
                 if (equal == true)
@@ -3393,22 +3324,55 @@ namespace AssetManagement
                 }
                 else
                 {
-                    //con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                    //string query = "UPDATE tbl_Medicine_Details SET Medicine_Name  = '" + tbox_ManageMedicine_UpdateMedicineName.Text.Trim() + "',Stock_Quantity=" + nemUD_ManageMedicine_UpdateMedicineStock.Value + ",Warning_Quantity='" + nemUD_ManageMedicine_UpdateWarning.Value + "',Active=" + active + " WHERE Id =" + tbox_ManageMedicineId.Text + "";
-                    //cmd = new OleDbCommand(query, con);
-                    //con.Open();
-                    //int n = cmd.ExecuteNonQuery();
-                    //con.Close();
-                    //if (n > 0)
-                    //{
-                    //    MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //}
-                    //else
-                    //{
-                    //    MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //}
+                    bool active;
+                    if (rdBtn_PedistalActive.Checked == true)
+                    {
+                        active = true;
+                    }
+                    else
+                    {
+                        active = false;
+                    }
+                    if (DatabaseOperation.updateData("UPDATE tbl_Pedistal_Details SET Key_No ='" + tbox_ManageKeys_UpdateKeysKeyNo.Text.Trim() + "', No_Of_Keys=" + nemUD_ManageKeys_UpdateKeys.Value + ", Location='" + cbox_ManageKeys_UpdateKeysWhichFloor.SelectedItem + "', Active= " + active + " WHERE Pedistal_No = '" + tbox_ManageKeys_UpdateKeysPedistalNo.Text + "'") > 0)
+                    {
+                        MessageBox.Show("Record Updated", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
+        }
+        /// <summary>
+        /// Compares the data.
+        /// </summary>
+        /// <param name="firstData">The first data.</param>
+        /// <param name="secondData">The second data.</param>
+        /// <returns></returns>
+        private bool compareData(Dictionary<string, string> firstData, Dictionary<string, string> secondData)
+        {
+            bool equal = false;
+            if (firstData.Count == secondData.Count) // Require equal count.
+            {
+                equal = true;
+                foreach (var pair in firstData)
+                {
+                    string value;
+                    if (secondData.TryGetValue(pair.Key, out value))
+                    {
+                        if (!value.Equals(pair.Value))
+                        {
+                            equal = false;
+                        }
+                    }
+                    else
+                    {
+                        equal = true;
+                    }
+                }
+            }
+            return equal;
         }
 
         #endregion Function

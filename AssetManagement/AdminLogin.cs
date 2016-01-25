@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AssetManagement.HelperClasses;
+using System;
 using System.Windows.Forms;
 
 namespace AssetManagement
