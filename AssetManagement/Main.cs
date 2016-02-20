@@ -592,7 +592,15 @@ namespace AssetManagement
 
         private void btn_Med_Assign_Click(object sender, EventArgs e)
         {
-            insertMedAssinment(cbox_Non_Employee_Medicine_Distribution.Checked);
+            if (!autoCompleteTextbox.autocompletedataValidator(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "=", "True"))
+            {
+                lbl_medNameChecker.Text = "You have entered an invalid medicine name!";
+            }
+            else
+            {
+                lbl_medNameChecker.Text = string.Empty;
+                insertMedAssinment(cbox_Non_Employee_Medicine_Distribution.Checked);
+            }
         }
 
         private void btn_ManageMedicine_Update_Reset_Click(object sender, EventArgs e)
@@ -1046,29 +1054,29 @@ namespace AssetManagement
 
         private void tbox_ManageEmployee_EmployeeId_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeId, "Employee_Id", "tbl_Employee_Details");
+            autoCompleteTextbox.autoCompleteData(ref tbox_ManageEmployee_EmployeeId, "Employee_Id", "tbl_Employee_Details");
         }
 
         private void tbox_ManageEmployee_EmployeeName_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeName, "Employee_Name", "tbl_Employee_Details");
+            autoCompleteTextbox.autoCompleteData(ref tbox_ManageEmployee_EmployeeName, "Employee_Name", "tbl_Employee_Details");
         }
 
         private void tbox_ManageEmployee_EmployeeEmail_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeEmail, "Employee_Email", "tbl_Employee_Details");
+            autoCompleteTextbox.autoCompleteData(ref tbox_ManageEmployee_EmployeeEmail, "Employee_Email", "tbl_Employee_Details");
         }
 
         private void tbox_ManageEmployee_EmployeeExtection_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_ManageEmployee_EmployeeExtection, "Extension", "tbl_Employee_Details");
+            autoCompleteTextbox.autoCompleteData(ref tbox_ManageEmployee_EmployeeExtection, "Extension", "tbl_Employee_Details");
         }
 
         private void tbox_Med_Emp_Id_TextChanged(object sender, EventArgs e)
         {
             if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
             {
-                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Id, "Employee_Id", "tbl_Employee_Details", "Active", " = ", "True");
+                autoCompleteTextbox.autoCompleteData(ref tbox_Med_Emp_Id, "Employee_Id", "tbl_Employee_Details", "Active", " = ", "True");
             }
         }
 
@@ -1076,14 +1084,14 @@ namespace AssetManagement
         {
             if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
             {
-                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Name, "Employee_Name", "tbl_Employee_Details", "Active", " = ", "True");
+                autoCompleteTextbox.autoCompleteData(ref tbox_Med_Emp_Name, "Employee_Name", "tbl_Employee_Details", "Active", " = ", "True");
             }
         }
 
         private void tbox_Med_Medcine_Name_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name_1, "Medicine_Name", "tbl_Medicine_Details", "Active", "=", "True");
-            if (tbox_Med_Medcine_Name_1.Text.Length > 0)
+            autoCompleteTextbox.autoCompleteData(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "=", "True");
+            if (tbox_Med_Medcine_Name.Text.Length > 0)
             {
                 tbox_Med_Medcine_Quantity.Enabled = true;
             }
@@ -1103,7 +1111,7 @@ namespace AssetManagement
             if (tbox_ManageMedicine_UpdateMedicineName.Text.Length > 0)
             {
                 btn_ManageMedicine_Search.Enabled = true;
-                autoCompleteTextbox.autocompletedata(ref tbox_ManageMedicine_UpdateMedicineName, "Medicine_Name", "tbl_Medicine_Details");
+                autoCompleteTextbox.autoCompleteData(ref tbox_ManageMedicine_UpdateMedicineName, "Medicine_Name", "tbl_Medicine_Details");
             }
             else
             {
@@ -1139,7 +1147,7 @@ namespace AssetManagement
         {
             if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
             {
-                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Email, "Employee_Email", "tbl_Employee_Details", "Active", " = ", "True");
+                autoCompleteTextbox.autoCompleteData(ref tbox_Med_Emp_Email, "Employee_Email", "tbl_Employee_Details", "Active", " = ", "True");
             }
         }
 
@@ -1147,13 +1155,13 @@ namespace AssetManagement
         {
             if (cbox_Non_Employee_Medicine_Distribution.Checked == false)
             {
-                autoCompleteTextbox.autocompletedata(ref tbox_Med_Emp_Desk_Phone, "Extension", "tbl_Employee_Details", "Active", " = ", "True");
+                autoCompleteTextbox.autoCompleteData(ref tbox_Med_Emp_Desk_Phone, "Extension", "tbl_Employee_Details", "Active", " = ", "True");
             }
         }
 
         private void tbox_InterOffce_Return_Employee_Id_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_InterOffce_Return_Employee_Id, "Employee_Id", "tbl_Inter_Office_Visitor", "Return_Date", " IS ", "NULL");
+            autoCompleteTextbox.autoCompleteData(ref tbox_InterOffce_Return_Employee_Id, "Employee_Id", "tbl_Inter_Office_Visitor", "Return_Date", " IS ", "NULL");
         }
 
         private void tbox_Med_Medcine_Updated_Stock_TextChanged(object sender, EventArgs e)
@@ -1170,22 +1178,22 @@ namespace AssetManagement
 
         private void tbox_Key_Emp_Id_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Id, "Employee_Id", "tbl_Employee_Details", "Active", " = ", "True");
+            autoCompleteTextbox.autoCompleteData(ref tbox_Key_Emp_Id, "Employee_Id", "tbl_Employee_Details", "Active", " = ", "True");
         }
 
         private void tbox_Key_Emp_Name_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Name, "Employee_Name", "tbl_Employee_Details", "Active", " = ", "True");
+            autoCompleteTextbox.autoCompleteData(ref tbox_Key_Emp_Name, "Employee_Name", "tbl_Employee_Details", "Active", " = ", "True");
         }
 
         private void tbox_Key_Emp_Email_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Email, "Employee_Email", "tbl_Employee_Details", "Active", " = ", "True");
+            autoCompleteTextbox.autoCompleteData(ref tbox_Key_Emp_Email, "Employee_Email", "tbl_Employee_Details", "Active", " = ", "True");
         }
 
         private void tbox_Key_Emp_Desk_Phone_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Key_Emp_Desk_Phone, "Extension", "tbl_Employee_Details", "Active", " = ", "True");
+            autoCompleteTextbox.autoCompleteData(ref tbox_Key_Emp_Desk_Phone, "Extension", "tbl_Employee_Details", "Active", " = ", "True");
         }
 
         private void tbox_Out_Serial_Number_TextChanged(object sender, EventArgs e)
@@ -1205,7 +1213,7 @@ namespace AssetManagement
             if (tbox_ManageKeys_UpdateKeysPedistalNo.Text.Length > 0)
             {
                 btn_ManageKeys_Search_By_PedistalNo.Enabled = true;
-                autoCompleteTextbox.autocompletedata(ref tbox_ManageKeys_UpdateKeysPedistalNo, "Pedistal_No", "tbl_Pedistal_Details");
+                autoCompleteTextbox.autoCompleteData(ref tbox_ManageKeys_UpdateKeysPedistalNo, "Pedistal_No", "tbl_Pedistal_Details");
             }
             else
             {
@@ -2730,8 +2738,9 @@ namespace AssetManagement
         /// </summary>
         private void resetMedMedcineData()
         {
-            tbox_Med_Medcine_Name_1.Text = string.Empty;
+            tbox_Med_Medcine_Name.Text = string.Empty;
             tbox_Med_Medcine_Quantity.Text = string.Empty;
+            lbl_medNameChecker.Text = string.Empty;
             //pBox_Medcine_Signeture.Image = null;
         }
         /// <summary>
@@ -2739,9 +2748,10 @@ namespace AssetManagement
         /// </summary>
         private void medStockValidator()
         {
-            int? stock = medicineStockCounter(tbox_Med_Medcine_Name_1.Text);
+            int? stock = medicineStockCounter(tbox_Med_Medcine_Name.Text);
             if (stock != null)
             {
+                lbl_medNameChecker.Text = string.Empty;
                 Regex regex = new Regex(@"[^0-9]");
                 MatchCollection matches = regex.Matches(tbox_Med_Medcine_Quantity.Text);
                 if (matches.Count > 0)
@@ -2778,7 +2788,7 @@ namespace AssetManagement
                         {
                             lbl_medStockCounter.Text = string.Empty;
                             frm_Main.medValidationPassed = true;
-                            tbox_Med_Medcine_Updated_Stock.Text = (medicineStockCounter(tbox_Med_Medcine_Name_1.Text) - int.Parse(tbox_Med_Medcine_Quantity.Text)).ToString();
+                            tbox_Med_Medcine_Updated_Stock.Text = (medicineStockCounter(tbox_Med_Medcine_Name.Text) - int.Parse(tbox_Med_Medcine_Quantity.Text)).ToString();
                         }
                     }
                     else
@@ -2791,7 +2801,7 @@ namespace AssetManagement
             }
             else
             {
-                MessageBox.Show("Please check the medicine name.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lbl_medNameChecker.Text = "Please check the medicine name.";
             }
         }
         /// <summary>
@@ -2833,7 +2843,7 @@ namespace AssetManagement
             int result;
             if (stat == false)
             {
-                result = DatabaseOperation.insertDetailsWithTransactionAndSinglePicture("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES (" + tbox_Med_Emp_Id.Text + ",'" + tbox_Med_Emp_Name.Text + "','" + tbox_Med_Emp_Email.Text + "','" + tbox_Med_Emp_Desk_Phone.Text + "','" + tbox_Med_Medcine_Name_1.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", "UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name_1.Text + "'", ref pBox_Medcine_Signeture, "@Employee_Signeture");
+                result = DatabaseOperation.insertDetailsWithTransactionAndSinglePicture("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES (" + tbox_Med_Emp_Id.Text + ",'" + tbox_Med_Emp_Name.Text + "','" + tbox_Med_Emp_Email.Text + "','" + tbox_Med_Emp_Desk_Phone.Text + "','" + tbox_Med_Medcine_Name.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", "UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name.Text + "'", ref pBox_Medcine_Signeture, "@Employee_Signeture");
                 if (result == 1)
                 {
                     MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -2847,7 +2857,7 @@ namespace AssetManagement
             }
             if (stat == true)
             {
-                result = DatabaseOperation.insertDetailsWithTransactionAndSinglePicture("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES ( " + 00000 + " ,'" + tbox_Med_Emp_Name.Text + "','NON_EMPLOYEE_EMAIL','NON_EMPLOYEE_DESK_PHONE','" + tbox_Med_Medcine_Name_1.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", "UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name_1.Text + "'", ref pBox_Medcine_Signeture, "@Employee_Signeture");
+                result = DatabaseOperation.insertDetailsWithTransactionAndSinglePicture("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES ( " + 00000 + " ,'" + tbox_Med_Emp_Name.Text + "','NON_EMPLOYEE_EMAIL','NON_EMPLOYEE_DESK_PHONE','" + tbox_Med_Medcine_Name.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", "UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name.Text + "'", ref pBox_Medcine_Signeture, "@Employee_Signeture");
                 if (result == 1)
                 {
                     MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);

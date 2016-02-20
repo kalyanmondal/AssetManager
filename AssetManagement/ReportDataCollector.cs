@@ -180,15 +180,15 @@ namespace AssetManagement
         {
             if (p == 0)
             {
-                autoCompleteTextbox.autocompletedata(ref tbox_Visitor_Report_DataCollector_EmployeeId, "Employee_Id", "tbl_Inter_Office_Visitor");
+                autoCompleteTextbox.autoCompleteData(ref tbox_Visitor_Report_DataCollector_EmployeeId, "Employee_Id", "tbl_Inter_Office_Visitor");
             }
             else if (p == 4)
             {
-                autoCompleteTextbox.autocompletedata(ref tbox_Visitor_Report_DataCollector_EmployeeId, "Employee_Id", "tbl_Medicine_Distrubution");
+                autoCompleteTextbox.autoCompleteData(ref tbox_Visitor_Report_DataCollector_EmployeeId, "Employee_Id", "tbl_Medicine_Distrubution");
             }
             else if (p == 2)
             {
-                autoCompleteTextbox.autocompletedata(ref tbox_Visitor_Report_DataCollector_EmployeeId, "Medcine_Name", "tbl_Medicine_Distrubution");
+                autoCompleteTextbox.autoCompleteData(ref tbox_Visitor_Report_DataCollector_EmployeeId, "Medcine_Name", "tbl_Medicine_Distrubution");
             }
         }
 

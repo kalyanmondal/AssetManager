@@ -169,5 +169,36 @@ namespace AssetManagement.HelperClasses
                 cmd.Parameters.AddWithValue(queryParameterName, photo_aray);
             }
         }
+
+        /// <summary>
+        /// Selects the data.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="columnName">Name of the column.</param>
+        /// <returns></returns>
+        public static List<string> selectData(string query)
+        {
+            List<string> result = new List<string>();
+            try
+            {
+                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
+                cmd = new OleDbCommand(query, con);
+                con.Open();
+                OleDbDataReader data = cmd.ExecuteReader();
+                while (data.Read())
+                {
+                    result.Add(data[0].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                con.Close();
+            }
+            return result;
+        }
     }
 }

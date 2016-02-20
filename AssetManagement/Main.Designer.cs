@@ -249,7 +249,7 @@
             this.btn_Med_Assign = new System.Windows.Forms.Button();
             this.tbox_Med_Medcine_Quantity = new System.Windows.Forms.TextBox();
             this.lbl_Med_Medcine_Quantity = new System.Windows.Forms.Label();
-            this.tbox_Med_Medcine_Name_1 = new System.Windows.Forms.TextBox();
+            this.tbox_Med_Medcine_Name = new System.Windows.Forms.TextBox();
             this.lbl_Med_Medcine_Name = new System.Windows.Forms.Label();
             this.tb_Page_Settings = new System.Windows.Forms.TabPage();
             this.tbCtrl_Settings = new System.Windows.Forms.TabControl();
@@ -380,6 +380,7 @@
             this.fbDlg_Backup_Database = new System.Windows.Forms.FolderBrowserDialog();
             this.bg_Worker_BackupDatabase = new System.ComponentModel.BackgroundWorker();
             this.bg_Worker_RestoreDatabase = new System.ComponentModel.BackgroundWorker();
+            this.lbl_medNameChecker = new System.Windows.Forms.Label();
             this.sts_Strip.SuspendLayout();
             this.tbCtrl_Asset_Manager.SuspendLayout();
             this.tb_Page_VisitorDetails.SuspendLayout();
@@ -2604,6 +2605,7 @@
             // 
             // sp_Cont_Medicine_Distribution.Panel2
             // 
+            this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.lbl_medNameChecker);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.tbox_Med_Medcine_Updated_Stock);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.lbl_medStockCounter);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.grpBx_MedicineSigneture);
@@ -2611,7 +2613,7 @@
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.btn_Med_Assign);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.tbox_Med_Medcine_Quantity);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.lbl_Med_Medcine_Quantity);
-            this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.tbox_Med_Medcine_Name_1);
+            this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.tbox_Med_Medcine_Name);
             this.sp_Cont_Medicine_Distribution.Panel2.Controls.Add(this.lbl_Med_Medcine_Name);
             this.sp_Cont_Medicine_Distribution.Size = new System.Drawing.Size(866, 325);
             this.sp_Cont_Medicine_Distribution.SplitterDistance = 434;
@@ -2820,15 +2822,15 @@
             this.lbl_Med_Medcine_Quantity.TabIndex = 10;
             this.lbl_Med_Medcine_Quantity.Text = "Quantity :";
             // 
-            // tbox_Med_Medcine_Name_1
+            // tbox_Med_Medcine_Name
             // 
-            this.tbox_Med_Medcine_Name_1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.tbox_Med_Medcine_Name_1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.tbox_Med_Medcine_Name_1.Location = new System.Drawing.Point(138, 49);
-            this.tbox_Med_Medcine_Name_1.Name = "tbox_Med_Medcine_Name_1";
-            this.tbox_Med_Medcine_Name_1.Size = new System.Drawing.Size(261, 20);
-            this.tbox_Med_Medcine_Name_1.TabIndex = 7;
-            this.tbox_Med_Medcine_Name_1.TextChanged += new System.EventHandler(this.tbox_Med_Medcine_Name_TextChanged);
+            this.tbox_Med_Medcine_Name.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tbox_Med_Medcine_Name.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.tbox_Med_Medcine_Name.Location = new System.Drawing.Point(138, 49);
+            this.tbox_Med_Medcine_Name.Name = "tbox_Med_Medcine_Name";
+            this.tbox_Med_Medcine_Name.Size = new System.Drawing.Size(261, 20);
+            this.tbox_Med_Medcine_Name.TabIndex = 7;
+            this.tbox_Med_Medcine_Name.TextChanged += new System.EventHandler(this.tbox_Med_Medcine_Name_TextChanged);
             // 
             // lbl_Med_Medcine_Name
             // 
@@ -4323,6 +4325,15 @@
             this.bg_Worker_RestoreDatabase.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bg_Worker_RestoreDatabase_ProgressChanged);
             this.bg_Worker_RestoreDatabase.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bg_Worker_RestoreDatabase_RunWorkerCompleted);
             // 
+            // lbl_medNameChecker
+            // 
+            this.lbl_medNameChecker.AutoSize = true;
+            this.lbl_medNameChecker.ForeColor = System.Drawing.Color.Red;
+            this.lbl_medNameChecker.Location = new System.Drawing.Point(135, 33);
+            this.lbl_medNameChecker.Name = "lbl_medNameChecker";
+            this.lbl_medNameChecker.Size = new System.Drawing.Size(0, 13);
+            this.lbl_medNameChecker.TabIndex = 22;
+            // 
             // frm_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4642,7 +4653,7 @@
         private System.Windows.Forms.Button btn_Med_Assign;
         private System.Windows.Forms.TextBox tbox_Med_Medcine_Quantity;
         private System.Windows.Forms.Label lbl_Med_Medcine_Quantity;
-        private System.Windows.Forms.TextBox tbox_Med_Medcine_Name_1;
+        private System.Windows.Forms.TextBox tbox_Med_Medcine_Name;
         private System.Windows.Forms.Label lbl_Med_Medcine_Name;
         private System.Windows.Forms.GroupBox grpBx_MedicineSigneture;
         private System.Windows.Forms.PictureBox pBox_Medcine_Signeture;
@@ -4805,6 +4816,7 @@
         private System.Windows.Forms.RadioButton rdBtn_PedistalInActive;
         private System.Windows.Forms.RadioButton rdBtn_PedistalActive;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl_medNameChecker;
     }
 }
 
