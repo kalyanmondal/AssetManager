@@ -1,4 +1,10 @@
-﻿using AssetManagement.HelperClasses;
+﻿
+//To Do List
+//    1) AutoComplete Other Data Entry Stop
+//    2) Webcam Problem
+//    3) Database Password
+
+using AssetManagement.HelperClasses;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,13 +29,11 @@ namespace AssetManagement
         private OleDbCommand cmd;
         private OleDbDataAdapter adapter;
         private DataSet ds;
-        private MemoryStream ms;
         private byte[] photo_aray;
         private string reportSaveLocation;
         private string backUpDatabaseLocation;
         private bool backupSuccessful = false;
         private bool restoreSuccessful = false;
-        private ExcelUtlity excelUtlity = new ExcelUtlity();
 
         public static string serialNumber { get; set; }
         public static string employeeId { get; set; }
@@ -41,6 +45,8 @@ namespace AssetManagement
         public static string restoreFrom { get; set; }
         public static bool medValidationPassed { get; set; }
         public static bool addminLoginAllowed { get; set; }
+        public static int validRows { get; set; }
+        public static bool errorInEmployeeeImport { get; set; }
 
         public Dictionary<string, string> employeeData = new Dictionary<string, string>();
         public Dictionary<string, string> employeeUpdatedData = new Dictionary<string, string>();
@@ -215,7 +221,9 @@ namespace AssetManagement
                 resetVisitorFrom(2);
             }
             else
+            {
                 MessageBox.Show("Updation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btn_Report_Extract_Click(object sender, EventArgs e)
@@ -238,7 +246,7 @@ namespace AssetManagement
                 svFlDlg_SaveReport.ShowDialog();
                 if (reportSaveLocation != null)
                 {
-                    if (excelUtlity.WriteDataTableToExcel(withoutImage, "Visitor Report", reportSaveLocation, "Visitor Details", 0))
+                    if (ExcelUtlity.WriteDataTableToExcel(withoutImage, "Visitor Report", reportSaveLocation, "Visitor Details", 0))
                     {
                         if (cbox_dload_Images.Checked)
                         {
@@ -436,6 +444,13 @@ namespace AssetManagement
                 if (tbox_Browse.Text == string.Empty)
                 {
                     MessageBox.Show("No File Seleted.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    btn_Start.Enabled = true;
+                    return;
+                }
+                if (!tbox_Browse.Text.Substring(tbox_Browse.Text.LastIndexOf('.') + 1, (tbox_Browse.Text.Length - tbox_Browse.Text.LastIndexOf('.')) - 1).Equals("xlsx") && !tbox_Browse.Text.Substring(tbox_Browse.Text.LastIndexOf('.') + 1, (tbox_Browse.Text.Length - tbox_Browse.Text.LastIndexOf('.')) - 1).Equals("xls"))
+                {
+                    MessageBox.Show("Kindly provide an Excel File!", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    btn_Start.Enabled = true;
                     return;
                 }
                 bg_Worker_ImportEmployee.ProgressChanged += new ProgressChangedEventHandler(bg_Worker_ImportEmployee_ProgressChanged);
@@ -533,9 +548,16 @@ namespace AssetManagement
             else
             {
                 lbl_ExistingMedicine.Text = string.Empty;
-                DatabaseOperation.insertDetails("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)");
-                resetAddMedicine();
-                plotGraph("True");
+                if (DatabaseOperation.insertDetails("INSERT INTO tbl_Medicine_Details (Medicine_Name,Stock_Quantity,Warning_Quantity,Active) VALUES ('" + tbox_ManageMedicine_InsertMedicineName.Text.Trim() + "'," + nemUD_ManageMedicine_InsertMedicineStock.Value + "," + nemUD_ManageMedicine_InsertWarning.Value + ",True)") > 0)
+                {
+                    resetAddMedicine();
+                    plotGraph("True");
+                    MessageBox.Show("Record Added", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Operation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 
@@ -722,8 +744,15 @@ namespace AssetManagement
             }
             if (validatPedistalNo && validateKeyNo && validateFloor)
             {
-                DatabaseOperation.insertDetails("INSERT INTO tbl_Pedistal_Details (Pedistal_No,Key_No,No_Of_Keys,Location,Active) VALUES ('" + tbox_ManageKeys_InsertKeysPedistalNo.Text.Trim() + "','" + tbox_ManageKeys_InsertKeysKeyNo.Text.Trim() + "','" + nemUD_ManageKeys_InsertKeys.Value + "','" + cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem + "',True)");
-                resetAddPedistal();
+                if (DatabaseOperation.insertDetails("INSERT INTO tbl_Pedistal_Details (Pedistal_No,Key_No,No_Of_Keys,Location,Active) VALUES ('" + tbox_ManageKeys_InsertKeysPedistalNo.Text.Trim() + "','" + tbox_ManageKeys_InsertKeysKeyNo.Text.Trim() + "','" + nemUD_ManageKeys_InsertKeys.Value + "','" + cbox_ManageKeys_InsertKeysWhichFloor.SelectedItem + "',True)") > 0)
+                {
+                    MessageBox.Show("Record Added", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    resetAddPedistal();
+                }
+                else
+                {
+                    MessageBox.Show("Operation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 
@@ -922,8 +951,13 @@ namespace AssetManagement
 
         private void bg_Worker_ImportEmployee_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            DialogResult dresult = new DialogResult();
             lblStateStatus.Text = "Completed...";
-            DialogResult dresult = MessageBox.Show("Data Uplaod Completed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (errorInEmployeeeImport == true)
+            {
+                MessageBox.Show( validRows +"/" + maxValProgressBar + " Data inserted into database \n There are some employee information which is not valid.", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                dresult = MessageBox.Show("Kidnly review " + tbox_Browse.Text.Substring(0, tbox_Browse.Text.LastIndexOf('.')) + "_Incorrect.xlsx File");
+            }
             if (dresult == DialogResult.OK)
             {
                 pgBar_Import_Progress.Value = 0;
@@ -1048,8 +1082,8 @@ namespace AssetManagement
 
         private void tbox_Med_Medcine_Name_TextChanged(object sender, EventArgs e)
         {
-            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name, "Medicine_Name", "tbl_Medicine_Details", "Active", "=", "True");
-            if (tbox_Med_Medcine_Name.Text.Length > 0)
+            autoCompleteTextbox.autocompletedata(ref tbox_Med_Medcine_Name_1, "Medicine_Name", "tbl_Medicine_Details", "Active", "=", "True");
+            if (tbox_Med_Medcine_Name_1.Text.Length > 0)
             {
                 tbox_Med_Medcine_Quantity.Enabled = true;
             }
@@ -1423,93 +1457,14 @@ namespace AssetManagement
         /// </summary>
         private void insertVisitorDetails()
         {
-            try
+            if (DatabaseOperation.insertDetailsWithDoublePicture("INSERT INTO tbl_Visitor_details ( Visitor_Name,From_Address,Contact_Number,Purpose,Whom_To_Meet,Badge_Number,In_Time,Escort_Name,Which_Floor,Remarks,Carrying_Laptop,ID_Proof,Photo,Signeture_Image) VALUES ('" + tbox_In_Name.Text + "','" + tbox_In_Address.Text + "','" + tbox_In_ContactNumber.Text + "','" + tbox_In_Purpose.Text + "','" + tbox_In_Whom_To_Meet.Text + "','" + tbox_In_Badge_Number.Text + "','" + tbox_In_Time.Text + "','" + tbox_In_Escort_Name.Text + "','" + cBox_Floor_Number.SelectedItem + "','" + tbox_In_Remarks.Text + "','" + tbox_In_Carrying_Laptop.Text + "','" + tbox_In_Id_Proof.Text + "',@Photo,@Signeture_Image)", ref pBox_Image, "@Photo", ref pBox_Signeture, "@Signeture_Image") > 0)
             {
-                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                cmd = new OleDbCommand("INSERT INTO tbl_Visitor_details ( Visitor_Name,From_Address,Contact_Number,Purpose,Whom_To_Meet,Badge_Number,In_Time,Escort_Name,Which_Floor,Remarks,Carrying_Laptop,ID_Proof,Photo,Signeture_Image) VALUES ('" + tbox_In_Name.Text + "','" + tbox_In_Address.Text + "','" + tbox_In_ContactNumber.Text + "','" + tbox_In_Purpose.Text + "','" + tbox_In_Whom_To_Meet.Text + "','" + tbox_In_Badge_Number.Text + "','" + tbox_In_Time.Text + "','" + tbox_In_Escort_Name.Text + "','" + cBox_Floor_Number.SelectedItem + "','" + tbox_In_Remarks.Text + "','" + tbox_In_Carrying_Laptop.Text + "','" + tbox_In_Id_Proof.Text + "',@Photo,@Signeture_Image)", con);
-                convertPhotoType(1);
-                convertPhotoType(2);
-                con.Open();
-                int n = cmd.ExecuteNonQuery();
-                con.Close();
-                if (n > 0)
-                {
-                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    resetVisitorFrom(1);
-                }
-                else
-                    MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                resetVisitorFrom(1);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-        /// <summary>
-        /// Converts the type of the photo.
-        /// </summary>
-        /// <param name="from">From.</param>
-        private void convertPhotoType(int from)
-        {
-            if (from == 1)
-            {
-                if (pBox_Image.Image != null)
-                {
-                    ms = new MemoryStream();
-                    pBox_Image.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] photo_aray = new byte[ms.Length];
-                    ms.Position = 0;
-                    ms.Read(photo_aray, 0, photo_aray.Length);
-                    cmd.Parameters.AddWithValue("@Photo", photo_aray);
-                }
-            }
-            if (from == 2)
-            {
-                if (pBox_Signeture.Image != null)
-                {
-                    ms = new MemoryStream();
-                    pBox_Signeture.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] photo_aray = new byte[ms.Length];
-                    ms.Position = 0;
-                    ms.Read(photo_aray, 0, photo_aray.Length);
-                    cmd.Parameters.AddWithValue("@Signeture_Image", photo_aray);
-                }
-            }
-            if (from == 3)
-            {
-                if (pBox_Inter_Office_Image.Image != null)
-                {
-                    ms = new MemoryStream();
-                    pBox_Inter_Office_Image.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] photo_aray = new byte[ms.Length];
-                    ms.Position = 0;
-                    ms.Read(photo_aray, 0, photo_aray.Length);
-                    cmd.Parameters.AddWithValue("@Employee_Image", photo_aray);
-                }
-            }
-            if (from == 4)
-            {
-                if (pBox_Inter_Office_Signeture.Image != null)
-                {
-                    ms = new MemoryStream();
-                    pBox_Inter_Office_Signeture.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] photo_aray = new byte[ms.Length];
-                    ms.Position = 0;
-                    ms.Read(photo_aray, 0, photo_aray.Length);
-                    cmd.Parameters.AddWithValue("@Employee_Signeture", photo_aray);
-                }
-            }
-            if (from == 5)
-            {
-                if (pBox_Medcine_Signeture.Image != null)
-                {
-                    ms = new MemoryStream();
-                    pBox_Medcine_Signeture.Image.Save(ms, ImageFormat.Jpeg);
-                    byte[] photo_aray = new byte[ms.Length];
-                    ms.Position = 0;
-                    ms.Read(photo_aray, 0, photo_aray.Length);
-                    cmd.Parameters.AddWithValue("@Employee_Signeture", photo_aray);
-                }
+                MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
         /// <summary>
@@ -2080,7 +2035,7 @@ namespace AssetManagement
                     svFlDlg_SaveReport.ShowDialog();
                     if (reportSaveLocation != null)
                     {
-                        if (excelUtlity.WriteDataTableToExcel(ds.Tables[0], "Report", reportSaveLocation, reportName, type))
+                        if (ExcelUtlity.WriteDataTableToExcel(ds.Tables[0], "Report", reportSaveLocation, reportName, type))
                         {
                             MessageBox.Show("Data Extracted...", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
@@ -2230,30 +2185,14 @@ namespace AssetManagement
         /// </summary>
         private void insertInterOfficeVisitorDetails()
         {
-            try
+            if (DatabaseOperation.insertDetailsWithDoublePicture("INSERT INTO tbl_Inter_Office_Visitor (Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Employee_Image,Employee_Signeture) VALUES ('" + tbox_InterOffce_Employee_Id.Text + "','" + tbox_InterOffce_Employee_Name.Text + "','" + tbox_InterOffce_Comming_From.Text + "','" + tbox_InterOffce_Contact_Number.Text + "','" + tbox_InterOffce_Date.Text + "','" + tbox_InterOffce_Remarks.Text + "','" + tbox_InterOffce_Badge_Number.Text + "','" + tbox_InterOffce_Access_Card_Number.Text + "','" + tbox_InterOffce_Issuing_Time.Text + "','" + tbox_InterOffce_No_Of_Days.Text + "',@Employee_Image,@Employee_Signeture)", ref pBox_Inter_Office_Image, "@Employee_Image", ref pBox_Inter_Office_Signeture, "@Employee_Signeture") > 0)
             {
-                con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-                cmd = new OleDbCommand("INSERT INTO tbl_Inter_Office_Visitor (Employee_Id,Employee_Name,Comming_From,Contact_Number,Assign_Date,Remarks,Badge_Number,Access_Card_Number,Issueing_Time,No_Of_Days,Employee_Image,Employee_Signeture) VALUES ('" + tbox_InterOffce_Employee_Id.Text + "','" + tbox_InterOffce_Employee_Name.Text + "','" + tbox_InterOffce_Comming_From.Text + "','" + tbox_InterOffce_Contact_Number.Text + "','" + tbox_InterOffce_Date.Text + "','" + tbox_InterOffce_Remarks.Text + "','" + tbox_InterOffce_Badge_Number.Text + "','" + tbox_InterOffce_Access_Card_Number.Text + "','" + tbox_InterOffce_Issuing_Time.Text + "','" + tbox_InterOffce_No_Of_Days.Text + "',@Employee_Image,@Employee_Signeture)", con);
-                convertPhotoType(3);
-                convertPhotoType(4);
-                con.Open();
-                int n = cmd.ExecuteNonQuery();
-                con.Close();
-                if (n > 0)
-                {
-                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                    MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                con.Close();
-            }
+                MessageBox.Show("Details Not Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }   
         }
         /// <summary>
         /// Imports the employee.
@@ -2264,18 +2203,23 @@ namespace AssetManagement
             {
                 bg_Worker_ImportEmployee.ReportProgress(0, string.Format("No file selected."));
                 bg_Worker_ImportEmployee.ReportProgress(0, string.Format("Complete with no Data Upload"));
+                btn_Start.Enabled = true;
                 return;
             }
 
             bg_Worker_ImportEmployee.ReportProgress(0, string.Format("Opening the file."));
-            if (excelUtlity.noOfSheetCounter(tbox_Browse.Text) > 1)
+            if (ExcelUtlity.noOfSheetCounter(tbox_Browse.Text) > 1)
             {
                 bg_Worker_ImportEmployee.ReportProgress(0, string.Format("Checking the number of sheets in the selected file."));
-                frm_SheetSelector ss = new frm_SheetSelector(excelUtlity.sheetNames(tbox_Browse.Text));
+                frm_SheetSelector ss = new frm_SheetSelector(ExcelUtlity.sheetNames(tbox_Browse.Text));
                 ss.ShowDialog();
             }
+            else
+            {
+                sheetName = ExcelUtlity.sheetNames(tbox_Browse.Text)[0].ToString();
+            }
 
-            int rowcount = excelUtlity.noOfRowsCounter(tbox_Browse.Text, sheetName);
+            int rowcount = ExcelUtlity.noOfRowsCounter(tbox_Browse.Text, sheetName);
             maxValProgressBar = rowcount;
             string connectionString = "";
             connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties='Excel 8.0;HDR=Yes'";
@@ -2283,7 +2227,7 @@ namespace AssetManagement
             OleDbConnection conn = new OleDbConnection(connectionString);
             OleDbCommand cmd = new OleDbCommand();
             OleDbDataAdapter dataAdapter = new OleDbDataAdapter();
-            DataTable dt = new DataTable();
+            DataTable allData = new DataTable();
             cmd.Connection = conn;
             conn.Open();
             DataTable dtSchema;
@@ -2293,9 +2237,26 @@ namespace AssetManagement
             conn.Open();
             cmd.CommandText = "SELECT * From [" + ExcelSheetName + "]";
             dataAdapter.SelectCommand = cmd;
-            dataAdapter.Fill(dt);
+            dataAdapter.Fill(allData);
+            allData.Columns.Add("IsCorrect", typeof(System.Int32));
+            int rows = 0;
+            bg_Worker_ImportEmployee.ReportProgress(0, string.Format("Validating the data."));
+            foreach (DataRow r in allData.Rows)
+            {
+                if (allData.Rows[rows][0].ToString().Equals("") || allData.Rows[rows][1].ToString().Equals("") || allData.Rows[rows][2].ToString().Equals("") || allData.Rows[rows][3].ToString().Equals(""))
+                {
+                    r["IsCorrect"] = 0;
+                }
+                if (!allData.Rows[rows][0].ToString().Equals("") && !allData.Rows[rows][1].ToString().Equals("") && !allData.Rows[rows][2].ToString().Equals("") && !allData.Rows[rows][3].ToString().Equals(""))
+                {
+                    r["IsCorrect"] = 1;
+                }
+                rows++;
+            }
             bg_Worker_ImportEmployee.ReportProgress(0, string.Format("Prepareing data to write to database."));
-            WriteToAccess(dt, rowcount);
+            WriteToAccess(allData.AsEnumerable().Where(row => row.Field<int>("IsCorrect") == 1).CopyToDataTable(), rowcount, tbox_Browse.Text);
+            validRows = rowcount - allData.AsEnumerable().Where(row => row.Field<int>("IsCorrect") == 0).CopyToDataTable().Rows.Count;
+            ExcelUtlity.WriteDataTableToExcelForFixedData(allData.AsEnumerable().Where(row => row.Field<int>("IsCorrect") == 0).CopyToDataTable(), "Employee Details", tbox_Browse.Text.Substring(0, tbox_Browse.Text.LastIndexOf('.')) + "_Incorrect.xlsx", ref bg_Worker_ImportEmployee, pgBar_Import_Progress.Value, rowcount - 1);
             conn.Close();
         }
         /// <summary>
@@ -2421,7 +2382,7 @@ namespace AssetManagement
         /// </summary>
         /// <param name="dt">The dt.</param>
         /// <param name="rowcount">The rowcount.</param>
-        private void WriteToAccess(DataTable dt, int rowcount)
+        private void WriteToAccess(DataTable dt, int rowcount, string fileName)
         {
             int j = 1;
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
@@ -2452,7 +2413,7 @@ namespace AssetManagement
                         cmd.Parameters.AddWithValue("?", 1);
                         cmd.ExecuteNonQuery();
                         j++;
-                        bg_Worker_ImportEmployee.ReportProgress((int)Math.Ceiling((float)j / rowcount), string.Format("Completed -" + j + "/" + rowcount));
+                        bg_Worker_ImportEmployee.ReportProgress((int)Math.Ceiling((float)j / rowcount), string.Format("Completed -" + (j - 1).ToString() + "/" + (rowcount - 1).ToString()));
                     }
                     transaction.Commit();
                 }
@@ -2769,7 +2730,7 @@ namespace AssetManagement
         /// </summary>
         private void resetMedMedcineData()
         {
-            tbox_Med_Medcine_Name.Text = string.Empty;
+            tbox_Med_Medcine_Name_1.Text = string.Empty;
             tbox_Med_Medcine_Quantity.Text = string.Empty;
             //pBox_Medcine_Signeture.Image = null;
         }
@@ -2778,7 +2739,7 @@ namespace AssetManagement
         /// </summary>
         private void medStockValidator()
         {
-            int? stock = medicineStockCounter(tbox_Med_Medcine_Name.Text);
+            int? stock = medicineStockCounter(tbox_Med_Medcine_Name_1.Text);
             if (stock != null)
             {
                 Regex regex = new Regex(@"[^0-9]");
@@ -2817,7 +2778,7 @@ namespace AssetManagement
                         {
                             lbl_medStockCounter.Text = string.Empty;
                             frm_Main.medValidationPassed = true;
-                            tbox_Med_Medcine_Updated_Stock.Text = (medicineStockCounter(tbox_Med_Medcine_Name.Text) - int.Parse(tbox_Med_Medcine_Quantity.Text)).ToString();
+                            tbox_Med_Medcine_Updated_Stock.Text = (medicineStockCounter(tbox_Med_Medcine_Name_1.Text) - int.Parse(tbox_Med_Medcine_Quantity.Text)).ToString();
                         }
                     }
                     else
@@ -2869,34 +2830,35 @@ namespace AssetManagement
         /// <param name="stat">if set to <c>true</c> [stat].</param>
         private void insertMedAssinment(bool stat)
         {
-            con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
-            con.Open();
-            OleDbTransaction transaction = con.BeginTransaction();
-            try
+            int result;
+            if (stat == false)
             {
-                if (stat == false)
+                result = DatabaseOperation.insertDetailsWithTransactionAndSinglePicture("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES (" + tbox_Med_Emp_Id.Text + ",'" + tbox_Med_Emp_Name.Text + "','" + tbox_Med_Emp_Email.Text + "','" + tbox_Med_Emp_Desk_Phone.Text + "','" + tbox_Med_Medcine_Name_1.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", "UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name_1.Text + "'", ref pBox_Medcine_Signeture, "@Employee_Signeture");
+                if (result == 1)
                 {
-                    cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES (" + tbox_Med_Emp_Id.Text + ",'" + tbox_Med_Emp_Name.Text + "','" + tbox_Med_Emp_Email.Text + "','" + tbox_Med_Emp_Desk_Phone.Text + "','" + tbox_Med_Medcine_Name.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", con, transaction);
+                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    resetEmpData(1, ref tbox_Med_Emp_Id, ref tbox_Med_Emp_Name, ref tbox_Med_Emp_Email, ref tbox_Med_Emp_Desk_Phone, ref lbl_Med_Emp_Id, ref lbl_Med_Emp_Name, ref lbl_Med_Emp_Email, ref lbl_Med_Emp_Desk_Phone, ref lbl_Med_Error, ref btn_Med_Emp_Search);
+                    resetMedMedcineData();
                 }
-                else if (stat == true)
+                if (result == 0)
                 {
-                    cmd = new OleDbCommand("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES ( " + 00000 +" ,'" + tbox_Med_Emp_Name.Text + "','NON_EMPLOYEE_EMAIL','NON_EMPLOYEE_DESK_PHONE','" + tbox_Med_Medcine_Name.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", con, transaction);
+                    MessageBox.Show("Operation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                convertPhotoType(5);
-                cmd.ExecuteNonQuery();
-                cmd = new OleDbCommand("UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name.Text + "'", con, transaction);
-                cmd.ExecuteNonQuery();
-                transaction.Commit();
-                MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                resetEmpData(1, ref tbox_Med_Emp_Id, ref tbox_Med_Emp_Name, ref tbox_Med_Emp_Email, ref tbox_Med_Emp_Desk_Phone, ref lbl_Med_Emp_Id, ref lbl_Med_Emp_Name, ref lbl_Med_Emp_Email, ref lbl_Med_Emp_Desk_Phone, ref lbl_Med_Error, ref btn_Med_Emp_Search);
-                resetMedMedcineData();
             }
-            catch (Exception ex)
+            if (stat == true)
             {
-                MessageBox.Show("Operation Failed due to : " + ex.Message, "Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                transaction.Rollback();
+                result = DatabaseOperation.insertDetailsWithTransactionAndSinglePicture("INSERT INTO tbl_Medicine_Distrubution ( Employee_Id,Employee_Name,Employee_Email,Desk_Phone,Medcine_Name,Quantity,Date_Assign,Signature_Employee) VALUES ( " + 00000 + " ,'" + tbox_Med_Emp_Name.Text + "','NON_EMPLOYEE_EMAIL','NON_EMPLOYEE_DESK_PHONE','" + tbox_Med_Medcine_Name_1.Text + "','" + tbox_Med_Medcine_Quantity.Text + "','" + DateTime.Now.ToString("dd MMMM yyyy") + "',@Employee_Signeture)", "UPDATE tbl_Medicine_Details SET Stock_Quantity='" + tbox_Med_Medcine_Updated_Stock.Text + "' WHERE Medicine_Name='" + tbox_Med_Medcine_Name_1.Text + "'", ref pBox_Medcine_Signeture, "@Employee_Signeture");
+                if (result == 1)
+                {
+                    MessageBox.Show("Details Captured", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    resetEmpData(1, ref tbox_Med_Emp_Id, ref tbox_Med_Emp_Name, ref tbox_Med_Emp_Email, ref tbox_Med_Emp_Desk_Phone, ref lbl_Med_Emp_Id, ref lbl_Med_Emp_Name, ref lbl_Med_Emp_Email, ref lbl_Med_Emp_Desk_Phone, ref lbl_Med_Error, ref btn_Med_Emp_Search);
+                    resetMedMedcineData();
+                }
+                if (result == 0)
+                {
+                    MessageBox.Show("Operation Failed", "Asset Manager", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            con.Close();
         }
         /// <summary>
         /// Plots the graph.
@@ -3376,6 +3338,5 @@ namespace AssetManagement
         }
 
         #endregion Function
-
     }
 }

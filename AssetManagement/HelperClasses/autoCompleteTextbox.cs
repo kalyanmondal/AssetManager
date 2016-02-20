@@ -8,7 +8,7 @@ namespace AssetManagement.HelperClasses
     {
         private static OleDbConnection con;
 
-        public static void autocompletedata(ref System.Windows.Forms.TextBox textControl, string columnName, string tableName)
+        public static void autocompletedata(ref TextBox textControl, string columnName, string tableName)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             var source = new AutoCompleteStringCollection();
@@ -34,7 +34,7 @@ namespace AssetManagement.HelperClasses
             textControl.AutoCompleteCustomSource = source;
         }
 
-        public static void autocompletedata(ref System.Windows.Forms.TextBox textControl, string columnName, string tableName, string secondFilterColumn, string Operator, string secondFilterConition)
+        public static void autocompletedata(ref TextBox textControl, string columnName, string tableName, string secondFilterColumn, string Operator, string secondFilterConition)
         {
             con = new OleDbConnection(@" provider=" + Encrypter.Decrypt(RegManager.getKey("provider"), true) + "; data source=" + Encrypter.Decrypt(RegManager.getKey("data source"), true));
             var source = new AutoCompleteStringCollection();

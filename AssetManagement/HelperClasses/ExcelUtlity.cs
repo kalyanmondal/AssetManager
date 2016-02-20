@@ -1,14 +1,16 @@
 ﻿using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace AssetManagement.HelperClasses
 {
-    internal class ExcelUtlity
+    public static class ExcelUtlity
     {
-        public bool WriteDataTableToExcel(System.Data.DataTable dataTable, string worksheetName, string saveAsLocation, string ReporType, int from)
+        public static bool WriteDataTableToExcel(System.Data.DataTable dataTable, string worksheetName, string saveAsLocation, string ReporType, int from)
         {
             Microsoft.Office.Interop.Excel.Application excel;
             Microsoft.Office.Interop.Excel.Workbook excelworkBook;
@@ -108,7 +110,7 @@ namespace AssetManagement.HelperClasses
             }
         }
 
-        public void FormattingExcelCells(Microsoft.Office.Interop.Excel.Range range, string HTMLcolorCode, System.Drawing.Color fontColor, bool IsFontbool)
+        public static void FormattingExcelCells(Range range, string HTMLcolorCode, Color fontColor, bool IsFontbool)
         {
             range.Interior.Color = System.Drawing.ColorTranslator.FromHtml(HTMLcolorCode);
             range.Font.Color = System.Drawing.ColorTranslator.ToOle(fontColor);
@@ -118,7 +120,7 @@ namespace AssetManagement.HelperClasses
             }
         }
 
-        public int noOfRowsCounter(string workWokbookName, string workSheetName)
+        public static int noOfRowsCounter(string workWokbookName, string workSheetName)
         {
             Microsoft.Office.Interop.Excel.Application excel;
             Microsoft.Office.Interop.Excel.Workbook excelworkBook;
@@ -147,7 +149,7 @@ namespace AssetManagement.HelperClasses
             }
         }
 
-        public int noOfSheetCounter(string workWokbookName)
+        public static int noOfSheetCounter(string workWokbookName)
         {
             Microsoft.Office.Interop.Excel.Application excel;
             Microsoft.Office.Interop.Excel.Workbook excelworkBook;
@@ -177,7 +179,7 @@ namespace AssetManagement.HelperClasses
             }
         }
 
-        public List<string> sheetNames(string workWokbookName)
+        public static List<string> sheetNames(string workWokbookName)
         {
             Microsoft.Office.Interop.Excel.Application excel;
             Microsoft.Office.Interop.Excel.Workbook excelworkBook;
@@ -203,6 +205,82 @@ namespace AssetManagement.HelperClasses
             }
             finally
             {
+                excelworkBook = null;
+            }
+        }
+
+        public static bool WriteDataTableToExcelForFixedData(System.Data.DataTable dataTable, string worksheetName, string saveAsLocation, ref BackgroundWorker impEmp, int presentValue, int finalValue)
+        {
+            frm_Main.errorInEmployeeeImport = true;
+            Microsoft.Office.Interop.Excel.Application excel;
+            Microsoft.Office.Interop.Excel.Workbook excelworkBook;
+            Microsoft.Office.Interop.Excel.Worksheet excelSheet;
+            Microsoft.Office.Interop.Excel.Range excelCellrange;
+            try
+            {
+                // Start Excel and get Application object.
+                excel = new Microsoft.Office.Interop.Excel.Application();
+
+                // for making Excel visible
+                excel.Visible = false;
+                excel.DisplayAlerts = false;
+
+                // Creation a new Workbook
+                excelworkBook = excel.Workbooks.Add(Type.Missing);
+
+                // Workk sheet
+                excelSheet = (Microsoft.Office.Interop.Excel.Worksheet)excelworkBook.Worksheets[1];
+                excelSheet.Delete();
+                excelSheet = (Microsoft.Office.Interop.Excel.Worksheet)excelworkBook.Worksheets[2];
+                excelSheet.Delete();
+                excelSheet = (Microsoft.Office.Interop.Excel.Worksheet)excelworkBook.ActiveSheet;
+                excelSheet.Name = worksheetName;
+
+                // loop through each row and add values to our sheet
+                int rowcount = 1;
+                foreach (DataRow datarow in dataTable.Rows)
+                {
+                    presentValue++;
+                    rowcount++;
+                    for (int i = 1; i <= dataTable.Columns.Count - 1; i++)
+                    {
+                        // on the first iteration we add the column headers
+                        if (rowcount == 2)
+                        {
+                            excelSheet.Cells[1, i] = dataTable.Columns[i - 1].ColumnName;
+                            excelSheet.Cells.Font.Color = System.Drawing.Color.Black;
+                        }
+                        excelSheet.Cells[rowcount, i] = datarow[i - 1].ToString();
+                    }
+                    impEmp.ReportProgress((int)Math.Ceiling((float)presentValue / finalValue), string.Format("Completed -" + (presentValue).ToString() + "/" + (finalValue).ToString()));
+                }
+
+                // now we resize the columns
+                excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[rowcount, dataTable.Columns.Count]];
+                excelCellrange.EntireColumn.AutoFit();
+                Microsoft.Office.Interop.Excel.Borders border = excelCellrange.Borders;
+                border.LineStyle = Microsoft.Office.Interop.Excel.XlLineStyle.xlContinuous;
+                border.Weight = 2d;
+
+                excelCellrange = excelSheet.Range[excelSheet.Cells[1, 1], excelSheet.Cells[1, dataTable.Columns.Count]];
+                FormattingExcelCells(excelCellrange, "#000099", System.Drawing.Color.White, true);
+
+                //now save the workbook and exit Excel
+
+                excelworkBook.SaveAs(saveAsLocation); ;
+                excelworkBook.Close();
+                excel.Quit();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+            finally
+            {
+                excelSheet = null;
+                excelCellrange = null;
                 excelworkBook = null;
             }
         }
